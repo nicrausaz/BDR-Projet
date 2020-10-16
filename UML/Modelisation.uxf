@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1197</x>
+      <y>576</y>
+      <w>144</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Training
+--
+description: Varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1719</x>
+      <y>648</y>
+      <w>90</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Federation
+--
+_id: Integer_
+name: String
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>576</y>
+      <w>126</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>Game
+--
+_id: Integer_
+score_host: Integer
+score_away: Integer
+canceled: Boolean
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1422</x>
+      <y>135</y>
+      <w>90</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Season
+--
+_id : Integer_
+title: Varchar
+startAt : Date
+endAt: Date
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1719</x>
+      <y>405</y>
+      <w>108</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>League
+--
+_id: Integer_
+level: String
+gender: Char
+sport: Enum
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>891</x>
+      <y>387</y>
+      <w>108</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Stadium
+--
+_id: Integer_
+address: Varchar
+capacity: Integer
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>594</y>
+      <w>117</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Team
+--
+_id: Integer_
+name: Varchar
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1404</x>
+      <y>378</y>
+      <w>117</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>Championship
+--
+_id: Integer_
+name: Varchar
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1260</x>
+      <y>927</y>
+      <w>117</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>User
+--
+_id: Integer_
+email: Varchar
+name: Varchar
+firstname: Varchar
+password: Varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>522</x>
+      <y>711</y>
+      <w>117</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Club
+--
+_id: Integer_
+name: Varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>522</x>
+      <y>558</y>
+      <w>153</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+_id: Integer_
+licenseNumber: Varchar
+name: Varchar
+firstname: Varchar
+birthDate: Date
+jerseyNumber: Integer
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1116</x>
+      <y>387</y>
+      <w>144</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Event
+--
+_id: Integer_
+name: Varchar
+date: Date
+startAt: Time
+endAt: Time
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1755</x>
+      <y>495</y>
+      <w>117</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+is responsible v</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>990</x>
+      <y>423</y>
+      <w>144</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+is played into v</panel_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1098</x>
+      <y>477</y>
+      <w>162</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+{ disjoint, total } </panel_attributes>
+    <additional_attributes>70.0;10.0;70.0;70.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1152</x>
+      <y>477</y>
+      <w>99</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;90.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>900</x>
+      <y>612</y>
+      <w>180</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+is visitor &gt;</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>900</x>
+      <y>648</y>
+      <w>180</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+is host &gt;</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>666</x>
+      <y>621</y>
+      <w>144</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1..*
+play for &gt;</panel_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>675</y>
+      <w>216</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+&lt; play for</panel_attributes>
+    <additional_attributes>10.0;70.0;200.0;70.0;200.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1098</x>
+      <y>531</y>
+      <w>396</w>
+      <h>315</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=1
+&lt; scheduled</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;330.0;410.0;330.0;410.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1458</x>
+      <y>216</y>
+      <w>72</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..*
+&lt; occur</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1512</x>
+      <y>441</y>
+      <w>225</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+teaches to &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;160.0;20.0;230.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>873</x>
+      <y>621</y>
+      <w>603</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=*
+m2=1
+participate in v</panel_attributes>
+    <additional_attributes>520.0;10.0;550.0;10.0;550.0;180.0;10.0;180.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1368</x>
+      <y>738</y>
+      <w>414</w>
+      <h>279</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=*
+administrate &gt;</panel_attributes>
+    <additional_attributes>10.0;280.0;440.0;280.0;440.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>567</x>
+      <y>801</y>
+      <w>711</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=*
+&lt; administrate</panel_attributes>
+    <additional_attributes>770.0;210.0;10.0;210.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>423</x>
+      <y>630</y>
+      <w>927</w>
+      <h>495</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=*
+&lt; administrate</panel_attributes>
+    <additional_attributes>1000.0;460.0;1000.0;530.0;10.0;530.0;10.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>837</x>
+      <y>486</y>
+      <w>900</w>
+      <h>396</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..*
+m2=1
+play into &gt;</panel_attributes>
+    <additional_attributes>10.0;220.0;10.0;420.0;890.0;420.0;890.0;10.0;980.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>99</x>
+      <y>162</y>
+      <w>342</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Un numéro de maillot doit être unique dans une équipe</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
