@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>4</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>512</x>
-      <y>248</y>
-      <w>64</w>
-      <h>48</h>
+      <x>1050</x>
+      <y>560</y>
+      <w>160</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Training
 --
@@ -17,10 +17,10 @@ description: Varchar</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>744</x>
-      <y>280</y>
-      <w>40</w>
-      <h>44</h>
+      <x>1630</x>
+      <y>640</y>
+      <w>100</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>Federation
 --
@@ -32,10 +32,10 @@ name: String
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>452</x>
-      <y>248</y>
-      <w>56</w>
-      <h>48</h>
+      <x>900</x>
+      <y>560</y>
+      <w>140</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>Game
 --
@@ -49,10 +49,10 @@ canceled: Boolean
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>604</x>
-      <y>56</y>
-      <w>52</w>
-      <h>40</h>
+      <x>1280</x>
+      <y>80</y>
+      <w>130</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Season
 --
@@ -67,10 +67,10 @@ endAt: Date
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>744</x>
-      <y>172</y>
-      <w>48</w>
-      <h>44</h>
+      <x>1630</x>
+      <y>370</y>
+      <w>120</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>League
 --
@@ -85,10 +85,10 @@ gender: Char
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>376</x>
-      <y>164</y>
-      <w>48</w>
-      <h>40</h>
+      <x>710</x>
+      <y>350</y>
+      <w>120</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Stadium
 --
@@ -103,10 +103,10 @@ capacity: Integer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>332</x>
-      <y>256</y>
-      <w>52</w>
-      <h>40</h>
+      <x>600</x>
+      <y>580</y>
+      <w>130</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>Team
 --
@@ -119,10 +119,10 @@ name: Varchar
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>604</x>
-      <y>160</y>
-      <w>52</w>
-      <h>72</h>
+      <x>1280</x>
+      <y>340</y>
+      <w>130</w>
+      <h>180</h>
     </coordinates>
     <panel_attributes>Championship
 --
@@ -135,12 +135,12 @@ endAt: Date</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>540</x>
-      <y>404</y>
-      <w>52</w>
-      <h>52</h>
+      <x>1120</x>
+      <y>950</y>
+      <w>130</w>
+      <h>130</h>
     </coordinates>
-    <panel_attributes>User
+    <panel_attributes>Administrator
 --
 _id: Integer_
 email: Varchar
@@ -152,10 +152,10 @@ password: Varchar</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>212</x>
-      <y>308</y>
-      <w>52</w>
-      <h>44</h>
+      <x>300</x>
+      <y>710</y>
+      <w>130</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>Club
 --
@@ -166,10 +166,10 @@ name: Varchar</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>212</x>
-      <y>240</y>
-      <w>68</w>
-      <h>56</h>
+      <x>300</x>
+      <y>540</y>
+      <w>170</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>Player
 --
@@ -184,10 +184,10 @@ birthDate: Date
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>476</x>
-      <y>164</y>
-      <w>64</w>
-      <h>44</h>
+      <x>960</x>
+      <y>350</y>
+      <w>160</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>Event
 --
@@ -201,38 +201,38 @@ endAt: Datetime
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>760</x>
-      <y>212</y>
-      <w>52</w>
-      <h>76</h>
+      <x>1670</x>
+      <y>470</y>
+      <w>130</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=*
-is responsible v</panel_attributes>
+is responsible ^</panel_attributes>
     <additional_attributes>10.0;170.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>420</x>
-      <y>180</y>
-      <w>64</w>
-      <h>20</h>
+      <x>820</x>
+      <y>390</y>
+      <w>160</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
 m2=1
-is played into v</panel_attributes>
+&lt; is played into</panel_attributes>
     <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>468</x>
-      <y>204</y>
-      <w>72</w>
-      <h>52</h>
+      <x>940</x>
+      <y>450</y>
+      <w>180</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 { disjoint, total } </panel_attributes>
@@ -241,10 +241,10 @@ is played into v</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>492</x>
-      <y>204</y>
-      <w>44</w>
-      <h>52</h>
+      <x>1000</x>
+      <y>450</y>
+      <w>110</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;90.0;110.0</additional_attributes>
@@ -252,10 +252,10 @@ is played into v</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>264</y>
-      <w>80</w>
-      <h>20</h>
+      <x>720</x>
+      <y>600</y>
+      <w>200</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
@@ -266,10 +266,10 @@ is visitor &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>280</y>
-      <w>80</w>
-      <h>20</h>
+      <x>720</x>
+      <y>640</y>
+      <w>200</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
@@ -280,10 +280,10 @@ is host &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>276</x>
-      <y>268</y>
-      <w>64</w>
-      <h>20</h>
+      <x>460</x>
+      <y>610</y>
+      <w>160</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
@@ -294,10 +294,10 @@ play for &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>260</x>
-      <y>292</y>
-      <w>96</w>
-      <h>40</h>
+      <x>420</x>
+      <y>670</y>
+      <w>240</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -308,10 +308,10 @@ m2=1..*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>468</x>
-      <y>228</y>
-      <w>176</w>
-      <h>140</h>
+      <x>940</x>
+      <y>510</y>
+      <w>440</w>
+      <h>350</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
@@ -322,52 +322,52 @@ m2=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>628</x>
-      <y>92</y>
-      <w>32</w>
-      <h>76</h>
+      <x>1340</x>
+      <y>170</y>
+      <w>80</w>
+      <h>190</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1..*
-&lt; occur</panel_attributes>
+occur ^</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>652</x>
-      <y>188</y>
-      <w>100</w>
-      <h>20</h>
+      <x>1400</x>
+      <y>410</y>
+      <w>250</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
 m2=1
-teaches to &gt;</panel_attributes>
+occur &gt;</panel_attributes>
     <additional_attributes>10.0;20.0;160.0;20.0;230.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>268</y>
-      <w>268</w>
-      <h>80</h>
+      <x>690</x>
+      <y>610</y>
+      <w>670</w>
+      <h>200</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
 m2=1
-participate in v</panel_attributes>
+participate in ^</panel_attributes>
     <additional_attributes>520.0;10.0;550.0;10.0;550.0;180.0;10.0;180.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>588</x>
-      <y>320</y>
-      <w>184</w>
-      <h>124</h>
+      <x>1240</x>
+      <y>740</y>
+      <w>460</w>
+      <h>310</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
@@ -378,10 +378,10 @@ administrate &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>248</x>
-      <y>348</y>
-      <w>300</w>
-      <h>96</h>
+      <x>390</x>
+      <y>810</y>
+      <w>750</w>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
@@ -392,10 +392,10 @@ m2=*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>168</x>
-      <y>272</y>
-      <w>412</w>
-      <h>220</h>
+      <x>190</x>
+      <y>620</y>
+      <w>1030</w>
+      <h>550</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -406,10 +406,10 @@ m2=*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>352</x>
-      <y>208</y>
-      <w>400</w>
-      <h>176</h>
+      <x>650</x>
+      <y>460</y>
+      <w>1000</w>
+      <h>440</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
@@ -420,10 +420,10 @@ play into &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>216</x>
-      <y>512</y>
-      <w>40</w>
-      <h>32</h>
+      <x>310</x>
+      <y>1220</y>
+      <w>100</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>Sport
 --
@@ -434,10 +434,10 @@ name: Varchar</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>224</x>
-      <y>348</y>
-      <w>32</w>
-      <h>172</h>
+      <x>330</x>
+      <y>810</y>
+      <w>80</w>
+      <h>430</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
@@ -448,10 +448,10 @@ plays v</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>252</x>
-      <y>312</y>
-      <w>604</w>
-      <h>220</h>
+      <x>400</x>
+      <y>720</y>
+      <w>1510</w>
+      <h>550</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -462,10 +462,10 @@ promote v</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>276</x>
-      <y>184</y>
-      <w>68</w>
-      <h>36</h>
+      <x>460</x>
+      <y>400</y>
+      <w>170</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>Play_for
 --
@@ -475,10 +475,10 @@ jerseyNumber: Integer</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>304</x>
-      <y>216</y>
-      <w>12</w>
-      <h>68</h>
+      <x>530</x>
+      <y>480</y>
+      <w>30</w>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
@@ -486,10 +486,10 @@ jerseyNumber: Integer</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>44</y>
-      <w>668</w>
-      <h>264</h>
+      <x>320</x>
+      <y>50</y>
+      <w>1670</w>
+      <h>660</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..*
@@ -500,10 +500,10 @@ is licenced v</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>276</x>
-      <y>76</y>
-      <w>68</w>
-      <h>36</h>
+      <x>460</x>
+      <y>130</y>
+      <w>170</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>references
 --
@@ -513,10 +513,10 @@ licenseNumber: Varchar</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>304</x>
-      <y>44</y>
-      <w>12</w>
-      <h>40</h>
+      <x>530</x>
+      <y>50</y>
+      <w>30</w>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
