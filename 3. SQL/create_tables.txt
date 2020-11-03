@@ -1,0 +1,113 @@
+/*
+ ---------------------------------------
+    Gestion de ligues sportives
+ ---------------------------------------
+    Création des tables
+ ---------------------------------------
+    Nicolas Crausaz & Maxime Scharwath
+    Version 1 - 03.11.2020
+ ---------------------------------------
+ */
+
+CREATE DATABASE bdr_proj_crausaz_scharwath;
+
+CREATE SCHEMA leagues_manager;
+
+set search_path to leagues_manager;
+
+CREATE TABLE season
+(
+    id      integer PRIMARY KEY,
+    name    varchar(15) NOT NULL,
+    startAt date        NOT NULL,
+    endAt   date        NOT NULL
+);
+
+CREATE TABLE championship
+(
+    id      integer PRIMARY KEY,
+    name    varchar(30) NOT NULL,
+    startAt date        NOT NULL,
+    endAt   date        NOT NULL
+);
+
+CREATE TABLE league
+(
+    id     integer PRIMARY KEY,
+    level  varchar(50) NOT NULL,
+    gender char        NOT NULL
+);
+
+CREATE TABLE sport
+(
+    id   integer PRIMARY KEY,
+    name varchar(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE administrator
+(
+    uid       uuid PRIMARY KEY,
+    email     varchar(255) UNIQUE NOT NULL,
+    lastname  varchar(255)        NOT NULL,
+    firstname varchar(255)        NOT NULL,
+    password  varchar(255)        NOT NULL
+);
+
+CREATE TABLE federation
+(
+    id   integer PRIMARY KEY,
+    name varchar(100) NOT NULL
+);
+
+CREATE TABLE club
+(
+    id   integer PRIMARY KEY,
+    name varchar(100) NOT NULL
+);
+
+CREATE TABLE player
+(
+    uid       uuid PRIMARY KEY,
+    lastname  varchar(255) NOT NULL,
+    firstname varchar(255) NOT NULL,
+    birthdate date         NOT NULL
+);
+
+CREATE TABLE team
+(
+    id   integer PRIMARY KEY,
+    name varchar(100) NOT NULL
+);
+
+CREATE TABLE stadium
+(
+    id       integer PRIMARY KEY,
+    name     varchar(100) NOT NULL,
+    address  varchar(255) NOT NULL,
+    capacity integer
+);
+
+CREATE TABLE event
+(
+    uid       uuid PRIMARY KEY,
+    name      varchar(100) NOT NULL,
+    startAt   timestamp    NOT NULL,
+    endAt     timestamp    NOT NULL,
+    createdAt timestamp,
+    updatedAt timestamp
+);
+
+CREATE TABLE game
+(
+    eventuid  uuid PRIMARY KEY,
+    gameId    varchar(50) NOT NULL,
+    scoreHost integer DEFAULT 0,
+    scoreAway integer DEFAULT 0,
+    canceled  boolean DEFAULT FALSE
+);
+
+CREATE TABLE training
+(
+    eventuid    uuid PRIMARY KEY,
+    description varchar(255)
+);
