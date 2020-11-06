@@ -2,14 +2,14 @@
  ---------------------------------------
     Gestion de ligues sportives
  ---------------------------------------
-    Création des contraintes
+    Création des tables et contraintes
  ---------------------------------------
     Nicolas Crausaz & Maxime Scharwath
     Version 1 - 03.11.2020
  ---------------------------------------
  */
 
---CREATE DATABASE bdr_proj_crausaz_scharwath;
+CREATE DATABASE bdr_proj_crausaz_scharwath;
 
 CREATE SCHEMA leagues_manager;
 
