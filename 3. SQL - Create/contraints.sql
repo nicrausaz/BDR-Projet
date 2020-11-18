@@ -5,11 +5,11 @@
     Création des tables et contraintes
  ---------------------------------------
     Nicolas Crausaz & Maxime Scharwath
-    Version 1 - 03.11.2020
+    Version 2 - 13.11.2020
  ---------------------------------------
  */
 
-CREATE DATABASE bdr_proj_crausaz_scharwath;
+--CREATE DATABASE bdr_proj_crausaz_scharwath;
 
 CREATE SCHEMA leagues_manager;
 
@@ -142,12 +142,13 @@ CREATE TABLE game
     canceled       boolean DEFAULT FALSE,
     championshipId integer     NOT NULL,
     teamHomeId     integer     NOT NULL,
-    teamGuestId    integer     NOT NULL CHECK (teamHomeId != teamGuestId),
+    teamGuestId    integer     NOT NULL,
 
     CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid),
     CONSTRAINT fk_championshipId FOREIGN KEY (championshipId) REFERENCES championship (id),
     CONSTRAINT fk_teamHomeId FOREIGN KEY (teamHomeId) REFERENCES team (id),
-    CONSTRAINT fk_teamGuestId FOREIGN KEY (teamGuestId) REFERENCES team (id)
+    CONSTRAINT fk_teamGuestId FOREIGN KEY (teamGuestId) REFERENCES team (id),
+    CHECK (teamHomeId != teamGuestId)
 );
 
 CREATE TABLE training
