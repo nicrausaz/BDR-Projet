@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "faker": "^5.1.0",
+    "pg": "^8.5.1"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "run": "node index.js"
+  }
+}
