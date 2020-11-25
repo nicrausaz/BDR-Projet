@@ -11,39 +11,39 @@
 
 --CREATE DATABASE bdr_proj_crausaz_scharwath;
 
-CREATE SCHEMA leagues_manager;
+-- CREATE SCHEMA public;
 
-set search_path to leagues_manager;
+SET search_path TO public;
 
 CREATE TABLE sport
 (
-    id   integer PRIMARY KEY,
-    name varchar(50) UNIQUE NOT NULL
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
 );
 
 CREATE TABLE season
 (
-    id      integer PRIMARY KEY,
-    name    varchar(15) NOT NULL,
-    startAt date        NOT NULL,
-    endAt   date        NOT NULL
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR(15) NOT NULL,
+    startAt DATE        NOT NULL,
+    endAt   DATE        NOT NULL
 );
 
 CREATE TABLE league
 (
-    id     integer PRIMARY KEY,
-    level  varchar(50) NOT NULL,
-    gender char        NOT NULL
+    id     SERIAL PRIMARY KEY,
+    level  VARCHAR(50) NOT NULL,
+    gender CHAR        NOT NULL
 );
 
 CREATE TABLE championship
 (
-    id       integer PRIMARY KEY,
-    name     varchar(30) NOT NULL,
-    startAt  date        NOT NULL,
-    endAt    date        NOT NULL,
-    seasonId integer     NOT NULL,
-    leagueId integer     NOT NULL,
+    id       SERIAL PRIMARY KEY,
+    name     VARCHAR(30) NOT NULL,
+    startAt  DATE        NOT NULL,
+    endAt    DATE        NOT NULL,
+    seasonId SERIAL      NOT NULL,
+    leagueId SERIAL      NOT NULL,
 
     CONSTRAINT fk_seasonId FOREIGN KEY (seasonId) REFERENCES season (id),
     CONSTRAINT fk_leagueId FOREIGN KEY (leagueId) REFERENCES league (id)
@@ -51,26 +51,26 @@ CREATE TABLE championship
 
 CREATE TABLE federation
 (
-    id      integer PRIMARY KEY,
-    name    varchar(100) NOT NULL,
-    sportId integer      NOT NULL,
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR(100) NOT NULL,
+    sportId SERIAL       NOT NULL,
 
     CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id)
 );
 
 CREATE TABLE player
 (
-    uid       uuid PRIMARY KEY,
-    lastname  varchar(255) NOT NULL,
-    firstname varchar(255) NOT NULL,
-    birthdate date         NOT NULL
+    uid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    lastname  VARCHAR(255) NOT NULL,
+    firstname VARCHAR(255) NOT NULL,
+    birthdate DATE         NOT NULL
 );
 
 CREATE TABLE federation_licence_player
 (
-    licenceNumber varchar(255) NOT NULL,
-    playerUid     uuid,
-    federationId  integer,
+    licenceNumber VARCHAR(255) NOT NULL,
+    playerUid     UUID,
+    federationId  SERIAL,
 
     PRIMARY KEY (playerUid, federationId),
 
@@ -80,18 +80,18 @@ CREATE TABLE federation_licence_player
 
 CREATE TABLE club
 (
-    id      integer PRIMARY KEY,
-    name    varchar(100) NOT NULL,
-    sportId integer      NOT NULL,
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR(100) NOT NULL,
+    sportId SERIAL       NOT NULL,
     CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id)
 );
 
 CREATE TABLE team
 (
-    id       integer PRIMARY KEY,
-    name     varchar(100) NOT NULL,
-    clubId   integer      NOT NULL,
-    leagueId integer      NOT NULL,
+    id       SERIAL PRIMARY KEY,
+    name     VARCHAR(100) NOT NULL,
+    clubId   SERIAL       NOT NULL,
+    leagueId SERIAL       NOT NULL,
 
     CONSTRAINT fk_clubId FOREIGN KEY (clubId) REFERENCES club (id),
     CONSTRAINT fk_leagueIdd FOREIGN KEY (leagueId) REFERENCES league (id)
@@ -100,11 +100,11 @@ CREATE TABLE team
 
 CREATE TABLE player_play_for_team
 (
-    jerseyNumber integer   NOT NULL,
-    startAt      timestamp NOT NULL,
-    endAt        timestamp,
-    playerUid    uuid,
-    teamId       integer,
+    jerseyNumber INTEGER   NOT NULL,
+    startAt      TIMESTAMP NOT NULL,
+    endAt        TIMESTAMP,
+    playerUid    UUID,
+    teamId       SERIAL,
 
     PRIMARY KEY (playerUid, teamId),
 
@@ -114,35 +114,35 @@ CREATE TABLE player_play_for_team
 
 CREATE TABLE stadium
 (
-    id       integer PRIMARY KEY,
-    name     varchar(100) NOT NULL,
-    address  varchar(255) NOT NULL,
-    capacity integer
+    id       SERIAL PRIMARY KEY,
+    name     VARCHAR(100) NOT NULL,
+    address  VARCHAR(255) NOT NULL,
+    capacity INTEGER
 );
 
 CREATE TABLE event
 (
-    uid       uuid PRIMARY KEY,
-    name      varchar(100) NOT NULL,
-    startAt   timestamp    NOT NULL,
-    endAt     timestamp    NOT NULL,
-    createdAt timestamp,
-    updatedAt timestamp,
-    stadiumId integer      NOT NULL,
+    uid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name      VARCHAR(100) NOT NULL,
+    startAt   TIMESTAMP    NOT NULL,
+    endAt     TIMESTAMP    NOT NULL,
+    createdAt TIMESTAMP,
+    updatedAt TIMESTAMP,
+    stadiumId SERIAL       NOT NULL,
 
     CONSTRAINT fk_stadiumId FOREIGN KEY (stadiumId) REFERENCES stadium (id)
 );
 
 CREATE TABLE game
 (
-    eventUid       uuid PRIMARY KEY,
-    gameId         varchar(50) NOT NULL,
-    scoreHome      integer DEFAULT 0,
-    scoreGuest     integer DEFAULT 0,
-    canceled       boolean DEFAULT FALSE,
-    championshipId integer     NOT NULL,
-    teamHomeId     integer     NOT NULL,
-    teamGuestId    integer     NOT NULL,
+    eventUid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    gameId         VARCHAR(50) NOT NULL,
+    scoreHome      INTEGER          DEFAULT 0,
+    scoreGuest     INTEGER          DEFAULT 0,
+    canceled       BOOLEAN          DEFAULT FALSE,
+    championshipId SERIAL      NOT NULL,
+    teamHomeId     SERIAL      NOT NULL,
+    teamGuestId    SERIAL      NOT NULL,
 
     CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid),
     CONSTRAINT fk_championshipId FOREIGN KEY (championshipId) REFERENCES championship (id),
@@ -153,9 +153,9 @@ CREATE TABLE game
 
 CREATE TABLE training
 (
-    eventUid    uuid PRIMARY KEY,
-    description varchar(255),
-    teamId      integer NOT NULL,
+    eventUid    UUID PRIMARY KEY,
+    description VARCHAR(255),
+    teamId      SERIAL NOT NULL,
 
     CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid),
     CONSTRAINT fk_teamId FOREIGN KEY (teamId) REFERENCES team (id)
@@ -163,17 +163,17 @@ CREATE TABLE training
 
 CREATE TABLE administrator
 (
-    uid       uuid PRIMARY KEY,
-    email     varchar(255) UNIQUE NOT NULL,
-    lastname  varchar(255)        NOT NULL,
-    firstname varchar(255)        NOT NULL,
-    password  varchar(255)        NOT NULL
+    uid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email     VARCHAR(255) UNIQUE NOT NULL,
+    lastname  VARCHAR(255)        NOT NULL,
+    firstname VARCHAR(255)        NOT NULL,
+    password  VARCHAR(255)        NOT NULL
 );
 
 CREATE TABLE administrator_player
 (
-    administratorUid uuid,
-    playerUid        uuid,
+    administratorUid UUID,
+    playerUid        UUID,
 
     PRIMARY KEY (administratorUid, playerUid),
 
@@ -183,8 +183,8 @@ CREATE TABLE administrator_player
 
 CREATE TABLE administrator_club
 (
-    administratorUid uuid,
-    clubId           integer,
+    administratorUid UUID,
+    clubId           SERIAL,
 
     PRIMARY KEY (administratorUid, clubId),
 
@@ -194,8 +194,8 @@ CREATE TABLE administrator_club
 
 CREATE TABLE administrator_federation
 (
-    administratorUid uuid,
-    federationId     integer,
+    administratorUid UUID,
+    federationId     SERIAL,
 
     PRIMARY KEY (administratorUid, federationId),
 
