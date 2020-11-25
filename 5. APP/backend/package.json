@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "faker": "^5.1.0",
     "pg": "^8.5.1"
   },
