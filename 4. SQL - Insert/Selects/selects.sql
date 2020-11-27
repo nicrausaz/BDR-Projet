@@ -49,7 +49,24 @@ WHERE c.id = <championshipid>;
 
 -- Selectionner les leagues d'un championnat
 
--- Selectionner les ressources d'un admin
+-- Selectionner un administrateur et ses ressources
+SELECT uid, email, lastname, firstname, clubid
+FROM administrator
+    INNER JOIN administrator_club ac ON uid = ac.administratoruid
+
+WHERE uid = <uid>;
+
+SELECT uid, email, lastname, firstname, federationid
+FROM administrator
+    INNER JOIN administrator_federation ON uid = administratoruid
+
+WHERE uid = <uid>;
+
+SELECT uid, email, lastname, firstname, playeruid
+FROM administrator
+    INNER JOIN administrator_player ac ON uid = administratoruid
+
+WHERE uid = <uid>;
 
 -- Selectionner les saisons
 SELECT *
