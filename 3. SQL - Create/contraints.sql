@@ -31,9 +31,12 @@ CREATE TABLE season
 
 CREATE TABLE league
 (
-    id     SERIAL PRIMARY KEY,
-    level  VARCHAR(50) NOT NULL,
-    gender CHAR        NOT NULL
+    id           SERIAL PRIMARY KEY,
+    level        VARCHAR(50) NOT NULL,
+    gender       CHAR        NOT NULL,
+    federationid SERIAL      NOT NULL,
+
+    CONSTRAINT fk_federationId FOREIGN KEY (federationid) REFERENCES federation (id)
 );
 
 CREATE TABLE championship
