@@ -3,3 +3,4 @@ INSERT INTO public.administrator_player (administratoruid, playeruid) VALUES ('6
 INSERT INTO public.administrator_player (administratoruid, playeruid) VALUES ('3d0ba533-4844-4a81-8a11-cf8db765ff0d', 'bf4f3502-a0f1-455a-b871-731d0bbebf58');
 INSERT INTO public.administrator_player (administratoruid, playeruid) VALUES ('24a47a94-eb59-47c5-b696-c16c09f414ff', 'cab67f39-e93e-46bd-ab81-92dccd733ed1');
 INSERT INTO public.administrator_player (administratoruid, playeruid) VALUES ('1eb65389-250f-4210-8df1-0b274f3713ae', 'f0bd34c9-1645-486f-8321-52a3ee5b0192');
+INSERT INTO public.administrator_player (administratoruid, playeruid) VALUES ('1eb65389-250f-4210-8df1-0b274f3713ae', '77979586-c0be-463f-941d-501ca1053172');

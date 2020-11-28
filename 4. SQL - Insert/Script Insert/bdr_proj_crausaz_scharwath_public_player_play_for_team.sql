@@ -1,4 +1,3 @@
-INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (1, '2020-12-07 00:00:00.000000', null, '04742101-99cd-414b-9dda-5abc44c285b0', 2);
 INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (2, '2020-12-07 00:00:00.000000', null, 'da8c05e7-f7ae-495d-aa3a-631159a7af45', 2);
 INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (3, '2020-12-07 00:00:00.000000', null, 'd61e7323-a5e5-4f81-98b5-0b46c9fb023f', 2);
 INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (45, '2020-12-07 00:00:00.000000', null, 'a2299122-1ec0-4fd5-b8c0-59542c72c1af', 2);
@@ -498,3 +497,4 @@ INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid
 INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (11, '2020-12-11 00:00:00.000000', '2020-12-11 00:00:00.000000', 'a7503457-a568-41e0-8a63-eb27ef28a608', 17);
 INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (9, '2020-12-11 00:00:00.000000', '2020-11-25 11:04:05.000000', '2f7bdaa7-dfa8-4bec-8f8a-eb94def1b431', 39);
 INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (10, '2020-12-11 00:00:00.000000', '2020-12-11 00:00:00.000000', '289a7dca-7a1a-47d5-9b26-aa36ace0dae1', 39);
+INSERT INTO public.player_play_for_team (jerseynumber, startat, endat, playeruid, teamid) VALUES (1, '2020-12-07 00:00:00.000000', '2020-11-24 16:52:32.000000', '04742101-99cd-414b-9dda-5abc44c285b0', 2);

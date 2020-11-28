@@ -1,4 +1,4 @@
 Vérifier les ON UPDATE / DELETE
 Versionning
 Vérifier les NOT NULLS
-Cardinalité 0 (revoir lescCardinalités)
+Cardinalité 0 (revoir les Cardinalités)
