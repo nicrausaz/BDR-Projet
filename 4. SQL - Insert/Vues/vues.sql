@@ -19,9 +19,20 @@ CREATE VIEW event_training AS (
 );
 
 -- Match joués par 1 equipe
+
+--creer une vue qui affiche les matchs joué par chaque équipe et indique si le match est gagnant/perdant/égalité dans un nouveau champs result
 CREATE VIEW team_played_games AS
 (
-    SELECT teamhomeid as teamid, * FROM event_game
-    UNION
-    SELECT teamguestid as teamid, * FROM event_game
-);
+SELECT *,
+       CASE
+           WHEN scorehome < scoreguest AND teamhomeid = t.teamid THEN 'W'
+           WHEN scorehome = scoreguest THEN 'D'
+           ELSE 'L' end as result
+FROM (
+         SELECT teamhomeid AS teamid, *
+         FROM event_game
+         UNION
+         SELECT teamguestid AS teamid, *
+         FROM event_game
+     ) as t
+    );
