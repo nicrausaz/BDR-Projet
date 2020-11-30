@@ -1,5 +1,5 @@
 --
--- Création des vues
+-- Création des vues & triggers
 -- Nicolas Crausaz & Maxime Scharwath
 -- Version 1 - 27.11.2020
 -- 
