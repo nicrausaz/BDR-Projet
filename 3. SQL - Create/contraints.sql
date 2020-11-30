@@ -5,12 +5,11 @@
     Création des tables et contraintes
  ---------------------------------------
     Nicolas Crausaz & Maxime Scharwath
-    Version 2 - 13.11.2020
+    Version 3 - 30.11.2020
  ---------------------------------------
  */
 
 --CREATE DATABASE bdr_proj_crausaz_scharwath;
-
 -- CREATE SCHEMA public;
 
 SET search_path TO public;
@@ -66,7 +65,10 @@ CREATE TABLE player
     uid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     lastname  VARCHAR(255) NOT NULL,
     firstname VARCHAR(255) NOT NULL,
-    birthdate DATE         NOT NULL
+    birthdate DATE         NOT NULL,
+    height    INTEGER,
+    weight    INTEGER,
+    sex       CHAR
 );
 
 CREATE TABLE federation_licence_player
@@ -77,16 +79,16 @@ CREATE TABLE federation_licence_player
 
     PRIMARY KEY (playerUid, federationId),
 
-    CONSTRAINT fk_playerUid FOREIGN KEY (playerUid) REFERENCES player (uid),
-    CONSTRAINT fk_federationId FOREIGN KEY (federationId) REFERENCES federation (id)
+    CONSTRAINT fk_playerUid FOREIGN KEY (playerUid) REFERENCES player (uid) ON DELETE CASCADE,
+    CONSTRAINT fk_federationId FOREIGN KEY (federationId) REFERENCES federation (id) ON DELETE CASCADE
 );
 
 CREATE TABLE club
 (
     id      SERIAL PRIMARY KEY,
     name    VARCHAR(100) NOT NULL,
-    sportId SERIAL       NOT NULL,
-    CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id)
+    sportId SERIAL,
+    CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id) ON DELETE SET NULL
 );
 
 CREATE TABLE team
@@ -96,8 +98,8 @@ CREATE TABLE team
     clubId   SERIAL       NOT NULL,
     leagueId SERIAL       NOT NULL,
 
-    CONSTRAINT fk_clubId FOREIGN KEY (clubId) REFERENCES club (id),
-    CONSTRAINT fk_leagueIdd FOREIGN KEY (leagueId) REFERENCES league (id)
+    CONSTRAINT fk_clubId FOREIGN KEY (clubId) REFERENCES club (id) ON DELETE CASCADE,
+    CONSTRAINT fk_leagueId FOREIGN KEY (leagueId) REFERENCES league (id)
 );
 
 
@@ -111,8 +113,8 @@ CREATE TABLE player_play_for_team
 
     PRIMARY KEY (playerUid, teamId),
 
-    CONSTRAINT fk_playerUid FOREIGN KEY (playerUid) REFERENCES player (uid),
-    CONSTRAINT fk_teamId FOREIGN KEY (teamId) REFERENCES team (id)
+    CONSTRAINT fk_playerUid FOREIGN KEY (playerUid) REFERENCES player (uid) ON DELETE CASCADE,
+    CONSTRAINT fk_teamId    FOREIGN KEY (teamId)    REFERENCES team (id) ON DELETE CASCADE
 );
 
 CREATE TABLE stadium
@@ -131,9 +133,9 @@ CREATE TABLE event
     endAt     TIMESTAMP    NOT NULL,
     createdAt TIMESTAMP,
     updatedAt TIMESTAMP,
-    stadiumId SERIAL       NOT NULL,
+    stadiumId SERIAL,
 
-    CONSTRAINT fk_stadiumId FOREIGN KEY (stadiumId) REFERENCES stadium (id)
+    CONSTRAINT fk_stadiumId FOREIGN KEY (stadiumId) REFERENCES stadium (id) ON DELETE SET NULL
 );
 
 CREATE TABLE game
@@ -147,10 +149,10 @@ CREATE TABLE game
     teamHomeId     SERIAL      NOT NULL,
     teamGuestId    SERIAL      NOT NULL,
 
-    CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid),
-    CONSTRAINT fk_championshipId FOREIGN KEY (championshipId) REFERENCES championship (id),
-    CONSTRAINT fk_teamHomeId FOREIGN KEY (teamHomeId) REFERENCES team (id),
-    CONSTRAINT fk_teamGuestId FOREIGN KEY (teamGuestId) REFERENCES team (id),
+    CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid) ON DELETE CASCADE,
+    CONSTRAINT fk_championshipId FOREIGN KEY (championshipId) REFERENCES championship (id) ON DELETE CASCADE,
+    CONSTRAINT fk_teamHomeId FOREIGN KEY (teamHomeId) REFERENCES team (id) ON DELETE CASCADE,
+    CONSTRAINT fk_teamGuestId FOREIGN KEY (teamGuestId) REFERENCES team (id) ON DELETE CASCADE,
     CHECK (teamHomeId != teamGuestId)
 );
 
@@ -160,7 +162,7 @@ CREATE TABLE training
     description VARCHAR(255),
     teamId      SERIAL NOT NULL,
 
-    CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid),
+    CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid) ON DELETE CASCADE,
     CONSTRAINT fk_teamId FOREIGN KEY (teamId) REFERENCES team (id)
 );
 

@@ -2,8 +2,6 @@
 -- Selections des données
 -- Nicolas Crausaz & Maxime Scharwath
 -- Version 1 - 28.11.2020
--- 
-
 --
 -- PS: Les champs variables sont écrits entre <>
 --
