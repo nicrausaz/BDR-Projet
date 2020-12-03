@@ -9,8 +9,11 @@
  ---------------------------------------
  */
 
---CREATE DATABASE bdr_proj_crausaz_scharwath;
--- CREATE SCHEMA public;
+CREATE DATABASE bdr_proj_crausaz_scharwath;
+CREATE SCHEMA public;
+
+--Pour utiliser uuid
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 SET search_path TO public;
 
@@ -26,6 +29,16 @@ CREATE TABLE season
     name    VARCHAR(15) NOT NULL,
     startAt DATE        NOT NULL,
     endAt   DATE        NOT NULL
+);
+
+
+CREATE TABLE federation
+(
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR(100) NOT NULL,
+    sportId SERIAL       NOT NULL,
+
+    CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id)
 );
 
 CREATE TABLE league
@@ -51,14 +64,6 @@ CREATE TABLE championship
     CONSTRAINT fk_leagueId FOREIGN KEY (leagueId) REFERENCES league (id)
 );
 
-CREATE TABLE federation
-(
-    id      SERIAL PRIMARY KEY,
-    name    VARCHAR(100) NOT NULL,
-    sportId SERIAL       NOT NULL,
-
-    CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id)
-);
 
 CREATE TABLE player
 (

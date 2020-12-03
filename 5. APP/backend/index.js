@@ -42,10 +42,35 @@ async function createAdmin() {
     }
 }
 
+async function createEvent(){
+    const stadium = await client.query('SELECT id  FROM stadium');
+    for (let i = 0; i < 100; ++i) {
+        const stadiumId = faker.helpers.randomize(stadium.rows).id;
+        const d1 = faker.date.between('2010-01-01','2022-12-31');
+        const d2 = faker.date.soon(2, d1);
+        await client.query('INSERT INTO event(name, startat, endat, createdat, updatedat, stadiumid) VALUES ($1,$2,$3,now(),now(),$4)',[
+            faker.random.words(5), d1,d2,stadiumId
+        ])
+    }
+}
+
+async function selectEvent(){
+    const result = await client.query(`
+        SELECT e.uid, 
+               e.name, 
+               e.startat, 
+               e.endat, 
+               row_to_json(s.*) as stadium 
+        FROM event AS e 
+        INNER JOIN stadium s ON s.id = e.stadiumid
+    `)
+    console.log(result.rows)
+}
+
 (async () => {
     await client.connect()
     //await createPlayers();
     //await createClubs();
-    await createAdmin();
+    await selectEvent();
     await client.end()
 })()
