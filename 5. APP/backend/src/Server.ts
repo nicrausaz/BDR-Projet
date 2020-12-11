@@ -1,5 +1,3 @@
-import {Configuration, Inject} from "@tsed/di";
-import {PlatformApplication} from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
 import bodyParser from "body-parser";
 import compress from "compression";
@@ -7,6 +5,8 @@ import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
 import cors from "cors";
 import "@tsed/ajv";
+import {Configuration, Inject} from "@tsed/di";
+import {PlatformApplication} from "@tsed/common";
 
 export const rootDir = __dirname;
 
@@ -16,7 +16,7 @@ export const rootDir = __dirname;
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
   mount: {
-    "/": [
+    "/api": [
       `${rootDir}/controllers/**/*.ts`
     ]
   },

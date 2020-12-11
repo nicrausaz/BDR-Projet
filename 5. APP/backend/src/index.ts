@@ -1,10 +1,12 @@
 import {$log} from "@tsed/common";
-import { PlatformExpress } from "@tsed/platform-express";
+import {PlatformExpress} from "@tsed/platform-express";
 import {Server} from "./Server";
+import DB from "./db/DB";
 
-(async ()=> {
+(async () => {
   try {
     $log.debug("Start server...");
+    await DB.connect();
     const platform = await PlatformExpress.bootstrap(Server);
 
     await platform.listen();
@@ -12,4 +14,4 @@ import {Server} from "./Server";
   } catch (er) {
     $log.error(er);
   }
-})()
+})();
