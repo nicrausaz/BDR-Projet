@@ -139,6 +139,14 @@
     micromatch "4.0.2"
     tslib "2.0.1"
 
+"@tsed/swagger@^6.14.3":
+  version "6.14.3"
+  resolved "https://registry.yarnpkg.com/@tsed/swagger/-/swagger-6.14.3.tgz#f594a2759db77bc23bd3f39d3e03df3c2e8a70ac"
+  integrity sha512-t4jdIqLryM9DUAi7V0wJu1FRJEqxGRbYKp9JBw3RD0lxk9WPXb+oZ30proPbp9jVMA73SjBO37KBUDt8/RuDJg==
+  dependencies:
+    swagger-ui-dist "^3.31.1"
+    tslib "2.0.1"
+
 "@types/body-parser@*":
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.0.tgz#0685b3c47eb3006ffed117cdd55164b61f80538f"
@@ -2227,6 +2235,11 @@ supports-color@^7.1.0:
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
   dependencies:
     has-flag "^4.0.0"
+
+swagger-ui-dist@^3.31.1:
+  version "3.38.0"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.38.0.tgz#fd7c6c04f2eb2dbfedd94722aa3148f3bf354cb5"
+  integrity sha512-sselV8VY6f1BBauY9Sdmwz0jVaWTnGuHQWei7BaTpiUrLcoEUdmmK5bKefLXiwq+dx//es2S8mOvUS+tcXDsKg==
 
 term-size@^2.1.0:
   version "2.2.1"

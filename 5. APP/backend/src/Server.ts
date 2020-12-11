@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
 import cors from "cors";
 import "@tsed/ajv";
+import "@tsed/swagger";
 import {Configuration, Inject} from "@tsed/di";
 import {PlatformApplication} from "@tsed/common";
 
@@ -20,6 +21,12 @@ export const rootDir = __dirname;
       `${rootDir}/controllers/**/*.ts`
     ]
   },
+  swagger: [
+    {
+      path: "/docs",
+      specVersion: "3.0.1"
+    }
+  ],
   exclude: [
     "**/*.spec.ts"
   ]
