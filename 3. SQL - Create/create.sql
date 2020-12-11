@@ -38,7 +38,7 @@ CREATE TABLE federation
     name    VARCHAR(100) NOT NULL,
     sportId SERIAL       NOT NULL,
 
-    CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id)
+    CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id) ON DELETE SET NULL
 );
 
 CREATE TABLE league
@@ -110,8 +110,8 @@ CREATE TABLE team
 
 CREATE TABLE player_play_for_team
 (
-    jerseyNumber INTEGER   NOT NULL,
-    startAt      TIMESTAMP NOT NULL,
+    jerseyNumber INTEGER,
+    startAt      TIMESTAMP NOT NULL DEFAULT current_timestamp,
     endAt        TIMESTAMP,
     playerUid    UUID,
     teamId       SERIAL,

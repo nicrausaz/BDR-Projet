@@ -36,3 +36,5 @@ FROM (
          FROM event_game
      ) as t
     );
+
+
