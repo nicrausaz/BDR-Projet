@@ -1,7 +1,7 @@
 import {Enum, Property} from "@tsed/schema";
-import {Hydrator} from './Model';
+import Model, {Hydrator} from "./Model";
 
-export default class League {
+export default class League extends Model {
 
   @Hydrator()
   @Property()

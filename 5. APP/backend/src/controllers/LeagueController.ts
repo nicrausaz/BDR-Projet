@@ -2,6 +2,7 @@ import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put} from "@tsed
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import League from "../models/League";
+import {NotFound} from "@tsed/exceptions";
 
 @Controller("/league")
 
@@ -13,7 +14,7 @@ export class LeagueController {
     const result = await DB.query(
       `SELECT *
        FROM league`);
-    return result.rows;
+    return result.rows.map(r => League.hydrate(r));
   }
 
   @Get("/:id")
@@ -21,11 +22,13 @@ export class LeagueController {
   async get(
     @PathParams("id") id: string
   ) {
-    const result = await DB.query(
+    const query = await DB.query(
       `SELECT *
        FROM league
        WHERE id = $1`, [id]);
-    return result.rows[0];
+    const result = query.rows.map(r => League.hydrate(r))[0];
+    if (result) return result;
+    throw new NotFound("League not found");
   }
 
   @Put("/")

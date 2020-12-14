@@ -1,8 +1,8 @@
 import Sport from "./Sport";
-import {Property} from '@tsed/schema';
-import {Hydrator} from './Model';
+import {Property} from "@tsed/schema";
+import Model, {Hydrator} from "./Model";
 
-export default class Club {
+export default class Club extends Model {
   @Hydrator()
   @Property()
   id: number;
@@ -11,7 +11,7 @@ export default class Club {
   @Property()
   name: string;
 
-  @Hydrator()
+  @Hydrator({model: Sport})
   @Property()
   sport: Sport;
 }

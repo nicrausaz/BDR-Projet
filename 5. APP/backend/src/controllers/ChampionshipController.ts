@@ -1,13 +1,14 @@
 import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put} from "@tsed/common";
-import {ContentType} from "@tsed/schema";
+import {ContentType, Returns} from "@tsed/schema";
 import DB from "../db/DB";
 import Championship from "../models/Championship";
+import {NotFound} from "@tsed/exceptions";
 
 @Controller("/championship")
-
 export class ChampionshipController {
 
   @Get("/")
+  @(Returns(200, Championship).Of(Championship).Description("All Championship"))
   @ContentType("json")
   async getAll() {
     const result = await DB.query(
@@ -21,11 +22,14 @@ export class ChampionshipController {
   async get(
     @PathParams("id") id: string
   ) {
-    const result = await DB.query(
+    const query = await DB.query(
       `SELECT *
        FROM championship
        WHERE id = $1`, [id]);
-    return result.rows.map(r => Championship.hydrate(r))[0];
+
+    const result = query.rows.map(r => Championship.hydrate(r))[0];
+    if (result) return result;
+    throw new NotFound("Championship not found");
   }
 
   @Put("/")
@@ -69,6 +73,5 @@ export class ChampionshipController {
     return results.rows;
   }
 
-  //TODO DELETE
 }
 

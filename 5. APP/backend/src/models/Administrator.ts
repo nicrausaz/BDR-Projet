@@ -1,10 +1,10 @@
-import {Hydrator} from './Model';
-import {Property} from '@tsed/schema';
+import Model, {Hydrator} from "./Model";
+import {Property} from "@tsed/schema";
 
-export default class Administrator {
+export default class Administrator extends Model {
   @Hydrator()
   @Property()
-  uuid: string;
+  uid: string;
 
   @Hydrator()
   @Property()
