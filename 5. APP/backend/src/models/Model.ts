@@ -1,4 +1,4 @@
-import {Description, Property} from "@tsed/schema";
+import {Property} from "@tsed/schema";
 
 export function Hydrator(options?: {alias?: string, model?: typeof Model}): PropertyDecorator {
   return (target: {} | any, propertyKey: PropertyKey): any => {
@@ -14,7 +14,7 @@ export default abstract class Model {
   protected __hydrated_props: [name: string, alias?: string, model?: Model][];
 
   public static hydrate(data: {[key: string]: any}) {
-    return (new (this as any)()).hydrate(data);
+    return (new (this as any)()).hydrate(data) as Model;
   }
 
   public hydrate(data: {[key: string]: any}) {

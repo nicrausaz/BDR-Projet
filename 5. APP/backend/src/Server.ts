@@ -6,6 +6,7 @@ import methodOverride from "method-override";
 import cors from "cors";
 import "@tsed/ajv";
 import "@tsed/swagger";
+import "@tsed/passport";
 import {Configuration, Inject} from "@tsed/di";
 import {PlatformApplication} from "@tsed/common";
 
@@ -21,6 +22,10 @@ export const rootDir = __dirname;
       `${rootDir}/controllers/**/*.ts`
     ]
   },
+  componentsScan: [
+    `${rootDir}/protocols/*{.ts,.js}` // scan protocols directory
+  ],
+  passport: {},
   swagger: [
     {
       path: "/docs",
