@@ -10,15 +10,18 @@ export class SportController {
   @Get("/")
   @ContentType("json")
   async getAll() {
-    const result = await DB.query(`SELECT * FROM sport`);
-    return result.rows.map(r => Sport.hydrate(r));
+    const result = await DB.query(`SELECT *
+                                   FROM sport`);
+    return result.rows.map(r => Sport.hydrate<Sport>(r));
   }
 
   @Get("/:id")
   @ContentType("json")
   async get(@PathParams("id") id: number) {
-    const query = await DB.query(`SELECT * FROM sport WHERE id = $1`, [id]);
-    const result = query.rows.map(r => Sport.hydrate(r))[0];
+    const query = await DB.query(`SELECT *
+                                  FROM sport
+                                  WHERE id = $1`, [id]);
+    const result = query.rows.map(r => Sport.hydrate<Sport>(r))[0];
     if (result) return result;
     throw new NotFound("Sport not found");
   }
@@ -26,12 +29,15 @@ export class SportController {
   @Put("/")
   @ContentType("json")
   async put(@BodyParams() sport: Sport) {
-    const result = await DB.query(`INSERT INTO sport(name) VALUES ($1)`, [sport.name]);
+    const result = await DB.query(`INSERT INTO sport(name)
+                                   VALUES ($1)`, [sport.name]);
   }
 
   @Delete("/:id")
   @ContentType("json")
   async delete(@PathParams("id") id: number) {
-    const result = await DB.query(`DELETE FROM sport WHERE id = $1`, [id]);
+    const result = await DB.query(`DELETE
+                                   FROM sport
+                                   WHERE id = $1`, [id]);
   }
 }

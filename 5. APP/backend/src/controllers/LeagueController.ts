@@ -14,7 +14,7 @@ export class LeagueController {
     const result = await DB.query(
       `SELECT *
        FROM league`);
-    return result.rows.map(r => League.hydrate(r));
+    return result.rows.map(r => League.hydrate<League>(r));
   }
 
   @Get("/:id")
@@ -26,7 +26,7 @@ export class LeagueController {
       `SELECT *
        FROM league
        WHERE id = $1`, [id]);
-    const result = query.rows.map(r => League.hydrate(r))[0];
+    const result = query.rows.map(r => League.hydrate<League>(r))[0];
     if (result) return result;
     throw new NotFound("League not found");
   }

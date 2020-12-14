@@ -12,7 +12,7 @@ export class SeasonController {
   async getAll() {
     const result = await DB.query(`SELECT *
                                    FROM season`);
-    return result.rows.map(r => Season.hydrate(r));
+    return result.rows.map(r => Season.hydrate<Season>(r));
   }
 
   @Get("/:id")
@@ -21,7 +21,7 @@ export class SeasonController {
     const query = await DB.query(`SELECT *
                                   FROM season
                                   WHERE id = $1`, [id]);
-    const result = query.rows.map(r => Season.hydrate(r))[0];
+    const result = query.rows.map(r => Season.hydrate<Season>(r))[0];
     if (result) return result;
     throw new NotFound("Season not found");
   }

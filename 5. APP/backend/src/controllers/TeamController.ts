@@ -13,7 +13,7 @@ export class TeamController {
   async getAll() {
     const result = await DB.query(`SELECT *
                                    FROM team`);
-    return result.rows.map(r => Team.hydrate(r));
+    return result.rows.map(r => Team.hydrate<Team>(r));
   }
 
   @Get("/:id")
@@ -22,7 +22,7 @@ export class TeamController {
     const query = await DB.query(`SELECT *
                                   FROM team
                                   WHERE id = $1`, [id]);
-    const result = query.rows.map(r => Team.hydrate(r))[0];
+    const result = query.rows.map(r => Team.hydrate<Team>(r))[0];
     if (result) return result;
     throw new NotFound("Team not found");
   }
@@ -57,7 +57,7 @@ export class TeamController {
                                    WHERE t.id = $1
                                      AND (endat IS NULL OR endat > NOW());`, [id]);
 
-    return result.rows.map(r => PlayerTeam.hydrate(r));
+    return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
   }
 
   @Put("/:id/player")

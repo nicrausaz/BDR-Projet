@@ -7,14 +7,14 @@ export function Hydrator(options?: {alias?: string, model?: typeof Model}): Prop
   };
 }
 
-export default abstract class Model {
+export default class Model {
   @Property()
   __typename: string = this.constructor.name;
 
   protected __hydrated_props: [name: string, alias?: string, model?: Model][];
 
-  public static hydrate(data: {[key: string]: any}) {
-    return (new (this as any)()).hydrate(data) as Model;
+  public static hydrate<T extends Model>(data: {[key: string]: any}) {
+    return new this().hydrate(data) as T;
   }
 
   public hydrate(data: {[key: string]: any}) {

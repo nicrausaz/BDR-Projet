@@ -14,7 +14,7 @@ export class StadiumController {
     const result = await DB.query(
       `SELECT *
        FROM stadium`);
-    return result.rows.map(r => Stadium.hydrate(r));
+    return result.rows.map(r => Stadium.hydrate<Stadium>(r));
   }
 
   @Get("/:id")
@@ -26,7 +26,7 @@ export class StadiumController {
       `SELECT *
        FROM stadium
        WHERE id = $1`, [id]);
-    const result = query.rows.map(r => Stadium.hydrate(r))[0];
+    const result = query.rows.map(r => Stadium.hydrate<Stadium>(r))[0];
     if (result) return result;
     throw new NotFound("Stadium not found");
   }

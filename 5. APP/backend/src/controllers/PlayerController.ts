@@ -12,7 +12,7 @@ export class PlayerController {
   async getAll() {
     const result = await DB.query(`SELECT *
                                    FROM player`);
-    return result.rows.map(r => Player.hydrate(r));
+    return result.rows.map(r => Player.hydrate<Player>(r));
   }
 
   @Get("/:id")
@@ -21,7 +21,7 @@ export class PlayerController {
     const query = await DB.query(`SELECT *
                                   FROM player
                                   WHERE uid = $1`, [id]);
-    const result = query.rows.map(r => Player.hydrate(r))[0];
+    const result = query.rows.map(r => Player.hydrate<Player>(r))[0];
     if (result) return result;
     throw new NotFound("Player not found");
   }
@@ -55,7 +55,7 @@ export class PlayerController {
                                             INNER JOIN player p on ppft.playeruid = p.uid
                                    WHERE ppft.playeruid = $1`, [id]);
 
-    return result.rows.map(r => PlayerTeam.hydrate(r));
+    return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
   }
 
 }

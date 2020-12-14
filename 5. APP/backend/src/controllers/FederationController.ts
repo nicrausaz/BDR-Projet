@@ -14,7 +14,7 @@ export class FederationController {
       `SELECT f.*, row_to_json(s.*) as sport
        FROM federation f
                 INNER JOIN sport s ON s.id = f.sportid`);
-    return result.rows.map(r => Federation.hydrate(r));
+    return result.rows.map(r => Federation.hydrate<Federation>(r));
   }
 
   @Get("/:id")
@@ -27,7 +27,7 @@ export class FederationController {
        FROM federation f
                 INNER JOIN sport s ON s.id = f.sportid
        WHERE f.id = $1`, [id]);
-    const result = query.rows.map(r => Federation.hydrate(r))[0];
+    const result = query.rows.map(r => Federation.hydrate<Federation>(r))[0];
     if (result) return result;
     throw new NotFound("Federation not found");
   }

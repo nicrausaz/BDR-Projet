@@ -14,7 +14,7 @@ export class ChampionshipController {
     const result = await DB.query(
       `SELECT *
        FROM championship`);
-    return result.rows.map(r => Championship.hydrate(r));
+    return result.rows.map(r => Championship.hydrate<Championship>(r));
   }
 
   @Get("/:id")
@@ -27,7 +27,7 @@ export class ChampionshipController {
        FROM championship
        WHERE id = $1`, [id]);
 
-    const result = query.rows.map(r => Championship.hydrate(r))[0];
+    const result = query.rows.map(r => Championship.hydrate<Championship>(r))[0];
     if (result) return result;
     throw new NotFound("Championship not found");
   }

@@ -15,7 +15,7 @@ export class ClubController {
       `SELECT c.*, row_to_json(s.*) as sport
        FROM club c
                 INNER JOIN sport s ON s.id = c.sportid`);
-    return result.rows.map(r => Club.hydrate(r));
+    return result.rows.map(r => Club.hydrate<Club>(r));
   }
 
   @Get("/:id")
@@ -26,7 +26,7 @@ export class ClubController {
        FROM club c
                 INNER JOIN sport s ON s.id = c.sportid
        WHERE c.id = $1`, [id]);
-    const result = query.rows.map(r => Club.hydrate(r))[0];
+    const result = query.rows.map(r => Club.hydrate<Club>(r))[0];
     if (result) return result;
     throw new NotFound("Club not found");
   }
@@ -58,6 +58,6 @@ export class ClubController {
        FROM club c
                 INNER JOIN team t ON c.id = t.clubid
        WHERE c.id = $1`, [id]);
-    return result.rows.map(r => Team.hydrate(r));
+    return result.rows.map(r => Team.hydrate<Team>(r));
   }
 }

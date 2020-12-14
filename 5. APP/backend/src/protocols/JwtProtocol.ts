@@ -20,7 +20,7 @@ export class JwtProtocol implements OnVerify {
        FROM administrator
        WHERE uid = $1
        LIMIT 1`, [jwtPayload.uid]))
-      .rows.map(r => Administrator.hydrate(r))[0];
+      .rows.map(r => Administrator.hydrate<Administrator>(r))[0];
     return user ?? false;
   }
 }
