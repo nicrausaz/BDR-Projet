@@ -13,7 +13,7 @@ export class ChampionshipController {
     const result = await DB.query(
       `SELECT *
        FROM championship`);
-    return result.rows;
+    return result.rows.map(r => Championship.hydrate(r));
   }
 
   @Get("/:id")
@@ -25,14 +25,14 @@ export class ChampionshipController {
       `SELECT *
        FROM championship
        WHERE id = $1`, [id]);
-    return result.rows[0];
+    return result.rows.map(r => Championship.hydrate(r))[0];
   }
 
   @Put("/")
   @ContentType("json")
   async insert(@BodyParams() championship: Championship) {
     await DB.query(
-      `INSERT INTO championship (name, startAt, endAt)
+      `INSERT INTO championship (name, startat, endat)
        VALUES ($1, $2, $3)`,
       [championship.name, championship.startAt, championship.endAt]
     );
@@ -48,8 +48,8 @@ export class ChampionshipController {
     await DB.query(
       `UPDATE championship
        SET name    = $1,
-           startAt = $2,
-           endAt   = $3
+           startat = $2,
+           endat   = $3
        WHERE id = $4`,
       [championship.name, championship.startAt, championship.endAt, id]
     );
