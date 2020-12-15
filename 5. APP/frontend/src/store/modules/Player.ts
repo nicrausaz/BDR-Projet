@@ -7,14 +7,14 @@ export default class Player extends VuexModule {
 
   @Mutation
   public setPlayers (players: any[]) {
+    console.log(players)
     this.players = players
   }
 
-  @Action()
+  @Action
   public async fetchAll () {
-    const response: Response = await API.axios.get('/player')
-    this.context.commit('setPlayers', response.body)
-    this.context.commit('setPlayers', [{ test: 'test' }])
+    const response = await API.axios.get('/player')
+    this.context.commit('setPlayers', response.data)
   }
 
   // @MutationAction({ mutate: ['events', 'conferences'] })
