@@ -52,5 +52,6 @@ import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
     HelloWorld
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+}
 </script>
