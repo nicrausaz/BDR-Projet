@@ -1,10 +1,11 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
-      <v-sheet class="pa-4" color="grey lighten-4">
+      <v-sheet class="pa-4" color="grey lighten-4" v-if="administrator">
         <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
-
-        <div>john@vuetifyjs.com</div>
+        <div>{{ administrator.firstname }}</div>
+        <div>{{ administrator.lastname }}</div>
+        <div>{{ administrator.email }}</div>
       </v-sheet>
 
       <v-divider></v-divider>
@@ -53,6 +54,7 @@
 
     <v-main>
       <v-container>
+        {{ administrator }}
         <router-view />
       </v-container>
     </v-main>
@@ -61,7 +63,11 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import HelloWorld from "@/components/HelloWorld.vue";
+import {namespace} from "vuex-class";
+import Administrator from "@/models/Administrator"; // @ is an alias to /src
+
+const administrator = namespace("administrator");
 
 @Component({
   components: {
@@ -72,9 +78,16 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
-      text: "test",
+      text: "Mes équipes",
+      icon: "mdi-domain"
+    },
+    {
+      text: "Mes équipes",
       icon: "mdi-domain"
     }
   ];
+
+  @administrator.State
+  administrator?: Administrator;
 }
 </script>

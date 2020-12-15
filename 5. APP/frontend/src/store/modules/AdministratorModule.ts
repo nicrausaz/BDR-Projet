@@ -1,5 +1,6 @@
-import {Action, Module, VuexModule} from "vuex-module-decorators";
+import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
 import API from "@/plugins/api";
+import Administrator from "@/models/Administrator";
 
 interface AuthenticationToken {
   token: string;
@@ -7,31 +8,33 @@ interface AuthenticationToken {
 
 @Module({namespaced: true})
 export default class AdministratorModule extends VuexModule {
-  // @Mutation
-  // public setPlayers (players: any[]) {
-  //   console.log(players)
-  //   this.players = players
-  // }
-  //
-  // @Action
-  // public async fetchAll () {
-  //   const response = await API.axios.get('/player')
-  //   this.context.commit('setPlayers', response.data)
-  // }
+  administrator?: Administrator;
+
+  @Mutation
+  public setAdministrator(administrator: Administrator) {
+    this.administrator = administrator;
+    console.log("set", administrator);
+  }
 
   @Action
-  async login(username: string, password: string) {
+  public async login({email, password}: {email: string; password: string}) {
     const {data} = await API.axios.post<AuthenticationToken>("/auth/login", {
-      username,
+      email,
       password
     });
     if (!data.token) return false;
     API.setToken(data.token);
+    return await this.getProfile();
   }
 
-  // @MutationAction({ mutate: ['events', 'conferences'] })
-  // async fetchAll () {
-  //   const response: Response = await API.axios.get('/player')
-  //   return response.body
-  // }
+  @Action
+  public async getProfile() {
+    if (localStorage.getItem("token")) {
+      const {data} = await API.axios.get<Administrator>("/auth/getProfile");
+      this.context.commit("setAdministrator", data);
+      this.administrator = data;
+      return true;
+    }
+    return false;
+  }
 }

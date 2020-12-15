@@ -24,9 +24,9 @@ export class AuthController {
     };
   }
 
-  @Get("/test")
+  @Get("/getProfile")
   @Authenticate()
-  test(@Req() request: Req) {
+  getProfile(@Req() request: Req) {
     return request.user;
   }
 }

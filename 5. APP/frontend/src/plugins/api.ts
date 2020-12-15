@@ -8,9 +8,11 @@ class API {
       baseURL: "http://localhost:8083/api",
       timeout: 1000
     });
+    this.setToken(localStorage.getItem("token") ?? "");
   }
 
   public setToken(token: string) {
+    localStorage.setItem("token", token);
     this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 }

@@ -8,7 +8,6 @@ export default class PlayerModule extends VuexModule {
 
   @Mutation
   public setPlayers(players: Player[]) {
-    console.log(players);
     this.players = players;
   }
 

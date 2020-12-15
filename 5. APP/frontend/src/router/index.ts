@@ -1,7 +1,9 @@
 import Vue from "vue";
 import VueRouter, {RouteConfig} from "vue-router";
-import Home from "../views/Home.vue";
+import store from "@/store";
+import Home from "@/views/Home.vue";
 import Login from "@/components/Login.vue";
+import Error from "@/views/Error.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +18,12 @@ const routes: Array<RouteConfig> = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+
+  {
+    path: "*",
+    name: "err",
+    component: Error
   }
 ];
 
@@ -25,4 +33,10 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach(async (to, from, next) => {
+  if (await store.dispatch("administrator/getProfile")) {
+    console.log("yes");
+  }
+  next();
+});
 export default router;
