@@ -1,9 +1,7 @@
 <template>
   <v-container>
-    <v-card color="blue-grey darken-1"
-    dark>
-      <v-toolbar flat
-                 color="blue-grey">
+    <v-card>
+      <v-toolbar flat>
         <v-icon>mdi-account</v-icon>
         <v-toolbar-title class="font-weight-light">
           Login
@@ -16,10 +14,7 @@
       </v-container>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="blue-grey darken-3"
-          depressed
-        >
+        <v-btn depressed>
           <v-icon left>
             mdi-login
           </v-icon>
