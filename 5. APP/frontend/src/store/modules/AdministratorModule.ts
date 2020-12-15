@@ -1,9 +1,12 @@
-import { Module, VuexModule, Mutation, Action, MutationAction } from 'vuex-module-decorators'
-import API from '@/plugins/api'
+import { Action, Module, VuexModule } from "vuex-module-decorators";
+import API from "@/plugins/api";
+
+interface AuthenticationToken {
+  token: string;
+}
 
 @Module({ namespaced: true })
-export default class Administrator extends VuexModule {
-
+export default class AdministratorModule extends VuexModule {
   // @Mutation
   // public setPlayers (players: any[]) {
   //   console.log(players)
@@ -17,11 +20,13 @@ export default class Administrator extends VuexModule {
   // }
 
   @Action
-  async login() {
-    const response = await API.axios.post('/auth/login', {
-      username: '',
-      password: ''
+  async login(username: string, password: string) {
+    const { data } = await API.axios.post<AuthenticationToken>("/auth/login", {
+      username,
+      password,
     });
+    if (!data.token) return false;
+    API.setToken(data.token);
   }
 
   // @MutationAction({ mutate: ['events', 'conferences'] })
@@ -29,4 +34,4 @@ export default class Administrator extends VuexModule {
   //   const response: Response = await API.axios.get('/player')
   //   return response.body
   // }
-};
+}
