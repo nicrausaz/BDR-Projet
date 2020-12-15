@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
-import Player from '@/store/modules/Player'
+import player from '@/store/modules/Player'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    player: Player
+    player
   }
 })

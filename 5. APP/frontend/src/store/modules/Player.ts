@@ -1,7 +1,7 @@
 import { Module, VuexModule, Mutation, Action, MutationAction } from 'vuex-module-decorators'
 import API from '@/plugins/api'
 
-@Module({ name: 'player', namespaced: true })
+@Module({ namespaced: true })
 export default class Player extends VuexModule {
   players: any[] = [];
 
@@ -10,11 +10,11 @@ export default class Player extends VuexModule {
     this.players = players
   }
 
-  @Action
-  public fetchAll () {
-    // const response: Response = await API.axios.get('/player')
-    // this.context.commit('setPlayers', response.body)
-    // this.context.commit('setPlayers', [{ test: 'test' }])
+  @Action()
+  public async fetchAll () {
+    const response: Response = await API.axios.get('/player')
+    this.context.commit('setPlayers', response.body)
+    this.context.commit('setPlayers', [{ test: 'test' }])
   }
 
   // @MutationAction({ mutate: ['events', 'conferences'] })
