@@ -4,7 +4,36 @@
       v-model="drawer"
       app
     >
-      <!--  -->
+      <v-sheet
+        color="grey lighten-4"
+        class="pa-4"
+      >
+        <v-avatar
+          class="mb-4"
+          color="grey darken-1"
+          size="64"
+        ></v-avatar>
+
+        <div>john@vuetifyjs.com</div>
+      </v-sheet>
+
+      <v-divider></v-divider>
+
+      <v-list>
+        <v-list-item
+          v-for="item in items"
+          :key="item.text"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app dense>
@@ -69,7 +98,8 @@ export default class App extends Vue {
     drawer = false;
     items: Array<object> = [
       {
-        title: 'test'
+        text: 'test',
+        icon: 'mdi-domain'
       }
     ]
 }
