@@ -37,7 +37,7 @@
       </v-btn>
 
       <v-menu bottom left>
-        <template v-slot:activator="{ on, attrs }">
+        <template v-slot:activator="{on, attrs}">
           <v-btn v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
@@ -60,21 +60,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
 @Component({
   components: {
-    HelloWorld,
-  },
+    HelloWorld
+  }
 })
 export default class App extends Vue {
   drawer = false;
   items = [
     {
       text: "test",
-      icon: "mdi-domain",
-    },
+      icon: "mdi-domain"
+    }
   ];
 }
 </script>

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, {AxiosInstance} from "axios";
 
 class API {
   public axios: AxiosInstance;
@@ -6,7 +6,7 @@ class API {
   constructor() {
     this.axios = axios.create({
       baseURL: "http://localhost:8083/api",
-      timeout: 1000,
+      timeout: 1000
     });
   }
 

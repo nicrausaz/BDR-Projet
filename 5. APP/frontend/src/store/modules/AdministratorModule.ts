@@ -1,11 +1,11 @@
-import { Action, Module, VuexModule } from "vuex-module-decorators";
+import {Action, Module, VuexModule} from "vuex-module-decorators";
 import API from "@/plugins/api";
 
 interface AuthenticationToken {
   token: string;
 }
 
-@Module({ namespaced: true })
+@Module({namespaced: true})
 export default class AdministratorModule extends VuexModule {
   // @Mutation
   // public setPlayers (players: any[]) {
@@ -21,9 +21,9 @@ export default class AdministratorModule extends VuexModule {
 
   @Action
   async login(username: string, password: string) {
-    const { data } = await API.axios.post<AuthenticationToken>("/auth/login", {
+    const {data} = await API.axios.post<AuthenticationToken>("/auth/login", {
       username,
-      password,
+      password
     });
     if (!data.token) return false;
     API.setToken(data.token);

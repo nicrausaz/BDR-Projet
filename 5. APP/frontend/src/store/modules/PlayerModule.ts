@@ -1,8 +1,8 @@
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
+import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
 import API from "@/plugins/api";
 import Player from "@/models/Player";
 
-@Module({ namespaced: true })
+@Module({namespaced: true})
 export default class PlayerModule extends VuexModule {
   players: Player[] = [];
 
