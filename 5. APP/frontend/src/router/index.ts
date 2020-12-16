@@ -3,6 +3,9 @@ import VueRouter, {RouteConfig} from "vue-router";
 import store from "@/store";
 import Home from "@/views/Home.vue";
 import Login from "@/components/Login.vue";
+import Teams from "@/views/Teams.vue";
+import Team from "@/views/Team.vue";
+
 import Error from "@/views/Error.vue";
 import PlayerProfile from "@/views/PlayerProfile.vue";
 
@@ -19,6 +22,18 @@ const routes: Array<RouteConfig> = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+
+  {
+    path: "/teams",
+    name: "Teams",
+    component: Teams
+  },
+
+  {
+    path: "/team/:id",
+    name: "Team",
+    component: Team
   },
 
   {

@@ -1,8 +1,10 @@
 import {Property} from "@tsed/schema";
-import {Hydrator} from "./Model";
-import Player from "./Player";
+import Model, {Hydrator} from "./Model";
+import Club from "./Club";
+import League from "./League";
+import Team from "./Team";
 
-export default class PlayerTeam extends Player {
+export default class PlayerTeam extends Model {
   @Hydrator({alias: "jerseynumber"})
   @Property()
   jerseyNumber: number;
@@ -15,15 +17,15 @@ export default class PlayerTeam extends Player {
   @Property()
   endAt: Date;
 
-  @Hydrator({alias: "clubid"})
+  @Hydrator({model: Club})
   @Property()
-  clubId: number;
+  club: Club;
 
-  @Hydrator({alias: "leagueid"})
+  @Hydrator({model: League})
   @Property()
-  leagueId: number;
+  league: League;
 
-  @Hydrator({alias: "teamid"})
+  @Hydrator({model: Team})
   @Property()
-  teamId: number;
+  team: Team;
 }

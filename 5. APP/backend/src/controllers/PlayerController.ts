@@ -49,10 +49,11 @@ export class PlayerController {
   @Get("/:id/teams")
   @ContentType("json")
   async getTeams(@PathParams("id") id: string) {
-    const result = await DB.query(`SELECT *
-                                   FROM player_play_for_team ppft
-                                            INNER JOIN team t on ppft.teamid = t.id
-                                            INNER JOIN player p on ppft.playeruid = p.uid
+    const result = await DB.query(`SELECT ppft.*, row_to_json(t.*) as team, row_to_json(c.*) as club, row_to_json(l.*) as league
+                                    FROM player_play_for_team ppft
+                                      INNER JOIN team t on ppft.teamid = t.id
+                                      INNER JOIN club c on t.clubid = c.id
+                                      INNER JOIN league l on t.leagueid = l.id
                                    WHERE ppft.playeruid = $1`, [id]);
 
     return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
