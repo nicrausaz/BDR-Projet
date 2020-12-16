@@ -1,5 +1,5 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
-import API from "@/plugins/api";
+import API from "@/plugins/API";
 import Administrator from "@/models/Administrator";
 
 interface AuthenticationToken {

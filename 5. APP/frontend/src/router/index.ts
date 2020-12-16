@@ -4,6 +4,7 @@ import store from "@/store";
 import Home from "@/views/Home.vue";
 import Login from "@/components/Login.vue";
 import Error from "@/views/Error.vue";
+import PlayerProfile from "@/views/PlayerProfile.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,12 @@ const routes: Array<RouteConfig> = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+
+  {
+    path: "/player/:id",
+    name: "Player",
+    component: PlayerProfile
   },
 
   {
