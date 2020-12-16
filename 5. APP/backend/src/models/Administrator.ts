@@ -20,7 +20,6 @@ export default class Administrator extends Model {
   firstname: string;
 
   @Hydrator()
-  @Property()
   password: string;
 
   public verifyPassword(password: string): Promise<boolean> {

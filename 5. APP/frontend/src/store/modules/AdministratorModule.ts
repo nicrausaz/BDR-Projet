@@ -8,12 +8,11 @@ interface AuthenticationToken {
 
 @Module({namespaced: true})
 export default class AdministratorModule extends VuexModule {
-  administrator?: Administrator;
+  administrator: Administrator | null = null;
 
   @Mutation
   public setAdministrator(administrator: Administrator) {
     this.administrator = administrator;
-    console.log("set", administrator);
   }
 
   @Action

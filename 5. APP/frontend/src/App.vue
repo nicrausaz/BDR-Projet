@@ -80,10 +80,6 @@ export default class App extends Vue {
     {
       text: "Mes équipes",
       icon: "mdi-domain"
-    },
-    {
-      text: "Mes équipes",
-      icon: "mdi-domain"
     }
   ];
 
