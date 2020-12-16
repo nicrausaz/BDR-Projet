@@ -1,5 +1,5 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
-import API from "@/plugins/api";
+import API from "@/plugins/API";
 import Team from "@/models/Team";
 
 @Module({namespaced: true})

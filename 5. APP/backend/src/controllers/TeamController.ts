@@ -3,7 +3,7 @@ import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Team from "../models/Team";
 import {NotFound} from "@tsed/exceptions";
-import TeamPlayer from "../models/TeamPlayer";
+import PlayerTeam from "../models/PlayerTeam";
 
 @Controller("/team")
 export class TeamController {
@@ -57,7 +57,7 @@ export class TeamController {
                                      WHERE t.id = $1
                                        AND (endat IS NULL OR endat > NOW());`, [id]);
 
-      return result.rows.map(r => TeamPlayer.hydrate<TeamPlayer>(r));
+      return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
    }
 
    @Put("/:id/player")

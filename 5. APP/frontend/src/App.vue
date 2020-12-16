@@ -54,7 +54,6 @@
 
     <v-main>
       <v-container>
-        {{ administrator }}
         <router-view />
       </v-container>
     </v-main>
