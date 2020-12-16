@@ -23,7 +23,13 @@ export default class AdministratorModule extends VuexModule {
     });
     if (!data.token) return false;
     API.setToken(data.token);
-    return await this.getProfile();
+    return await this.context.dispatch("getProfile");
+  }
+
+  @Action
+  public async logout() {
+    API.clearToken();
+    this.context.commit("setAdministrator", null);
   }
 
   @Action
@@ -31,7 +37,6 @@ export default class AdministratorModule extends VuexModule {
     if (localStorage.getItem("token")) {
       const {data} = await API.axios.get<Administrator>("/auth/getProfile");
       this.context.commit("setAdministrator", data);
-      this.administrator = data;
       return true;
     }
     return false;

@@ -15,6 +15,11 @@ class API {
     localStorage.setItem("token", token);
     this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
+
+  public clearToken() {
+    localStorage.removeItem("token");
+    this.axios.defaults.headers.common.Authorization = ``;
+  }
 }
 
 export default new API();

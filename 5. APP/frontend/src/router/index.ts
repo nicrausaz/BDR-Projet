@@ -34,8 +34,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (await store.dispatch("administrator/getProfile")) {
-    console.log("yes");
+  if (!(await store.dispatch("administrator/getProfile"))) {
+    await store.dispatch("administrator/logout");
+    if (to.name !== "Login") return next({name: "Login"});
   }
   next();
 });
