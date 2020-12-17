@@ -2,6 +2,7 @@ import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
 import API from "@/plugins/API";
 import Administrator from "@/models/Administrator";
 import Credentials from "@/models/Credentials";
+import router from "@/router";
 
 interface AuthenticationToken {
   token: string;
@@ -33,8 +34,10 @@ export default class AdministratorModule extends VuexModule {
 
   @Action
   public async logout() {
+    if (!this.administrator) return;
     API.clearToken();
     this.context.commit("setAdministrator", null);
+    await router.push({name: "Login"});
   }
 
   @Action

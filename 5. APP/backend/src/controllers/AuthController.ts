@@ -1,6 +1,6 @@
 import {BodyParams, Controller, Get, Post, Req} from "@tsed/common";
 import {Authenticate} from "@tsed/passport";
-import jwt from "jwt-simple";
+import jwt from "jsonwebtoken";
 import DB from "../db/DB";
 import Administrator from "../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
@@ -17,11 +17,11 @@ export class AuthController {
     if (!user || !await user.verifyPassword(password)) {
       throw new Unauthorized("Wrong credentials");
     }
-    return {
-      token: jwt.encode({
-        uid: user.uid
-      }, "secret")
-    };
+    const token = jwt.sign({
+      uid: user.uid
+    }, "secret", {expiresIn: "1d"});
+
+    return {token};
   }
 
   @Get("/getProfile")

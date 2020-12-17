@@ -9,7 +9,8 @@ import Administrator from "../models/Administrator";
   useStrategy: Strategy,
   settings: {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "secret"
+    secretOrKey: "secret",
+    ignoreExpiration: false
   }
 })
 export class JwtProtocol implements OnVerify {
