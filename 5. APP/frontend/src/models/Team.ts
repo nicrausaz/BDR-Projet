@@ -1,10 +1,10 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 import Club from "@/models/Club";
 import League from "@/models/League";
 
-export default interface Team extends Model {
-  id: number;
-  name: string;
-  club: Club;
-  league: League;
+export default class Team extends Model {
+  @Property() id!: number;
+  @Property() name!: string;
+  @Property() club!: Club;
+  @Property() league!: League;
 }

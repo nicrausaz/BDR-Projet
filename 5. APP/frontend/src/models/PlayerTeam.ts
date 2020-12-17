@@ -1,10 +1,11 @@
 import Player from "@/models/Player";
+import {Property} from "@/models/Model";
 
-export default interface PlayerTeam extends Player {
-  jerseyNumber: number;
-  startAt: Date;
-  endAt: Date;
-  clubId: number;
-  leagueId: number;
-  teamId: number;
+export default class PlayerTeam extends Player {
+  @Property() jerseyNumber!: number;
+  @Property() startAt!: Date;
+  @Property() endAt!: Date;
+  @Property() clubId!: number;
+  @Property() leagueId!: number;
+  @Property() teamId!: number;
 }

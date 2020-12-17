@@ -1,4 +1,6 @@
-export default interface Credentials {
-  email?: string | null;
-  password?: string | null;
+import {Property} from "@/models/Model";
+
+export default class Credentials {
+  @Property() email!: string;
+  @Property() password!: string;
 }

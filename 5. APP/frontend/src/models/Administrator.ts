@@ -1,9 +1,9 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 
-export default interface Administrator extends Model {
-  uid: string;
-  email: string;
-  lastname: string;
-  firstname: string;
-  password: string;
+export default class Administrator extends Model {
+  @Property() uid!: string;
+  @Property() email!: string;
+  @Property() lastname!: string;
+  @Property() firstname!: string;
+  @Property() password!: string;
 }

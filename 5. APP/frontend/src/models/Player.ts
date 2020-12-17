@@ -1,11 +1,11 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 
-export default interface Player extends Model {
-  uid: string;
-  lastname: string;
-  firstname: string;
-  birthdate: Date;
-  height: number;
-  weight: number;
-  sex: "M" | "F";
+export default class Player extends Model {
+  @Property() uid!: string;
+  @Property() lastname!: string;
+  @Property() firstname!: string;
+  @Property() birthdate!: Date;
+  @Property() height!: number;
+  @Property() weight!: number;
+  @Property() sex!: "M" | "F";
 }

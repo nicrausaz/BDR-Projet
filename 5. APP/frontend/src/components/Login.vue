@@ -37,10 +37,7 @@ const administrator = namespace("administrator");
 })
 export default class Login extends Vue {
   private valid = false;
-  private data: Credentials = {
-    email: null,
-    password: null
-  };
+  private data = new Credentials();
 
   private loading = false;
 
@@ -59,8 +56,7 @@ export default class Login extends Vue {
         }
       })
       .finally(() => {
-        this.data.email = null;
-        this.data.password = null;
+        this.data = new Credentials();
         this.loading = false;
       });
   }

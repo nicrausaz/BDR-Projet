@@ -1,8 +1,8 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 
-export default interface Stadium extends Model {
-  id: number;
-  name: string;
-  address: string;
-  capacity: number;
+export default class Stadium extends Model {
+  @Property() id!: number;
+  @Property() name!: string;
+  @Property() address!: string;
+  @Property() capacity!: number;
 }

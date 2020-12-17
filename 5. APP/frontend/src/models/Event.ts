@@ -1,12 +1,12 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 import Stadium from "@/models/Stadium";
 
-export default interface Event extends Model {
-  uid: string;
-  name: string;
-  startAt: Date;
-  endAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  stadium: Stadium;
+export default class Event extends Model {
+  @Property() uid!: string;
+  @Property() name!: string;
+  @Property() startAt!: Date;
+  @Property() endAt!: Date;
+  @Property() createdAt!: Date;
+  @Property() updatedAt!: Date;
+  @Property() stadium!: Stadium;
 }

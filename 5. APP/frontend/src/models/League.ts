@@ -1,7 +1,7 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 
-export default interface League extends Model {
-  id: number;
-  level: string;
-  gender: "M" | "F";
+export default class League extends Model {
+  @Property() id!: number;
+  @Property() level!: string;
+  @Property() gender!: "M" | "F";
 }

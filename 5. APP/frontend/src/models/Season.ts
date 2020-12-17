@@ -1,8 +1,8 @@
-import Model from "@/models/Model";
+import Model, {Property} from "@/models/Model";
 
-export default interface Season extends Model {
-  id: number;
-  name: string;
-  startAt: Date;
-  endAt: Date;
+export default class Season extends Model {
+  @Property() id!: number;
+  @Property() name!: string;
+  @Property() startAt!: Date;
+  @Property() endAt!: Date;
 }
