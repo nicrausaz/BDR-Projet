@@ -1,6 +1,7 @@
 import Model, {Hydrator} from "./Model";
 import {Property} from "@tsed/schema";
 import bcrypt from "bcrypt";
+import Permission from "./Permission"
 
 export default class Administrator extends Model {
   @Hydrator()
@@ -21,6 +22,9 @@ export default class Administrator extends Model {
 
   @Hydrator()
   password: string;
+
+  @Hydrator()
+  allowedRessources: Permission[];
 
   public verifyPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

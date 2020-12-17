@@ -1,10 +1,14 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, Req} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Federation from "../models/Federation";
-import {NotFound} from "@tsed/exceptions";
+import {NotFound, Unauthorized} from "@tsed/exceptions";
+import {Authenticate} from "@tsed/passport";
+import {Utils} from "./utils";
+import Administrator from "../models/Administrator";
 
 @Controller("/federation")
+@Authenticate()
 export class FederationController {
 
   @Get("/")
@@ -35,42 +39,30 @@ export class FederationController {
   @Put("/")
   @ContentType("json")
   async insert(@BodyParams() federation: Federation) {
-    await DB.query(
+    const result = await DB.query(
       `INSERT INTO federation (name, sportid)
-       VALUES ($1, $2)`,
+       VALUES ($1, $2) RETURNING *`,
       [federation.name, federation.sport.id]
     );
-    return federation; // TODO: send full object
+
+    return result.rows.map((r) => Federation.hydrate<Federation>(r))[0];
   }
 
   @Patch("/:id")
   @ContentType("json")
-  async update(
-    @PathParams("id") id: number,
-    @BodyParams() federation: Federation
-  ) {
-    await DB.query(
-      `UPDATE federation
-       SET name = $1
-       WHERE id = $2`,
-      [federation.name, id]
-    );
+  async update(@Req() request: Req, @PathParams("id") id: number, @BodyParams() federation: Federation) {
+
+    if (!await Utils.checkAccessToFederationRessource(<Administrator> request.user, id)) throw new Unauthorized("Unauthorized ressource");
+
+    const result = await DB.query(`UPDATE federation SET name = $1 WHERE id = $2 RETURNING *`, [federation.name, id]);
+
+    return result.rows.map((r) => Federation.hydrate<Federation>(r))[0];
   }
 
   @Delete("/:id")
   @ContentType("json")
-  async delete(
-    @PathParams("id") id: number
-  ) {
-    const results = await DB.query(
-      `DELETE
-       FROM federation
-       WHERE id = $1`,
-      [id]
-    );
-    return results.rows;
+  async delete(@PathParams("id") id: number) {
+    await DB.query(`DELETE FROM federation WHERE id = $1`, [id]);
   }
-
-  //TODO DELETE
 }
 

@@ -3,8 +3,10 @@ import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Season from "../models/Season";
 import {NotFound} from "@tsed/exceptions";
+import {Authenticate} from "@tsed/passport";
 
 @Controller("/season")
+@Authenticate()
 export class SeasonController {
 
   @Get("/")
@@ -29,17 +31,21 @@ export class SeasonController {
   @Put("/")
   @ContentType("json")
   async put(@BodyParams() season: Season) {
-    await DB.query(`INSERT INTO season(name, startat, endat)
-                    VALUES ($1, $2, $3)`, [season.name, season.startAt, season.endAt]);
+    const result = await DB.query(`INSERT INTO season(name, startat, endat)
+                    VALUES ($1, $2, $3) RETURNING *`, [season.name, season.startAt, season.endAt]);
+
+    return result.rows.map((r) => Season.hydrate<Season>(r))[0];
   }
 
   @Patch("/:id")
   @ContentType("json")
   async patch(@PathParams("id") id: number, @BodyParams() season: Season) {
-    await DB.query(`UPDATE season
+    const result = await DB.query(`UPDATE season
                     SET name    = $1,
                         startat = $2,
                         endat   = $3
-                    WHERE id = $4`, [season.name, season.startAt, season.endAt, id]);
+                    WHERE id = $4 RETURNING *`, [season.name, season.startAt, season.endAt, id]);
+
+    return result.rows.map((r) => Season.hydrate<Season>(r))[0];
   }
 }

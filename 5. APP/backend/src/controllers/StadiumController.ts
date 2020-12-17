@@ -3,17 +3,19 @@ import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Stadium from "../models/Stadium";
 import {NotFound} from "@tsed/exceptions";
+import {Authenticate} from "@tsed/passport";
+import Sport from "../models/Sport";
 
 @Controller("/stadium")
-
+@Authenticate()
 export class StadiumController {
 
   @Get("/")
   @ContentType("json")
   async getAll() {
     const result = await DB.query(
-      `SELECT *
-       FROM stadium`);
+        `SELECT *
+         FROM stadium`);
     return result.rows.map(r => Stadium.hydrate<Stadium>(r));
   }
 
@@ -23,9 +25,9 @@ export class StadiumController {
     @PathParams("id") id: string
   ) {
     const query = await DB.query(
-      `SELECT *
-       FROM stadium
-       WHERE id = $1`, [id]);
+        `SELECT *
+         FROM stadium
+         WHERE id = $1`, [id]);
     const result = query.rows.map(r => Stadium.hydrate<Stadium>(r))[0];
     if (result) return result;
     throw new NotFound("Stadium not found");
@@ -34,12 +36,14 @@ export class StadiumController {
   @Put("/")
   @ContentType("json")
   async insert(@BodyParams() stadium: Stadium) {
-    await DB.query(
-      `INSERT INTO stadium (name, address, capacity)
-       VALUES ($1, $2, $3)`,
+    const result = await DB.query(
+        `INSERT INTO stadium (name, address, capacity)
+         VALUES ($1, $2, $3)
+         RETURNING *`,
       [stadium.name, stadium.address, stadium.capacity]
     );
-    return stadium; // TODO: send full object
+
+    return result.rows.map((r) => Stadium.hydrate<Stadium>(r))[0];
   }
 
   @Patch("/:id")
@@ -48,14 +52,17 @@ export class StadiumController {
     @PathParams("id") id: string,
     @BodyParams() stadium: Stadium
   ) {
-    await DB.query(
-      `UPDATE stadium
-       SET name     = $1,
-           address  = $2,
-           capacity = $3
-       WHERE id = $4`,
+    const result = await DB.query(
+        `UPDATE stadium
+         SET name     = $1,
+             address  = $2,
+             capacity = $3
+         WHERE id = $4
+         RETURNING *`,
       [stadium.name, stadium.address, stadium.capacity, id]
     );
+
+    return result.rows.map((r) => Stadium.hydrate<Stadium>(r))[0];
   }
 
   @Delete("/:id")
@@ -63,15 +70,12 @@ export class StadiumController {
   async delete(
     @PathParams("id") id: string
   ) {
-    const results = await DB.query(
-      `DELETE
-       FROM stadium
-       WHERE id = $1`,
+    await DB.query(
+        `DELETE
+         FROM stadium
+         WHERE id = $1`,
       [id]
     );
-    return results.rows;
   }
-
-  //TODO DELETE
 }
 
