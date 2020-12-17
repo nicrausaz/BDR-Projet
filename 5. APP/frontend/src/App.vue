@@ -21,6 +21,11 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block @click="logout" color="error"> Logout </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar app dense>
@@ -84,5 +89,8 @@ export default class App extends Vue {
 
   @administrator.State
   administrator?: Administrator;
+
+  @administrator.Action
+  logout!: () => void;
 }
 </script>

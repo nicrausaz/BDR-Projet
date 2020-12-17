@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container style="max-width: 1000px">
     <v-card>
       <v-container class="text-center">
         <v-avatar tile size="250" class="ma-5 ghost">

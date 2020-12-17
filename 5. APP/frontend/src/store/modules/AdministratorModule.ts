@@ -1,6 +1,7 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
 import API from "@/plugins/API";
 import Administrator from "@/models/Administrator";
+import Credentials from "@/models/Credentials";
 
 interface AuthenticationToken {
   token: string;
@@ -16,14 +17,18 @@ export default class AdministratorModule extends VuexModule {
   }
 
   @Action
-  public async login({email, password}: {email: string; password: string}) {
-    const {data} = await API.axios.post<AuthenticationToken>("/auth/login", {
-      email,
-      password
-    });
-    if (!data.token) return false;
-    API.setToken(data.token);
-    return await this.context.dispatch("getProfile");
+  public login({email, password}: Credentials): Promise<true | Error> {
+    return API.axios
+      .post<AuthenticationToken>("/auth/login", {
+        email,
+        password
+      })
+      .then(async ({data}) => {
+        if (!data.token) return false;
+        API.setToken(data.token);
+        return await this.context.dispatch("getProfile");
+      })
+      .catch((e) => e);
   }
 
   @Action
@@ -33,11 +38,15 @@ export default class AdministratorModule extends VuexModule {
   }
 
   @Action
-  public async getProfile() {
+  public async getProfile(): Promise<boolean> {
     if (localStorage.getItem("token")) {
-      const {data} = await API.axios.get<Administrator>("/auth/getProfile");
-      this.context.commit("setAdministrator", data);
-      return true;
+      try {
+        const {data} = await API.axios.get<Administrator>("/auth/getProfile");
+        this.context.commit("setAdministrator", data);
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
     return false;
   }

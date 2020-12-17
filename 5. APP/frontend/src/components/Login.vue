@@ -3,20 +3,24 @@
     <v-card :loading="loading">
       <v-toolbar flat>
         <v-icon>mdi-account</v-icon>
-        <v-toolbar-title class="font-weight-light"> Login</v-toolbar-title>
+        <v-toolbar-title class="font-weight-light">Login</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
-      <v-container>
-        <v-text-field filled label="Email" type="email" v-model="email" />
-        <v-text-field filled label="Password" type="password" v-model="password" />
-      </v-container>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn depressed @click="log">
-          <v-icon left> mdi-login</v-icon>
-          Login
-        </v-btn>
-      </v-card-actions>
+
+      <v-form v-model="valid">
+        <v-container>
+          <v-alert type="error" v-if="error">{{ error }}</v-alert>
+          <v-text-field filled label="Email" type="email" v-model="data.email" required />
+          <v-text-field filled label="Password" type="password" v-model="data.password" required />
+        </v-container>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn depressed :disabled="!valid" @click="login">
+            <v-icon left> mdi-login</v-icon>
+            Login
+          </v-btn>
+        </v-card-actions>
+      </v-form>
     </v-card>
   </v-container>
 </template>
@@ -24,24 +28,41 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
 import {namespace} from "vuex-class";
+import Credentials from "@/models/Credentials";
+
 const administrator = namespace("administrator");
 
 @Component({
   components: {}
 })
 export default class Login extends Vue {
-  private email = "";
-  private password = "";
+  private valid = false;
+  private data: Credentials = {
+    email: null,
+    password: null
+  };
+
   private loading = false;
 
-  @administrator.Action
-  public login!: ({email, password}: {email: string; password: string}) => Promise<boolean>;
+  private error: string | null = null;
 
-  public log() {
+  @administrator.Action("login")
+  public log!: ({email, password}: Credentials) => Promise<true | Error>;
+
+  public login() {
+    this.error = null;
     this.loading = true;
-    this.login({email: this.email, password: this.password}).finally(() => {
-      this.loading = false;
-    });
+    this.log(this.data)
+      .then((e) => {
+        if (e instanceof Error) {
+          this.error = e.message;
+        }
+      })
+      .finally(() => {
+        this.data.email = null;
+        this.data.password = null;
+        this.loading = false;
+      });
   }
 }
 </script>
