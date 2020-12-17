@@ -11,7 +11,7 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item v-for="item in items" :key="item.text" link>
+        <v-list-item v-for="item in items" :key="item.text" link :to="item.path">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -83,7 +83,13 @@ export default class App extends Vue {
   items = [
     {
       text: "Mes équipes",
-      icon: "mdi-domain"
+      icon: "mdi-domain",
+      path: null
+    },
+    {
+      text: "Les matchs",
+      icon: "mdi-basketball",
+      path: {name: "Game"}
     }
   ];
 

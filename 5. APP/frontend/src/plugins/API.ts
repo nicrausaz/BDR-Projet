@@ -5,7 +5,7 @@ class API {
 
   constructor() {
     this.axios = axios.create({
-      baseURL: "http://localhost:8083/api",
+      baseURL: "http://192.168.2.3:8083/api",
       timeout: 1000
     });
     this.axios.interceptors.response.use((response) => {

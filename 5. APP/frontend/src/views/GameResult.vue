@@ -16,7 +16,7 @@
                     <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
                   </v-avatar>
                 </v-col>
-                <v-col cols="12">{{ game.teamHome.name }}</v-col>
+                <v-col cols="12" class="text-break">{{ game.teamHome.name }}</v-col>
               </v-row>
             </v-col>
             <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ game.scoreHome }}:{{ game.scoreGuest }} </v-col>
@@ -27,7 +27,7 @@
                     <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2688.png" />
                   </v-avatar>
                 </v-col>
-                <v-col cols="12">{{ game.teamGuest.name }}</v-col>
+                <v-col cols="12" class="text-break">{{ game.teamGuest.name }}</v-col>
               </v-row>
             </v-col>
           </v-row>
