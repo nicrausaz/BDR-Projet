@@ -2,9 +2,10 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
       <v-sheet class="pa-4" color="grey lighten-4" v-if="administrator">
-        <v-avatar class="mb-4" color="grey darken-1" size="64"></v-avatar>
-        <div>{{ administrator.firstname }}</div>
-        <div>{{ administrator.lastname }}</div>
+        <v-avatar class="mb-4" color="grey darken-1" size="64">
+          <v-img :src="administrator.avatar" />
+        </v-avatar>
+        <div>{{ administrator.firstname }} {{ administrator.lastname }}</div>
         <div>{{ administrator.email }}</div>
       </v-sheet>
 

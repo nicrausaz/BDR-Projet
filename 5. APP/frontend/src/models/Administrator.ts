@@ -6,4 +6,5 @@ export default class Administrator extends Model {
   @Property() lastname!: string;
   @Property() firstname!: string;
   @Property() password!: string;
+  @Property() avatar!: string;
 }

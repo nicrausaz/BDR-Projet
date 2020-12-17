@@ -1,7 +1,7 @@
 <template>
   <v-container fluid style="max-width: 1000px" v-if="game">
     <v-card class="mx-auto" dark>
-      <v-parallax src="https://ysnlive.com/wp-content/uploads/2018/08/football-background.jpg" height="400">
+      <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-card color="rgba(0,0,0,0.5)" class="pa-5 blur">
           <v-row align="center" no-gutters>
             <v-col align="center">

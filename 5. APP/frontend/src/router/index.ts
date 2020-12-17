@@ -18,7 +18,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    meta: {
+      authenticate: true
+    }
   },
 
   {
@@ -36,29 +39,44 @@ const routes: Array<RouteConfig> = [
   {
     path: "/teams",
     name: "Teams",
-    component: Teams
+    component: Teams,
+    meta: {
+      authenticate: true
+    }
   },
 
   {
     path: "/team/:id",
     name: "Team",
-    component: Team
+    component: Team,
+    meta: {
+      authenticate: true
+    }
   },
 
   {
     path: "/player/:id",
     name: "Player",
-    component: PlayerProfile
+    component: PlayerProfile,
+    meta: {
+      authenticate: true
+    }
   },
   {
     path: "/game",
     name: "Game",
-    component: GameList
+    component: GameList,
+    meta: {
+      authenticate: true
+    }
   },
   {
     path: "/game/:id",
     name: "GameResult",
-    component: GameResult
+    component: GameResult,
+    meta: {
+      authenticate: true
+    }
   },
 
   {
@@ -75,7 +93,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (!(await store.dispatch("administrator/getProfile"))) {
+  if (to.meta?.authenticate && !(await store.dispatch("administrator/getProfile"))) {
     await store.dispatch("administrator/logout");
     if (to.name !== "Login") return next({name: "Login"});
   }

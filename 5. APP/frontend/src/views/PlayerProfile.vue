@@ -1,7 +1,7 @@
 <template>
   <v-container fluid v-if="player" style="max-width: 1000px">
     <v-card class="mx-auto" dark>
-      <v-parallax src="https://ysnlive.com/wp-content/uploads/2018/08/football-background.jpg" height="400">
+      <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-row align="end">
           <v-col class="align-self-middle text-center" cols="12">
             <v-avatar class="profile elevation-24" color="grey" :size="$vuetify.breakpoint.xs ? 200 : 250">
@@ -21,8 +21,7 @@
             <v-icon color="indigo">
               {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female"
               }}
-            </v-icon
-            >
+            </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>

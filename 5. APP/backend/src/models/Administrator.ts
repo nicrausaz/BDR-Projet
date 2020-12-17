@@ -30,7 +30,7 @@ export default class Administrator extends Model {
 
   @Property()
   get avatar(){
-    return `${this.uid}.png`;
+    return `https://i.pravatar.cc/150?u=${this.uid}`;
   }
 
   public verifyPassword(password: string): Promise<boolean> {

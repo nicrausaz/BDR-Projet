@@ -15,8 +15,12 @@
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn depressed :to="{name: 'Register'}">
+            <v-icon left>mdi-account-plus</v-icon>
+            Register
+          </v-btn>
           <v-btn depressed :disabled="!valid" @click="login">
-            <v-icon left> mdi-login</v-icon>
+            <v-icon left>mdi-login</v-icon>
             Login
           </v-btn>
         </v-card-actions>
