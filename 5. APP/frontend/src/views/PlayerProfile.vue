@@ -1,13 +1,9 @@
 <template>
   <v-container fluid v-if="player" style="max-width: 1000px">
     <v-card class="mx-auto" dark>
-      <v-img
-        max-height="500"
-        gradient="to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)"
-        src="https://news.utexas.edu/wp-content/uploads/2017/01/football_stadium.jpg"
-      >
-        <v-row align="end" class="fill-height">
-          <v-col class="align-self-middle text-center py-5" cols="12">
+      <v-parallax src="https://ysnlive.com/wp-content/uploads/2018/08/football-background.jpg" height="400">
+        <v-row align="end">
+          <v-col class="align-self-middle text-center" cols="12">
             <v-avatar class="profile elevation-24" color="grey" :size="$vuetify.breakpoint.xs ? 200 : 250">
               <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
             </v-avatar>
@@ -16,7 +12,7 @@
             <span class="text-h4">{{ player.firstname }} {{ player.lastname }}</span>
           </v-col>
         </v-row>
-      </v-img>
+      </v-parallax>
     </v-card>
     <v-card class="mx-auto mt-4">
       <v-list>
