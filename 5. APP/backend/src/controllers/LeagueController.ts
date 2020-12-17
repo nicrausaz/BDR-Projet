@@ -3,8 +3,11 @@ import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import League from "../models/League";
 import {NotFound} from "@tsed/exceptions";
+import {Authenticate} from "@tsed/passport";
+import Federation from "../models/Federation";
 
 @Controller("/league")
+@Authenticate()
 export class LeagueController {
 
   @Get("/")
@@ -33,12 +36,13 @@ export class LeagueController {
   @Put("/")
   @ContentType("json")
   async insert(@BodyParams() league: League) {
-    await DB.query(
+    const result = await DB.query(
       `INSERT INTO league (level, gender)
-       VALUES ($1, $2)`,
+       VALUES ($1, $2) RETURNING *`,
       [league.level, league.gender]
     );
-    return league; // TODO: send full object
+
+    return result.rows.map((r) => League.hydrate<League>(r))[0];
   }
 
   @Patch("/:id")
@@ -47,13 +51,15 @@ export class LeagueController {
     @PathParams("id") id: string,
     @BodyParams() league: League
   ) {
-    await DB.query(
+    const result = await DB.query(
       `UPDATE league
        SET level  = $1,
            gender = $2
-       WHERE id = $3`,
+       WHERE id = $3 RETURNING *`,
       [league.level, league.gender, id]
     );
+
+    return result.rows.map((r) => League.hydrate<League>(r))[0];
   }
 
   @Delete("/:id")
@@ -61,15 +67,12 @@ export class LeagueController {
   async delete(
     @PathParams("id") id: string
   ) {
-    const results = await DB.query(
+    await DB.query(
       `DELETE
        FROM league
        WHERE id = $1`,
       [id]
     );
-    return results.rows;
   }
-
-  //TODO DELETE
 }
 

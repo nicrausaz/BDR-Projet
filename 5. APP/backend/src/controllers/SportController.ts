@@ -3,8 +3,10 @@ import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Sport from "../models/Sport";
 import {NotFound} from "@tsed/exceptions";
+import {Authenticate} from "@tsed/passport";
 
 @Controller("/sport")
+@Authenticate()
 export class SportController {
 
   @Get("/")
@@ -30,7 +32,9 @@ export class SportController {
   @ContentType("json")
   async put(@BodyParams() sport: Sport) {
     const result = await DB.query(`INSERT INTO sport(name)
-                                   VALUES ($1)`, [sport.name]);
+                                   VALUES ($1) RETURNING *`, [sport.name]);
+
+    return result.rows.map((r) => Sport.hydrate<Sport>(r))[0];
   }
 
   @Delete("/:id")
