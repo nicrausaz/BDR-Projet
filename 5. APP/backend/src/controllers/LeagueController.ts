@@ -5,7 +5,6 @@ import League from "../models/League";
 import {NotFound} from "@tsed/exceptions";
 
 @Controller("/league")
-
 export class LeagueController {
 
   @Get("/")

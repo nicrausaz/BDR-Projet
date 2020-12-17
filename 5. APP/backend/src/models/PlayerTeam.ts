@@ -3,8 +3,9 @@ import Model, {Hydrator} from "./Model";
 import Club from "./Club";
 import League from "./League";
 import Team from "./Team";
+import Player from "./Player";
 
-export default class PlayerTeam extends Model {
+export default class PlayerTeam extends Player {
   @Hydrator({alias: "jerseynumber"})
   @Property()
   jerseyNumber: number;

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import DB from "../db/DB";
 import Administrator from "../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
+import bcrypt from "bcrypt";
 
 @Controller("/auth")
 export class AuthController {
@@ -28,5 +29,19 @@ export class AuthController {
   @Authenticate()
   getProfile(@Req() request: Req) {
     return request.user;
+  }
+
+  @Post("/register")
+  private async register(@BodyParams() admin: Administrator) {
+    const query = await DB.query(
+      `INSERT INTO administrator(email, password, lastname, firstname)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`, [
+        admin.email,
+        await bcrypt.hash(admin.password, 10),
+        admin.lastname,
+        admin.firstname
+      ]);
+    return query.rows.map(r => Administrator.hydrate<Administrator>(r))[0];
   }
 }

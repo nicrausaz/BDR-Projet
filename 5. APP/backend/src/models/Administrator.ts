@@ -1,5 +1,5 @@
 import Model, {Hydrator} from "./Model";
-import {Property} from "@tsed/schema";
+import {Email, MinLength, Property, Required} from "@tsed/schema";
 import bcrypt from "bcrypt";
 
 export default class Administrator extends Model {
@@ -9,18 +9,29 @@ export default class Administrator extends Model {
 
   @Hydrator()
   @Property()
+  @Required()
+  @Email()
   email: string;
 
   @Hydrator()
   @Property()
+  @Required()
   lastname: string;
 
   @Hydrator()
   @Property()
+  @Required()
   firstname: string;
 
   @Hydrator()
+  @Required()
+  @MinLength(8)
   password: string;
+
+  @Property()
+  get avatar(){
+    return `${this.uid}.png`;
+  }
 
   public verifyPassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

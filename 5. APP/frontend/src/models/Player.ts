@@ -8,4 +8,5 @@ export default class Player extends Model {
   @Property() height!: number;
   @Property() weight!: number;
   @Property() sex!: "M" | "F";
+  @Property() avatar!: string;
 }

@@ -30,4 +30,9 @@ export default class Player extends Model {
   @Property()
   @Enum("M", "F")
   sex: "M" | "F";
+
+  @Property()
+  get avatar():string{
+    return `https://i.pravatar.cc/150?u=${this.uid}`;
+  }
 }

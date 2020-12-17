@@ -32,6 +32,16 @@ export const rootDir = __dirname;
       specVersion: "3.0.1"
     }
   ],
+  statics: {
+    "/statics": [
+      {
+        root: `${rootDir}/public`,
+      }
+    ]
+  },
+  multer: {
+    dest: `${rootDir}/storage`
+  },
   exclude: [
     "**/*.spec.ts"
   ]

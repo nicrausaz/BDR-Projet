@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter, {RouteConfig} from "vue-router";
 import store from "@/store";
 import Home from "@/views/Home.vue";
-import Login from "@/components/Login.vue";
+import Login from "@/views/Login.vue";
 import Teams from "@/views/Teams.vue";
 import Team from "@/views/Team.vue";
 
@@ -10,6 +10,7 @@ import Error from "@/views/Error.vue";
 import PlayerProfile from "@/views/PlayerProfile.vue";
 import GameResult from "@/views/GameResult.vue";
 import GameList from "@/views/GameList.vue";
+import Register from "@/views/Register.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,12 @@ const routes: Array<RouteConfig> = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+
+  {
+    path: "/register",
+    name: "Register",
+    component: Register
   },
 
   {
@@ -68,7 +75,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  return next();
   if (!(await store.dispatch("administrator/getProfile"))) {
     await store.dispatch("administrator/logout");
     if (to.name !== "Login") return next({name: "Login"});

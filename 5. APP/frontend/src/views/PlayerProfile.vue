@@ -5,7 +5,7 @@
         <v-row align="end">
           <v-col class="align-self-middle text-center" cols="12">
             <v-avatar class="profile elevation-24" color="grey" :size="$vuetify.breakpoint.xs ? 200 : 250">
-              <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+              <v-img :src="player.avatar"></v-img>
             </v-avatar>
           </v-col>
           <v-col class="py-7 text-center">
@@ -18,11 +18,16 @@
       <v-list>
         <v-list-item>
           <v-list-item-icon>
-            <v-icon color="indigo"> {{ player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female" }}</v-icon>
+            <v-icon color="indigo">
+              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female"
+              }}
+            </v-icon
+            >
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ player.sex === "M" ? "Male" : "Female" }}</v-list-item-title>
+            <v-list-item-title>{{ !player.sex ? "Not specified" : player.sex === "M" ? "Male" : "Female" }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
