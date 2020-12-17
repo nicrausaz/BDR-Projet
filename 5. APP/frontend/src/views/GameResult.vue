@@ -52,8 +52,7 @@
             </v-card-title>
           </v-card>
           <v-list two-line>
-            <v-list-item link v-for="player in team.players" :key="player.uid"
-                         :to="{name: 'Player', params: {id: player.uid}}">
+            <v-list-item link v-for="player in team.players" :key="player.uid" :to="{name: 'Player', params: {id: player.uid}}">
               <v-list-item-avatar>
                 <v-img :src="player.avatar" />
               </v-list-item-avatar>

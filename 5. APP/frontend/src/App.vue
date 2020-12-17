@@ -68,24 +68,19 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue";
 import {namespace} from "vuex-class";
 import Administrator from "@/models/Administrator"; // @ is an alias to /src
 
 const administrator = namespace("administrator");
 
-@Component({
-  components: {
-    HelloWorld
-  }
-})
+@Component
 export default class App extends Vue {
   drawer = false;
   items = [
     {
-      text: "Mes équipes",
+      text: "Les équipes",
       icon: "mdi-domain",
-      path: null
+      path: {name: "Teams"}
     },
     {
       text: "Les matchs",

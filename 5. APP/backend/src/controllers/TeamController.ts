@@ -13,8 +13,10 @@ export class TeamController {
   @Get("/")
   @ContentType("json")
   async getAll() {
-    const result = await DB.query(`SELECT *
-                                   FROM team`);
+    const result = await DB.query(`SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
+                                   FROM team t
+                                            INNER JOIN club c on t.clubid = c.id
+                                            INNER JOIN league l on t.leagueid = l.id`);
     return result.rows.map(r => Team.hydrate<Team>(r));
   }
 
