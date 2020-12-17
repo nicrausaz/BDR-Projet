@@ -19,8 +19,9 @@ export default class Model {
 
   public hydrate(data: {[key: string]: any}) {
     for (const [name, alias, model] of this.__hydrated_props) {
-      const d = data[alias ?? name];
-      if (d) {
+      const n = alias ?? name
+      const d = data[n]??data[n.toLowerCase()];
+      if (d!==undefined) {
         (this as any)[name] = model ? model.hydrate(d) : d;
       }
     }
