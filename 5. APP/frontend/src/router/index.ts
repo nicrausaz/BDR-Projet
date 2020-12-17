@@ -8,6 +8,7 @@ import Team from "@/views/Team.vue";
 
 import Error from "@/views/Error.vue";
 import PlayerProfile from "@/views/PlayerProfile.vue";
+import GameResult from "@/views/GameResult.vue";
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,12 @@ const routes: Array<RouteConfig> = [
     path: "/player/:id",
     name: "Player",
     component: PlayerProfile
+  },
+
+  {
+    path: "/game/:id",
+    name: "Game",
+    component: GameResult
   },
 
   {
