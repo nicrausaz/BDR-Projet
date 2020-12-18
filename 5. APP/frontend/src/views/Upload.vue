@@ -16,10 +16,10 @@ export default class Upload extends Vue {
   src: string | null = null;
 
   async addFile(e: DragEvent) {
-    const file = e.dataTransfer.files.item(0);
-    if (!(file.type === "image/png" || file.type === "image/jpeg")) return;
+    const file = e.dataTransfer?.files.item(0);
+    if (!file || !(file.type === "image/png" || file.type === "image/jpeg")) return;
     this.file = file;
-    URL.revokeObjectURL(this.src);
+    URL.revokeObjectURL(this.src ?? "");
     this.src = URL.createObjectURL(this.file);
   }
 }

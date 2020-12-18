@@ -24,13 +24,14 @@
 import {Component, Vue} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Game from "@/models/Game";
+import Pagination from "@/models/Pagination";
 
 @Component
 export default class GameList extends Vue {
   private games: Game[] = [];
 
   async mounted() {
-    this.games = (await API.axios.get<Game[]>(`game`)).data;
+    this.games = (await API.axios.get<Pagination<Game>>(`game`)).data.result;
   }
 }
 </script>

@@ -61,6 +61,7 @@
 import {Component, Vue} from "vue-property-decorator";
 import Team from "@/models/Team";
 import API from "@/plugins/API";
+import Pagination from "@/models/Pagination";
 
 @Component
 export default class Teams extends Vue {
@@ -86,7 +87,7 @@ export default class Teams extends Vue {
     this.teams = [];
     this.editedTeam = new Team();
     this.defaultTeam = new Team();
-    this.teams = (await API.axios.get<Team[]>(`/team`)).data;
+    this.teams = (await API.axios.get<Pagination<Team>>(`/team`)).data.result;
   }
 
   public close() {

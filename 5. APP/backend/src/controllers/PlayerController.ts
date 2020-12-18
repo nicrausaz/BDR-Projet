@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, Patch, PathParams, Put, Req} from "@tsed/common";
+import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Player from "../models/player";
@@ -13,10 +13,12 @@ import Administrator from "../models/Administrator";
 export class PlayerController {
   @Get("/")
   @ContentType("json")
-  async getAll() {
-    const result = await DB.query(`SELECT *
-                                   FROM player`);
-    return result.rows.map(r => Player.hydrate<Player>(r));
+  async getAll(
+    @QueryParams("q")query: string = "",
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    return Utils.createSimpleSearchPaginate(Player, "player", ["firstname","lastname"], query, limit, offset);
   }
 
   @Get("/:id")
@@ -34,7 +36,8 @@ export class PlayerController {
   @ContentType("json")
   async put(@BodyParams() player: Player) {
     const result = await DB.query(`INSERT INTO player(lastname, firstname, birthdate, height, weight, sex)
-                                   VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`, [player.lastname, player.firstname, player.birthdate, player.height, player.weight, player.sex]);
+                                   VALUES ($1, $2, $3, $4, $5, $6)
+                                   RETURNING *`, [player.lastname, player.firstname, player.birthdate, player.height, player.weight, player.sex]);
 
     return result.rows.map((r) => Player.hydrate<Player>(r))[0];
   }
@@ -52,7 +55,8 @@ export class PlayerController {
                                        height    = $4,
                                        weight    = $5,
                                        sex       = $6
-                                   WHERE uid = $7 RETURNING *`, [player.lastname, player.firstname, player.birthdate, player.height, player.weight, player.sex, id]);
+                                   WHERE uid = $7
+                                   RETURNING *`, [player.lastname, player.firstname, player.birthdate, player.height, player.weight, player.sex, id]);
 
     return result.rows.map((r) => Player.hydrate<Player>(r))[0];
   }
