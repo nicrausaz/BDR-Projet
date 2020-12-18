@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="max-width: 1000px">
+  <v-container fluid style="max-width: 1500px">
     <v-list two-line>
       <v-list-item link v-for="game in games" :key="game.uid" :to="{name: 'GameResult', params: {id: game.uid}}">
         <v-list-item-content>

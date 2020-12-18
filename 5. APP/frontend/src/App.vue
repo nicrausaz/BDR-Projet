@@ -1,17 +1,22 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-model="drawer" app width="300">
       <v-sheet class="pa-4" color="grey lighten-4" v-if="administrator">
-        <v-avatar class="mb-4" color="grey darken-1" size="64">
-          <v-img :src="administrator.avatar" />
-        </v-avatar>
-        <div>{{ administrator.firstname }} {{ administrator.lastname }}</div>
-        <div>{{ administrator.email }}</div>
+        <v-card>
+          <v-list-item dense>
+            <v-list-item-avatar>
+              <v-img :src="administrator.avatar" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>{{ administrator.firstname }} {{ administrator.lastname }}</v-list-item-title>
+              <v-list-item-subtitle>{{ administrator.email }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
       </v-sheet>
-
       <v-divider></v-divider>
 
-      <v-list>
+      <v-list rounded>
         <v-list-item v-for="item in items" :key="item.text" link :to="item.path">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
@@ -24,15 +29,17 @@
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block @click="logout" color="error"> Logout </v-btn>
+          <v-btn block @click="logout" color="error"> Logout</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app dense>
+    <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-avatar tile>
+        <v-img :src="require('@/assets/logo.svg')" />
+      </v-avatar>
+      <v-toolbar-title>StarSport</v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-btn icon>
@@ -83,14 +90,29 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
+      text: "Mon compte",
+      icon: "mdi-account-circle",
+      path: null
+    },
+    {
       text: "Mes équipes",
       icon: "mdi-domain",
+      path: null
+    },
+    {
+      text: "Mes clubs",
+      icon: "mdi-soccer",
       path: null
     },
     {
       text: "Les matchs",
       icon: "mdi-basketball",
       path: {name: "Game"}
+    },
+    {
+      text: "About",
+      icon: "mdi-information",
+      path: {name: "About"}
     }
   ];
 

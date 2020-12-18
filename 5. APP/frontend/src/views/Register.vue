@@ -49,7 +49,7 @@ export default class Register extends Vue {
     API.axios
       .post("/auth/register", this.data)
       .catch((e) => {
-        if (e.response.data.name === "AJV_VALIDATION_ERROR") this.errors.push(...e.response.data.errors.map((e) => e.message));
+        if (e.response.data.name === "AJV_VALIDATION_ERROR") this.errors.push(...e.response.data.errors.map((e: Error) => e.message));
         else this.errors.push(e.response.data.message);
       })
       .finally(() => {

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="max-width: 1000px" v-if="game">
+  <v-container fluid style="max-width: 1500px" v-if="game">
     <v-card class="mx-auto" dark>
       <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-card color="rgba(0,0,0,0.5)" class="pa-5 blur">
@@ -52,21 +52,22 @@
             </v-card-title>
           </v-card>
           <v-list two-line>
-            <v-list-item link v-for="player in team.players" :key="player.uid"
-                         :to="{name: 'Player', params: {id: player.uid}}">
-              <v-list-item-avatar>
-                <v-img :src="player.avatar" />
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ player.firstname }} {{ player.lastname }}</v-list-item-title>
-                <v-list-item-subtitle>
-                  <v-chip label small>
-                    <v-icon small left>mdi-tshirt-crew</v-icon>
-                    {{ player.jerseyNumber }}
-                  </v-chip>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+            <v-card v-for="player in team.players" :key="player.uid" class="ma-3">
+              <v-list-item link :to="{name: 'Player', params: {id: player.uid}}">
+                <v-list-item-avatar color="grey">
+                  <v-img :src="player.avatar" />
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ player.firstname }} {{ player.lastname }}</v-list-item-title>
+                  <v-list-item-subtitle>
+                    <v-chip label small>
+                      <v-icon small left>mdi-tshirt-crew</v-icon>
+                      {{ player.jerseyNumber }}
+                    </v-chip>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-card>
           </v-list>
         </v-card>
       </v-col>

@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid v-if="player" style="max-width: 1000px">
+  <v-container fluid v-if="player" style="max-width: 1500px">
     <v-card class="mx-auto" dark>
       <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-row align="end">

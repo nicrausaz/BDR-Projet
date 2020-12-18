@@ -11,6 +11,7 @@ import PlayerProfile from "@/views/PlayerProfile.vue";
 import GameResult from "@/views/GameResult.vue";
 import GameList from "@/views/GameList.vue";
 import Register from "@/views/Register.vue";
+import About from "@/views/About.vue";
 
 Vue.use(VueRouter);
 
@@ -22,6 +23,11 @@ const routes: Array<RouteConfig> = [
     meta: {
       authenticate: true
     }
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: About
   },
 
   {
