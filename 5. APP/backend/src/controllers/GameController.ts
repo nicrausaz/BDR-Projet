@@ -23,7 +23,7 @@ export class GameController {
                  INNER JOIN team th ON th.id = g.teamhomeid
                  INNER JOIN team tg ON tg.id = g.teamguestid
         WHERE g.name ILIKE $1
-    `, query, limit, offset);
+    `, [], query, limit, offset);
   }
 
   @Get("/:uid")

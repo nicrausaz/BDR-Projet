@@ -39,11 +39,11 @@ export class Utils {
     `)).rows[0]?.total;
   }
 
-  static async createSearchPaginate<T extends typeof Model>(model: T, tableName: string, sql: string, query: string, limit: number, offset: number) {
+  static async createSearchPaginate<T extends typeof Model>(model: T, tableName: string, sql: string, values: any[], query: string, limit: number, offset: number) {
     const result = await DB.query(`
         ${sql}
         LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset]);
+    `, [`%${query}%`, limit, offset, ...values]);
 
     return Pagination.create(
       result.rows.map(r => model.hydrate(r)),
@@ -89,7 +89,8 @@ export class Utils {
                                             INNER JOIN federation f on l.federationid = f.id
                                             INNER JOIN administrator_federation af on f.id = af.federationid
                                    WHERE c.id = $1
-                                     AND af.administratoruid = $2 LIMIT 1;`, [administrator.uid, championshipId]);
+                                     AND af.administratoruid = $2
+                                   LIMIT 1;`, [administrator.uid, championshipId]);
 
     return result.rows.length == 1;
   }

@@ -72,8 +72,10 @@
 import {Component, Vue} from "vue-property-decorator";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
-
-@Component
+import Header from "@/components/Header.vue";
+@Component({
+  components: {Header}
+})
 export default class PlayerProfile extends Vue {
   private player: Player | null = null;
 
