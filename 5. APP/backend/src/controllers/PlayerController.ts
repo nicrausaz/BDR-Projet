@@ -18,14 +18,7 @@ export class PlayerController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    const result = await DB.query(`
-        SELECT *
-        FROM player
-        WHERE firstname ILIKE $1
-           OR lastname ILIKE $1
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset]);
-    return result.rows.map(r => Player.hydrate<Player>(r));
+    return Utils.createSimpleSearchPaginate(Player, "player", ["firstname","lastname"], query, limit, offset);
   }
 
   @Get("/:id")

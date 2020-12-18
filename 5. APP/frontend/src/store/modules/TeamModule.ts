@@ -1,6 +1,7 @@
 import {Action, Module, Mutation, VuexModule} from "vuex-module-decorators";
 import API from "@/plugins/API";
 import Team from "@/models/Team";
+import Pagination from "@/models/Pagination";
 
 @Module({namespaced: true})
 export default class PlayerModule extends VuexModule {
@@ -15,7 +16,7 @@ export default class PlayerModule extends VuexModule {
 
   @Action
   public async fetchTeams(uid: string) {
-    const {data} = await API.axios.get<Team[]>("/player/" + uid + "/teams");
-    this.context.commit("setTeams", data);
+    const {data} = await API.axios.get<Pagination<Team>>("/player/" + uid + "/teams");
+    this.context.commit("setTeams", data.result);
   }
 }

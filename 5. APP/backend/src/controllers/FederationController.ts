@@ -6,6 +6,7 @@ import {NotFound, Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import {Utils} from "./utils";
 import Administrator from "../models/Administrator";
+import Season from "../models/Season";
 
 @Controller("/federation")
 @Authenticate()
@@ -18,14 +19,7 @@ export class FederationController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    const result = await DB.query(`
-        SELECT f.*, row_to_json(s.*) as sport
-       FROM federation f
-                INNER JOIN sport s ON s.id = f.sportid
-        WHERE f.name ILIKE $1
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset])
-    return result.rows.map(r => Federation.hydrate<Federation>(r));
+    return Utils.createSimpleSearchPaginate(Federation, "federation", ["name"], query, limit, offset);
   }
 
   @Get("/:id")

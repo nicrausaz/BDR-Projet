@@ -5,6 +5,8 @@ import Championship from "../models/Championship";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Club from "../models/Club";
+import {Utils} from "./utils";
+import Season from "../models/Season";
 
 @Controller("/championship")
 @Authenticate()
@@ -18,13 +20,7 @@ export class ChampionshipController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    const result = await DB.query(`
-        SELECT *
-         FROM championship
-        WHERE name ILIKE $1
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset])
-    return result.rows.map(r => Championship.hydrate<Championship>(r));
+    return Utils.createSimpleSearchPaginate(Championship, "championship", ["name"], query, limit, offset);
   }
 
   @Get("/:id")

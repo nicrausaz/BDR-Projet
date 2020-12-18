@@ -5,6 +5,8 @@ import League from "../models/League";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Federation from "../models/Federation";
+import {Utils} from "./utils";
+import Season from "../models/Season";
 
 @Controller("/league")
 @Authenticate()
@@ -17,13 +19,7 @@ export class LeagueController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    const result = await DB.query(`
-        SELECT *
-       FROM league
-        WHERE c.name ILIKE $1
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset])
-    return result.rows.map(r => League.hydrate<League>(r));
+    return Utils.createSimpleSearchPaginate(League, "league", ["name"], query, limit, offset);
   }
 
   @Get("/:id")
