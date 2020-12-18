@@ -4,7 +4,7 @@
       <v-sheet class="pa-4" color="grey lighten-4" v-if="administrator">
         <v-card>
           <v-list-item dense>
-            <v-list-item-avatar>
+            <v-list-item-avatar color="gray">
               <v-img :src="administrator.avatar" />
             </v-list-item-avatar>
             <v-list-item-content>
