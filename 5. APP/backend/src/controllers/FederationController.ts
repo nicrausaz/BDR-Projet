@@ -1,4 +1,4 @@
-import {Controller, Get, PathParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Federation from "../models/Federation";
