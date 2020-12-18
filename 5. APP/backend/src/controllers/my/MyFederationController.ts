@@ -120,18 +120,17 @@ export class MyFederationController {
       await client.query("BEGIN");
 
       const res = await client.query(`INSERT INTO league (level, gender, federationid)
-                                  VALUES ($1, $2, $3)
-                                  RETURNING *`, [league.level, league.gender, league.federation.id]);
-
-      const result = await client.query(`INSERT INTO administrator_federation (administratoruid, federationid)
-                                         VALUES ($1, $2)`, [(<Administrator>request.user).uid, res.rows[0].id]);
+                                      VALUES ($1, $2, $3)
+                                      RETURNING *`, [league.level, league.gender, id]);
 
       await client.query("COMMIT");
 
-      return result.rows.map(r => League.hydrate<League>(r))[0];
+      return res.rows.map(r => League.hydrate<League>(r))[0];
     } catch (e) {
       await client.query("ROLLBACK");
       throw e;
+    } finally {
+      client.release();
     }
   }
 
