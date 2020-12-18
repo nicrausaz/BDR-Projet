@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
 import {ContentType, Returns} from "@tsed/schema";
 import DB from "../db/DB";
 import Championship from "../models/Championship";
@@ -13,10 +13,17 @@ export class ChampionshipController {
   @Get("/")
   @(Returns(200, Championship).Of(Championship).Description("All Championship"))
   @ContentType("json")
-  async getAll() {
-    const result = await DB.query(
-        `SELECT *
-         FROM championship`);
+  async getAll(
+    @QueryParams("q")query?: string,
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    const result = await DB.query(`
+        SELECT *
+         FROM championship
+        WHERE name ILIKE $1
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset])
     return result.rows.map(r => Championship.hydrate<Championship>(r));
   }
 

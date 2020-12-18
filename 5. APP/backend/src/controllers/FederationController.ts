@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, Req} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Federation from "../models/Federation";
@@ -13,11 +13,18 @@ export class FederationController {
 
   @Get("/")
   @ContentType("json")
-  async getAll() {
-    const result = await DB.query(
-      `SELECT f.*, row_to_json(s.*) as sport
+  async getAll(
+    @QueryParams("q")query?: string,
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    const result = await DB.query(`
+        SELECT f.*, row_to_json(s.*) as sport
        FROM federation f
-                INNER JOIN sport s ON s.id = f.sportid`);
+                INNER JOIN sport s ON s.id = f.sportid
+        WHERE f.name ILIKE $1
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset])
     return result.rows.map(r => Federation.hydrate<Federation>(r));
   }
 

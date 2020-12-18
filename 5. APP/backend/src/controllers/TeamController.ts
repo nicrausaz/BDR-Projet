@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Team from "../models/Team";
@@ -12,11 +12,19 @@ export class TeamController {
 
   @Get("/")
   @ContentType("json")
-  async getAll() {
-    const result = await DB.query(`SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
-                                   FROM team t
-                                            INNER JOIN club c on t.clubid = c.id
-                                            INNER JOIN league l on t.leagueid = l.id`);
+  async getAll(
+    @QueryParams("q")query?: string,
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    const result = await DB.query(`
+        SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
+        FROM team t
+                 INNER JOIN club c on t.clubid = c.id
+                 INNER JOIN league l on t.leagueid = l.id
+        WHERE t.name ILIKE $1
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset]);
     return result.rows.map(r => Team.hydrate<Team>(r));
   }
 

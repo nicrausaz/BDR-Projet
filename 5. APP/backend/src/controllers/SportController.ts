@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, PathParams, Put} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, PathParams, Put, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Sport from "../models/Sport";
@@ -11,9 +11,17 @@ export class SportController {
 
   @Get("/")
   @ContentType("json")
-  async getAll() {
-    const result = await DB.query(`SELECT *
-                                   FROM sport`);
+  async getAll(
+    @QueryParams("q")query?: string,
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    const result = await DB.query(`
+        SELECT *
+        FROM sport
+        WHERE name ILIKE $1
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset]);
     return result.rows.map(r => Sport.hydrate<Sport>(r));
   }
 
@@ -32,7 +40,8 @@ export class SportController {
   @ContentType("json")
   async put(@BodyParams() sport: Sport) {
     const result = await DB.query(`INSERT INTO sport(name)
-                                   VALUES ($1) RETURNING *`, [sport.name]);
+                                   VALUES ($1)
+                                   RETURNING *`, [sport.name]);
 
     return result.rows.map((r) => Sport.hydrate<Sport>(r))[0];
   }

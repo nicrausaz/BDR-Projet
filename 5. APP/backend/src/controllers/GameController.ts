@@ -1,4 +1,4 @@
-import {Controller, Get, PathParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import {NotFound} from "@tsed/exceptions";
@@ -10,13 +10,20 @@ import {Authenticate} from "@tsed/passport";
 export class GameController {
   @Get("/")
   @ContentType("json")
-  async getAll() {
-    const result = await DB.query(
-      `SELECT g.*, row_to_json(s.*) as stadium, row_to_json(th.*) as teamHome, row_to_json(tg.*) as teamGuest
-       FROM event_game g
-                INNER JOIN stadium s ON s.id = g.stadiumid
-                INNER JOIN team th ON th.id = g.teamhomeid
-                INNER JOIN team tg ON tg.id = g.teamguestid`);
+  async getAll(
+    @QueryParams("q")query?: string,
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    const result = await DB.query(`
+        SELECT g.*, row_to_json(s.*) as stadium, row_to_json(th.*) as teamHome, row_to_json(tg.*) as teamGuest
+        FROM event_game g
+                 INNER JOIN stadium s ON s.id = g.stadiumid
+                 INNER JOIN team th ON th.id = g.teamhomeid
+                 INNER JOIN team tg ON tg.id = g.teamguestid
+        WHERE g.name ILIKE $1
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset]);
     return result.rows.map(r => Game.hydrate<Game>(r));
   }
 
