@@ -12,7 +12,7 @@
 import {Component, Vue} from "vue-property-decorator";
 import {namespace} from "vuex-class";
 import Player from "@/models/Player";
-import Upload from "@/views/Upload.vue";
+import Upload from "@/components/Upload.vue";
 
 const player = namespace("player");
 @Component({

@@ -1,45 +1,40 @@
 <template>
   <v-container fluid style="max-width: 1500px" v-if="game">
-    <v-card class="mx-auto" dark>
-      <v-parallax :src="require('@/assets/background.jpg')" height="400">
-        <v-card color="rgba(0,0,0,0.5)" class="pa-5 blur">
+    <Header>
+      <v-row align="center" no-gutters>
+        <v-col align="center">
+          <v-chip>{{ game.startAt.toLocaleDateString() }}</v-chip>
+        </v-col>
+      </v-row>
+      <v-row align="center" justify="center">
+        <v-col class="text-right text-h6 text-md-h5 text-uppercase">
           <v-row align="center" no-gutters>
-            <v-col align="center">
-              <v-chip>{{ game.startAt.toLocaleDateString() }}</v-chip>
+            <v-col>
+              <v-avatar size="64" tile class="ma-3">
+                <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
+              </v-avatar>
             </v-col>
+            <v-col cols="12" class="text-break">{{ game.teamHome.name }}</v-col>
           </v-row>
-          <v-row align="center" justify="center">
-            <v-col class="text-right text-h6 text-md-h5 text-uppercase">
-              <v-row align="center" no-gutters>
-                <v-col>
-                  <v-avatar size="64" tile class="ma-3">
-                    <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
-                  </v-avatar>
-                </v-col>
-                <v-col cols="12" class="text-break">{{ game.teamHome.name }}</v-col>
-              </v-row>
-            </v-col>
-            <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ game.scoreHome }}:{{ game.scoreGuest }} </v-col>
-            <v-col class="text-left text-h6 text-md-h5 text-uppercase">
-              <v-row align="center" no-gutters>
-                <v-col>
-                  <v-avatar size="64" tile class="ma-3">
-                    <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2688.png" />
-                  </v-avatar>
-                </v-col>
-                <v-col cols="12" class="text-break">{{ game.teamGuest.name }}</v-col>
-              </v-row>
-            </v-col>
-          </v-row>
+        </v-col>
+        <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ game.scoreHome }}:{{ game.scoreGuest }} </v-col>
+        <v-col class="text-left text-h6 text-md-h5 text-uppercase">
           <v-row align="center" no-gutters>
-            <v-col align="center">
-              <v-chip>{{ game.stadium.name }}</v-chip>
+            <v-col>
+              <v-avatar size="64" tile class="ma-3">
+                <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2688.png" />
+              </v-avatar>
             </v-col>
+            <v-col cols="12" class="text-break">{{ game.teamGuest.name }}</v-col>
           </v-row>
-        </v-card>
-      </v-parallax>
-    </v-card>
-
+        </v-col>
+      </v-row>
+      <v-row align="center" no-gutters>
+        <v-col align="center">
+          <v-chip>{{ game.stadium.name }}</v-chip>
+        </v-col>
+      </v-row>
+    </Header>
     <v-row>
       <v-col cols="12" md="6" v-for="team in teams" :key="team.team.id">
         <v-card>
@@ -81,8 +76,11 @@ import API from "@/plugins/API";
 import Game from "@/models/Game";
 import PlayerTeam from "@/models/PlayerTeam";
 import Team from "@/models/Team";
+import Header from "@/components/Header.vue";
 
-@Component
+@Component({
+  components: {Header}
+})
 export default class GameResult extends Vue {
   private game: Game | null = null;
   private teams: {team: Team; players: PlayerTeam[]}[] = [];

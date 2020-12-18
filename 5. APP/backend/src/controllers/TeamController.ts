@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../db/DB";
 import Team from "../models/Team";
@@ -24,7 +24,7 @@ export class TeamController {
                  INNER JOIN club c on t.clubid = c.id
                  INNER JOIN league l on t.leagueid = l.id
         WHERE t.name ILIKE $1
-    `, query, limit, offset);
+    `, [], query, limit, offset);
   }
 
   @Get("/:id")
