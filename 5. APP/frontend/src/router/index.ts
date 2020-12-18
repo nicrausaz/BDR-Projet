@@ -99,7 +99,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (to.meta?.authenticate && !(await store.dispatch("administrator/getProfile"))) {
+  if (!(await store.dispatch("administrator/getProfile")) && to.meta?.authenticate) {
     await store.dispatch("administrator/logout");
     if (to.name !== "Login") return next({name: "Login"});
   }
