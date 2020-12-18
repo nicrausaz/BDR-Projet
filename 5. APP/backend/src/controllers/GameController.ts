@@ -11,7 +11,7 @@ export class GameController {
   @Get("/")
   @ContentType("json")
   async getAll(
-    @QueryParams("q")query?: string,
+    @QueryParams("q")query: string = "",
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
