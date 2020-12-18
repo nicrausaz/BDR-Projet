@@ -1,6 +1,6 @@
 import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../../db/DB";
+import DB, {PoolClient} from "../../db/DB";
 import Federation from "../../models/Federation";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
@@ -114,12 +114,25 @@ export class MyFederationController {
   async insertLeague(@Req() request: Req, @BodyParams() league: League, @PathParams("id") id: number) {
 
     if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    const client = await PoolClient();
 
-    const result = await DB.query(`INSERT INTO league (level, gender, federationid)
-                                   VALUES ($1, $2, $3)
-                                   RETURNING *`, [league.level, league.gender, league.federation.id]);
+    try {
+      await client.query("BEGIN");
 
-    return result.rows.map((r) => League.hydrate<League>(r))[0];
+      const res = await client.query(`INSERT INTO league (level, gender, federationid)
+                                  VALUES ($1, $2, $3)
+                                  RETURNING *`, [league.level, league.gender, league.federation.id]);
+
+      const result = await client.query(`INSERT INTO administrator_federation (administratoruid, federationid)
+                                         VALUES ($1, $2)`, [(<Administrator>request.user).uid, res.rows[0].id]);
+
+      await client.query("COMMIT");
+
+      return result.rows.map(r => League.hydrate<League>(r))[0];
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    }
   }
 
   /**
