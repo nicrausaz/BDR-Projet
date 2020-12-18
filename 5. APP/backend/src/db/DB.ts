@@ -7,5 +7,5 @@ const config: pg.ClientConfig = {
   password: "root",
   database: "bdr_proj_crausaz_scharwath"
 };
-export const Pool = new pg.Pool(config);
+export const PoolClient = () => new pg.Pool(config).connect();
 export default new pg.Client(config);
