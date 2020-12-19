@@ -5,7 +5,7 @@ import League from "../models/League";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Federation from "../models/Federation";
-import {Utils} from "./utils";
+import {Utils} from "../Utils";
 import Season from "../models/Season";
 
 @Controller("/league")
@@ -19,7 +19,7 @@ export class LeagueController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSimpleSearchPaginate(League, "league", ["name"], query, limit, offset);
+    return Utils.createSimpleSearchPaginate(League, "league", ["level"], query, limit, offset);
   }
 
   @Get("/:id")

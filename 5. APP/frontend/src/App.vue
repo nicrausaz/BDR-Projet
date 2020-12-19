@@ -87,7 +87,7 @@ export default class App extends Vue {
     {
       text: "Mon compte",
       icon: "mdi-account-circle",
-      path: null
+      path: {name: "Account"}
     },
     {
       text: "Mes équipes",

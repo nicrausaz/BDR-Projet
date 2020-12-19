@@ -1,7 +1,7 @@
-import DB from "../db/DB";
-import Administrator from "../models/Administrator";
-import Pagination from "../models/Pagination";
-import Model from "../models/Model";
+import DB from "./db/DB";
+import Administrator from "./models/Administrator";
+import Pagination from "./models/Pagination";
+import Model from "./models/Model";
 
 export class Utils {
 

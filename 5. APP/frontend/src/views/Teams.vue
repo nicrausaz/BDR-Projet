@@ -1,105 +1,51 @@
 <template>
-  <v-container fluid style="max-width: 1000px">
-    <v-data-table :headers="headers" :items="teams" sort-by="id" class="elevation-1">
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>My CRUD</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{on, attrs}">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"> New Item</v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="headline">New team</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedTeam.name" label="Team name"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedTeam.league" label="League"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedTeam.club" label="Club"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close"> Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <!--                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>-->
-                <!--                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>-->
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{item}">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil</v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete</v-icon>
-      </template>
-    </v-data-table>
+  <v-container fluid style="max-width: 1500px">
+    <v-card :loading="loading">
+      <v-toolbar flat>
+        <v-icon>mdi-account</v-icon>
+        <v-toolbar-title class="font-weight-light">Create Team</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+      <v-form v-model="valid">
+        <v-container>
+          <v-text-field required filled v-model="team.name" label="Name" />
+          <MyClubInput required v-model="team.club" />
+          <LeagueInput required v-model="team.league" />
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn depressed :disabled="!valid" @click="create">
+            <v-icon left>mdi-plus</v-icon>
+            Create
+          </v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
+import MyClubInput from "@/components/input/MyClubInput.vue";
 import Team from "@/models/Team";
 import API from "@/plugins/API";
-import Pagination from "@/models/Pagination";
+import LeagueInput from "@/components/input/LeagueInput.vue";
 
-@Component
+@Component({
+  components: {LeagueInput, MyClubInput}
+})
 export default class Teams extends Vue {
-  headers = [
-    {text: "Name", value: "name"},
-    {text: "Club", value: "club.name"},
-    {text: "League", value: "league.level"},
-    {text: "Actions", value: ""}
-  ];
+  private valid = false;
+  private loading = false;
+  private team = new Team();
 
-  search = "";
-
-  private dialog = false;
-  private dialogDelete = false;
-  private editedIndex = -1;
-  private editedTeam = {};
-  private defaultTeam = {};
-
-  private teams: Team[] = [];
-
-  public async mounted() {
-    // Faut passer l'id du joueur quand on aura fait les accès
-    this.teams = [];
-    this.editedTeam = new Team();
-    this.defaultTeam = new Team();
-    this.teams = (await API.axios.get<Pagination<Team>>(`/team`)).data.result;
-  }
-
-  public close() {
-    this.dialog = false;
-    this.$nextTick(() => {
-      this.editedTeam = Object.assign({}, this.defaultTeam);
-      this.editedIndex = -1;
-    });
-  }
-
-  public save() {
-    this.dialog = false;
+  private create() {
+    this.loading = true;
+    API.axios
+      .put<Team>(`my/team`, this.team)
+      .then((e) => console.log(e))
+      .catch((e) => console.log(e))
+      .finally(() => (this.loading = false));
   }
 }
 </script>

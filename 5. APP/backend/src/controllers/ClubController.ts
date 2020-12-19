@@ -5,7 +5,7 @@ import Club from "../models/Club";
 import Team from "../models/Team";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "./utils";
+import {Utils} from "../Utils";
 import Administrator from "../models/Administrator";
 import Season from "../models/Season";
 

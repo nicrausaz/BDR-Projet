@@ -4,7 +4,7 @@ import DB from "../../db/DB";
 import Federation from "../../models/Federation";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../utils";
+import {Utils} from "../../Utils";
 import Administrator from "../../models/Administrator";
 import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";

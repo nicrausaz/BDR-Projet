@@ -4,7 +4,7 @@ import DB from "../db/DB";
 import Sport from "../models/Sport";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "./utils";
+import {Utils} from "../Utils";
 import Season from "../models/Season";
 
 @Controller("/sport")

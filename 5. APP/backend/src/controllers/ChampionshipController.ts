@@ -5,7 +5,7 @@ import Championship from "../models/Championship";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Club from "../models/Club";
-import {Utils} from "./utils";
+import {Utils} from "../Utils";
 import Season from "../models/Season";
 
 @Controller("/championship")

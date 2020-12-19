@@ -4,7 +4,7 @@ import DB from "../../db/DB";
 import Club from "../../models/Club";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../utils";
+import {Utils} from "../../Utils";
 import Administrator from "../../models/Administrator";
 
 @Controller("/my/club")

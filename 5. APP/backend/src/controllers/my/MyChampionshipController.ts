@@ -3,7 +3,7 @@ import {Authenticate} from "@tsed/passport";
 import {ContentType, Returns} from "@tsed/schema";
 import Championship from "../../models/Championship";
 import DB from "../../db/DB";
-import {Utils} from "../utils";
+import {Utils} from "../../Utils";
 import Administrator from "../../models/Administrator";
 
 @Controller("/my/championship")
