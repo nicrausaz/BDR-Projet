@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app width="300">
+    <v-navigation-drawer v-model="drawer" app>
       <v-container class="pa-4" v-if="administrator">
         <v-card>
           <v-list-item dense>

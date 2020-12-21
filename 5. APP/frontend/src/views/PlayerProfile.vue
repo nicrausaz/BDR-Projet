@@ -18,8 +18,9 @@
       <v-list>
         <v-list-item>
           <v-list-item-icon>
-            <v-icon color="indigo">
-              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female" }}
+            <v-icon color="primary">
+              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female"
+              }}
             </v-icon>
           </v-list-item-icon>
 
@@ -32,7 +33,7 @@
           <v-divider inset></v-divider>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon color="indigo"> mdi-human-male-height</v-icon>
+              <v-icon color="primary"> mdi-human-male-height</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>{{ player.height }} cm</v-list-item-title>
@@ -44,7 +45,7 @@
           <v-divider inset></v-divider>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon color="indigo">mdi-weight-kilogram</v-icon>
+              <v-icon color="primary">mdi-weight-kilogram</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>{{ player.weight }} kg</v-list-item-title>
@@ -56,7 +57,7 @@
           <v-divider inset></v-divider>
           <v-list-item>
             <v-list-item-icon>
-              <v-icon color="indigo">mdi-cake</v-icon>
+              <v-icon color="primary">mdi-cake</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title>{{ player.birthdate.toLocaleDateString() }}</v-list-item-title>
@@ -73,6 +74,7 @@ import {Component, Vue} from "vue-property-decorator";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
 import Header from "@/components/Header.vue";
+
 @Component({
   components: {Header}
 })

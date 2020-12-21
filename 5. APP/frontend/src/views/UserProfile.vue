@@ -18,7 +18,7 @@
       <v-list>
         <v-list-item>
           <v-list-item-icon>
-            <v-icon color="indigo"> mdi-email</v-icon>
+            <v-icon color="primary"> mdi-email</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>{{ administrator.email }}</v-list-item-title>
