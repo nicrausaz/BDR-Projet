@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app width="300">
-      <v-sheet class="pa-4" color="grey lighten-4" v-if="administrator">
+      <v-container class="pa-4" v-if="administrator">
         <v-card>
           <v-list-item dense>
             <v-list-item-avatar color="gray">
@@ -13,7 +13,7 @@
             </v-list-item-content>
           </v-list-item>
         </v-card>
-      </v-sheet>
+      </v-container>
       <v-divider></v-divider>
 
       <v-list rounded>
@@ -42,8 +42,8 @@
       <v-toolbar-title>StarSport</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
+      <v-btn icon @click="toggleDarkMode">
+        <v-icon>{{ darkMode ? "mdi-weather-sunny" : "mdi-weather-night" }}</v-icon>
       </v-btn>
 
       <v-btn icon>
@@ -116,5 +116,13 @@ export default class App extends Vue {
 
   @administrator.Action
   logout!: () => void;
+
+  get darkMode() {
+    return this.$vuetify.theme.dark;
+  }
+
+  toggleDarkMode() {
+    this.$vuetify.theme.dark = !this.darkMode;
+  }
 }
 </script>
