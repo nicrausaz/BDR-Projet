@@ -5,6 +5,7 @@
     </v-overlay>
     <v-form :disabled="isUploading">
       <v-container>
+        <v-alert type="error" v-if="error">{{ error }}</v-alert>
         <v-row>
           <v-col cols="12" align="center">
             <Upload v-model="file" />
@@ -38,15 +39,20 @@ export default class UploadForm extends Vue {
 
   private percent = 0;
   private isUploading = false;
+  private error: string = null;
 
   private close() {
     this.file = null;
+    this.error = null;
+    this.isUploading = false;
+    this.percent = 0;
     this.$emit("close");
   }
 
   private upload() {
     if (!(this.file instanceof File) || this.isUploading) return;
     this.isUploading = true;
+    this.error = null;
     const formData = new FormData();
     formData.append("file", this.file);
     API.axios
@@ -58,11 +64,16 @@ export default class UploadForm extends Vue {
           this.percent = (100 * e.loaded) / e.total;
         }
       })
+      .then(() => {
+        this.$emit("upload", this.file);
+        this.close();
+      })
+      .catch((e: Error) => {
+        this.error = e.message;
+      })
       .finally(() => {
         this.isUploading = false;
         this.percent = 0;
-        this.$emit("upload", this.file);
-        this.close();
       });
   }
 }

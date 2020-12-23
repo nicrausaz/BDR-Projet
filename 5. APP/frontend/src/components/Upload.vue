@@ -26,5 +26,9 @@ export default class Upload extends Vue {
     if (!file || !(file.type === "image/png" || file.type === "image/jpeg")) return;
     this.$emit("input", file);
   }
+
+  destroy() {
+    URL.revokeObjectURL(this.src ?? "");
+  }
 }
 </script>
