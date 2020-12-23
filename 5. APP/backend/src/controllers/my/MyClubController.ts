@@ -7,17 +7,17 @@ import {Authenticate} from "@tsed/passport";
 import {Utils} from "../../Utils";
 import Administrator from "../../models/Administrator";
 
-@Controller("/my/club")
+@Controller("/club")
 @Authenticate()
 export class MyClubController {
 
   @Get("/")
   @ContentType("json")
   async getAll(@Req() request: Req) {
-    const perms = await Utils.getAccessibleClubRessources(<Administrator>request.user);
+    const perms = await Utils.getAccessibleClubResources(<Administrator>request.user);
 
     const result = await DB.query(
-        `SELECT c.*, row_to_json(s.*) as sport
+      `SELECT c.*, row_to_json(s.*) as sport
          FROM club c
                   INNER JOIN sport s ON s.id = c.sportid
          WHERE c.id = ANY ($1)`, [perms]);
@@ -30,8 +30,8 @@ export class MyClubController {
   async put(@BodyParams() club: Club) {
     const result = await DB.query(
       `INSERT INTO club (name, sportid)
-         VALUES ($1, $2)
-         RETURNING *`, [club.name, club.sport.id]);
+       VALUES ($1, $2)
+       RETURNING *`, [club.name, club.sport.id]);
 
     return result.rows.map(r => Club.hydrate<Club>(r))[0];
   }
@@ -39,7 +39,7 @@ export class MyClubController {
   @Patch("/:id")
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("id") id: number, @BodyParams() club: Club) {
-    if (!await Utils.checkAccessToClubRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToClubResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(
       `UPDATE club

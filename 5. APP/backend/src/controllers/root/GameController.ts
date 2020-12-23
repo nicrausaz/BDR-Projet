@@ -1,10 +1,10 @@
 import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../db/DB";
+import DB from "../../db/DB";
 import {NotFound} from "@tsed/exceptions";
-import Game from "../models/Game";
+import Game from "../../models/Game";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../Utils";
+import {Utils} from "../../Utils";
 
 @Controller("/game")
 @Authenticate()

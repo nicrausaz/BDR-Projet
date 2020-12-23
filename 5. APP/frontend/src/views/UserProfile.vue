@@ -57,7 +57,7 @@ export default class UserProfile extends Vue {
   administrator?: Administrator;
 
   @administrator.Mutation
-  setAvatar: (url: string) => void;
+  setAvatar!: (url: string) => void;
 
   uploadDialog = false;
 

@@ -1,7 +1,6 @@
 import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, Req} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
-import Federation from "../../models/Federation";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import {Utils} from "../../Utils";
@@ -9,7 +8,7 @@ import Administrator from "../../models/Administrator";
 import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";
 
-@Controller("/my/team")
+@Controller("/team")
 @Authenticate()
 export class MyTeamController {
 
@@ -17,7 +16,7 @@ export class MyTeamController {
   @ContentType("json")
   async getAll(@Req() request: Req) {
 
-    const perms = Utils.getAccessibleClubRessources(<Administrator>request.user);
+    const perms = Utils.getAccessibleClubResources(<Administrator>request.user);
 
     const result = await DB.query(`SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
                                    FROM team t
@@ -31,14 +30,15 @@ export class MyTeamController {
   @ContentType("json")
   async getPlayers(@Req() request: Req, @PathParams("id") id: number) {
 
-    const perms = Utils.getAccessibleClubRessources(<Administrator>request.user);
+    const perms = Utils.getAccessibleClubResources(<Administrator>request.user);
 
     const result = await DB.query(`SELECT *
                                    FROM player
                                             INNER JOIN player_play_for_team ppft ON player.uid = ppft.playeruid
                                             INNER JOIN team t ON ppft.teamid = t.id
                                             INNER JOIN club c on t.clubid = c.id
-                                   WHERE t.id = $1 AND c.id = ANY ($2)
+                                   WHERE t.id = $1
+                                     AND c.id = ANY ($2)
                                      AND (endat IS NULL OR endat > NOW());`, [id, perms]);
 
     return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
@@ -48,7 +48,7 @@ export class MyTeamController {
   @ContentType("json")
   async put(@Req() request: Req, @BodyParams() team: Team) {
 
-    if (!await Utils.checkAccessToClubRessource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToClubResource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
 
     const result = await DB.query(`INSERT INTO team(name, clubid, leagueid)
                                    VALUES ($1, $2, $3)
@@ -60,7 +60,7 @@ export class MyTeamController {
   @Patch("/:id")
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("id") id: number, @BodyParams() team: Team) {
-    if (!await Utils.checkAccessToClubRessource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToClubResource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
 
     const result = await DB.query(`UPDATE team
                                    SET name     = $1,
@@ -76,7 +76,7 @@ export class MyTeamController {
   @ContentType("json")
   async addPlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
 
-    if (!await Utils.checkAccessToTeamRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
 
     await DB.query(`INSERT INTO player_play_for_team(playeruid, teamid, jerseynumber)
                     VALUES ($1, $2, $3)`, [data.playerUid, id, data.jerseyNumber]);
@@ -86,7 +86,7 @@ export class MyTeamController {
   @ContentType("json")
   async updatePlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
 
-    if (!await Utils.checkAccessToTeamRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
 
     await DB.query(`UPDATE player_play_for_team
                     SET jerseynumber = $1
@@ -99,7 +99,7 @@ export class MyTeamController {
   @ContentType("json")
   async deletePlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
 
-    if (!await Utils.checkAccessToTeamRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
 
     await DB.query(`UPDATE player_play_for_team
                     SET endat        = current_timestamp,

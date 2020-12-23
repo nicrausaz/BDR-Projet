@@ -1,6 +1,5 @@
 <template>
-  <v-card @drop.prevent="addFile" @dragover.prevent width="325" height="325"
-          class="d-flex justify-center align-center fill-height">
+  <v-card @drop.prevent="addFile" @dragover.prevent width="325" height="325" class="d-flex justify-center align-center fill-height">
     <v-img v-if="src" :src="src" class="fill-height" />
     <v-icon v-else size="100">mdi-file-image</v-icon>
   </v-card>

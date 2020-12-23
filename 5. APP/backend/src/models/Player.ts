@@ -32,7 +32,7 @@ export default class Player extends Model {
   sex: "M" | "F";
 
   @Property()
-  get avatar():string{
-    return `https://i.pravatar.cc/150?u=${this.uid}`;
+  get avatar(): string {
+    return `http://localhost:8083/api/player/${this.uid}/avatar`;
   }
 }

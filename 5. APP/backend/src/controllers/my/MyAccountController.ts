@@ -5,7 +5,7 @@ import {rootDir} from "../../Server";
 import fs from "fs";
 import Administrator from "../../models/Administrator";
 
-@Controller("/my/account")
+@Controller("/account")
 @Authenticate()
 export class MyAccountController {
 

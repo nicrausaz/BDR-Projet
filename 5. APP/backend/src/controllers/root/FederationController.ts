@@ -1,12 +1,10 @@
 import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../db/DB";
-import Federation from "../models/Federation";
-import {NotFound, Unauthorized} from "@tsed/exceptions";
+import DB from "../../db/DB";
+import Federation from "../../models/Federation";
+import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../Utils";
-import Administrator from "../models/Administrator";
-import Season from "../models/Season";
+import {Utils} from "../../Utils";
 
 @Controller("/federation")
 @Authenticate()
@@ -28,7 +26,7 @@ export class FederationController {
     @PathParams("id") id: number
   ) {
     const query = await DB.query(
-        `SELECT f.*, row_to_json(s.*) as sport
+      `SELECT f.*, row_to_json(s.*) as sport
          FROM federation f
                   INNER JOIN sport s ON s.id = f.sportid
          WHERE f.id = $1`, [id]);

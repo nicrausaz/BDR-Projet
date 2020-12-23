@@ -1,12 +1,10 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType, Returns} from "@tsed/schema";
-import DB from "../db/DB";
-import Championship from "../models/Championship";
+import DB from "../../db/DB";
+import Championship from "../../models/Championship";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import Club from "../models/Club";
-import {Utils} from "../Utils";
-import Season from "../models/Season";
+import {Utils} from "../../Utils";
 
 @Controller("/championship")
 @Authenticate()
@@ -27,7 +25,7 @@ export class ChampionshipController {
   @ContentType("json")
   async get(@PathParams("id") id: string) {
     const query = await DB.query(
-        `SELECT *
+      `SELECT *
          FROM championship
          WHERE id = $1`, [id]);
 

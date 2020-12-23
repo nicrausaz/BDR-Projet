@@ -19,7 +19,10 @@ export const rootDir = __dirname;
   httpsPort: false, // CHANGE
   mount: {
     "/api": [
-      `${rootDir}/controllers/**/*.ts`
+      `${rootDir}/controllers/root/**/*.ts`
+    ],
+    "/api/my": [
+      `${rootDir}/controllers/my/**/*.ts`
     ]
   },
   componentsScan: [
@@ -35,7 +38,7 @@ export const rootDir = __dirname;
   statics: {
     "/statics": [
       {
-        root: `${rootDir}/public`,
+        root: `${rootDir}/public`
       }
     ]
   },

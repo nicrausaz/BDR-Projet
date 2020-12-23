@@ -1,12 +1,10 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../db/DB";
-import League from "../models/League";
+import DB from "../../db/DB";
+import League from "../../models/League";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import Federation from "../models/Federation";
-import {Utils} from "../Utils";
-import Season from "../models/Season";
+import {Utils} from "../../Utils";
 
 @Controller("/league")
 @Authenticate()
@@ -28,7 +26,7 @@ export class LeagueController {
     @PathParams("id") id: string
   ) {
     const query = await DB.query(
-        `SELECT *
+      `SELECT *
          FROM league
          WHERE id = $1`, [id]);
     const result = query.rows.map(r => League.hydrate<League>(r))[0];

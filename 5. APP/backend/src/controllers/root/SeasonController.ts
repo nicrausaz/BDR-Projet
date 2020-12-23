@@ -1,11 +1,10 @@
 import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../db/DB";
-import Season from "../models/Season";
+import DB from "../../db/DB";
+import Season from "../../models/Season";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../Utils";
-import Player from "../models/Player";
+import {Utils} from "../../Utils";
 
 @Controller("/season")
 @Authenticate()

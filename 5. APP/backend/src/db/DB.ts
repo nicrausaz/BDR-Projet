@@ -10,7 +10,7 @@ const config: pg.ClientConfig = {
 export const PoolClient = () => new pg.Pool(config).connect();
 export default new pg.Client(config);
 
-PoolClient().then(async client=>{
+PoolClient().then(async client => {
   const result = await client.query(``);
-  result.rows.join()
-})
+  result.rows.join();
+});

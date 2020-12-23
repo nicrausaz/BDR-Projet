@@ -1,13 +1,11 @@
 import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../db/DB";
-import Club from "../models/Club";
-import Team from "../models/Team";
+import DB from "../../db/DB";
+import Club from "../../models/Club";
+import Team from "../../models/Team";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../Utils";
-import Administrator from "../models/Administrator";
-import Season from "../models/Season";
+import {Utils} from "../../Utils";
 
 @Controller("/club")
 @Authenticate()
@@ -40,10 +38,10 @@ export class ClubController {
   @ContentType("json")
   async getTeams(@PathParams("id") id: number) {
     const result = await DB.query(
-        `SELECT t.*
-         FROM club c
-                  INNER JOIN team t ON c.id = t.clubid
-         WHERE c.id = $1`, [id]);
+      `SELECT t.*
+       FROM club c
+                INNER JOIN team t ON c.id = t.clubid
+       WHERE c.id = $1`, [id]);
     return result.rows.map(r => Team.hydrate<Team>(r));
   }
 }

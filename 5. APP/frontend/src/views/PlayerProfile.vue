@@ -19,8 +19,7 @@
         <v-list-item>
           <v-list-item-icon>
             <v-icon color="primary">
-              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female"
-              }}
+              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female" }}
             </v-icon>
           </v-list-item-icon>
 

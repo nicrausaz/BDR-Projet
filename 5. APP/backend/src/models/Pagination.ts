@@ -1,7 +1,7 @@
 import {Property} from "@tsed/schema";
 import Model from "./Model";
 
-export default class Pagination<T extends Model> extends Model{
+export default class Pagination<T extends Model> extends Model {
   @Property()
   total: number;
 

@@ -1,7 +1,7 @@
 import {Controller, MultipartFile, PlatformMulterFile, Post} from "@tsed/common";
 import * as fs from "fs";
 import Jimp from "jimp";
-import {rootDir} from "../Server";
+import {rootDir} from "../../Server";
 
 @Controller("/test")
 export class TestController {
@@ -15,7 +15,7 @@ export class TestController {
         .cover(500, 500)
         .quality(75)
         .write(`${rootDir}/storage/${name}.png`);
-    }finally {
+    } finally {
       fs.unlinkSync(file.path);
     }
   }

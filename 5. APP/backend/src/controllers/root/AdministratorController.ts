@@ -1,6 +1,6 @@
 import {Controller, Get, PathParams} from "@tsed/common";
 import Jimp from "jimp";
-import {rootDir} from "../Server";
+import {rootDir} from "../../Server";
 import {ContentType} from "@tsed/schema";
 import {Readable} from "stream";
 
@@ -12,14 +12,10 @@ export class AdministratorController {
     @PathParams("uid") uid: string
   ) {
     const path = `${rootDir}/storage/administrator/${uid}.png`;
-
-    const img = await Jimp.read(path)
-      .catch(() => Jimp.read(`https://i.pravatar.cc/500?u=${uid}`));
-
-    img
+    return Readable.from(await (await Jimp.read(path)
+      .catch(() => Jimp.read(`https://i.pravatar.cc/500?u=${uid}`)))
       .cover(250, 250)
-      .quality(50);
-
-    return Readable.from(await img.getBufferAsync(Jimp.MIME_PNG));
+      .quality(50)
+      .getBufferAsync(Jimp.MIME_PNG));
   }
 }

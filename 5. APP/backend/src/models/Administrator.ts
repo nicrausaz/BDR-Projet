@@ -1,7 +1,6 @@
 import Model, {Hydrator} from "./Model";
 import {Email, MinLength, Property, Required} from "@tsed/schema";
 import bcrypt from "bcrypt";
-import {Utils} from "../Utils";
 
 export default class Administrator extends Model {
   @Hydrator()

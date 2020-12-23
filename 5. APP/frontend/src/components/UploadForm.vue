@@ -11,8 +11,7 @@
             <Upload v-model="file" />
           </v-col>
           <v-col cols="12">
-            <v-file-input v-model="file" accept="image/png, image/jpeg" filled prepend-icon="mdi-camera" show-size
-                          label="Upload file" />
+            <v-file-input v-model="file" accept="image/png, image/jpeg" filled prepend-icon="mdi-camera" show-size label="Upload file" />
           </v-col>
         </v-row>
       </v-container>
@@ -39,7 +38,7 @@ export default class UploadForm extends Vue {
 
   private percent = 0;
   private isUploading = false;
-  private error: string = null;
+  private error: string | null = null;
 
   private close() {
     this.file = null;

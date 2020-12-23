@@ -1,5 +1,5 @@
 import {Property} from "@tsed/schema";
-import Model, {Hydrator} from "./Model";
+import {Hydrator} from "./Model";
 import Club from "./Club";
 import League from "./League";
 import Team from "./Team";

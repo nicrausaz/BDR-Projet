@@ -9,7 +9,7 @@ import Administrator from "../../models/Administrator";
 import League from "../../models/League";
 import Championship from "../../models/Championship";
 
-@Controller("/my/federation")
+@Controller("/federation")
 @Authenticate()
 export class MyFederationController {
 
@@ -20,7 +20,7 @@ export class MyFederationController {
   @Get("/")
   @ContentType("json")
   async getAll(@Req() request: Req) {
-    const perms = await Utils.getAccessibleFederationRessources(<Administrator>request.user);
+    const perms = await Utils.getAccessibleFederationResources(<Administrator>request.user);
 
     const result = await DB.query(`SELECT f.*, row_to_json(s.*) as sport
                                    FROM federation f
@@ -57,7 +57,7 @@ export class MyFederationController {
   @ContentType("json")
   async update(@Req() request: Req, @PathParams("id") id: number, @BodyParams() federation: Federation) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`UPDATE federation
                                    SET name = $1
@@ -75,7 +75,7 @@ export class MyFederationController {
   @Delete("/:id")
   @ContentType("json")
   async delete(@Req() request: Req, @PathParams("id") id: number) {
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     await DB.query(`DELETE
                     FROM federation
@@ -94,7 +94,7 @@ export class MyFederationController {
   @Get("/:id/league")
   @ContentType("json")
   async getAllLeagues(@Req() request: Req, @PathParams("id") id: number) {
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`SELECT *
                                    FROM league
@@ -113,7 +113,7 @@ export class MyFederationController {
   @ContentType("json")
   async insertLeague(@Req() request: Req, @BodyParams() league: League, @PathParams("id") id: number) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
     const client = await PoolClient();
 
     try {
@@ -145,7 +145,7 @@ export class MyFederationController {
   @ContentType("json")
   async updateLeague(@Req() request: Req, @BodyParams() league: League, @PathParams("id") id: number) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`UPDATE league
                                    SET level  = $1,
@@ -166,7 +166,7 @@ export class MyFederationController {
   @ContentType("json")
   async deleteLeague(@Req() request: Req, @PathParams("id") id: number) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     await DB.query(`DELETE
                     FROM league
@@ -195,7 +195,7 @@ export class MyFederationController {
                                   @QueryParams("limit") limit: number = 20,
                                   @QueryParams("offset") offset: number = 0) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`SELECT *
                                    FROM championship
@@ -220,7 +220,7 @@ export class MyFederationController {
                            @PathParams("id") id: number,
                            @PathParams("lid") lid: number) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`INSERT INTO championship (name, startat, endat, seasonid, leagueid)
                                    VALUES ($1, $2, $3, $4, $5)
@@ -244,7 +244,7 @@ export class MyFederationController {
                            @PathParams("id") id: number,
                            @PathParams("cid") cid: number) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`UPDATE championship
                                    SET name     = $1,
@@ -271,7 +271,7 @@ export class MyFederationController {
                            @PathParams("id") id: number,
                            @PathParams("cid") cid: number) {
 
-    if (!await Utils.checkAccessToFederationRessource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     await DB.query(`DELETE
                     FROM championship
