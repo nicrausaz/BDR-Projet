@@ -1,9 +1,9 @@
-import DB from "./db/DB";
-import Administrator from "./models/Administrator";
-import Pagination from "./models/Pagination";
-import Model from "./models/Model";
+import DB from "../db/DB";
+import Administrator from "../models/Administrator";
+import Pagination from "../models/Pagination";
+import Model from "../models/Model";
 
-export class Utils {
+export default class Utils {
 
   static async checkAccessToPlayerResource(administrator: Administrator, playerUid: string): Promise<boolean> {
     const result = await DB.query(`SELECT playeruid

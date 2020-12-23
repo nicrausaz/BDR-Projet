@@ -13,7 +13,7 @@ import {Authenticate} from "@tsed/passport";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import fs from "fs";
-import {Utils} from "../../Utils";
+import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
 import {ContentType} from "@tsed/schema";

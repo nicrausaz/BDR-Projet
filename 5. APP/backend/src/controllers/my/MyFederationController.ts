@@ -4,7 +4,7 @@ import DB, {PoolClient} from "../../db/DB";
 import Federation from "../../models/Federation";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../../Utils";
+import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import League from "../../models/League";
 import Championship from "../../models/Championship";

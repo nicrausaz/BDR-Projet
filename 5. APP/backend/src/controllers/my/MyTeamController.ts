@@ -1,12 +1,13 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, Req} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../../Utils";
+import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/team")
 @Authenticate()
@@ -14,16 +15,29 @@ export class MyTeamController {
 
   @Get("/")
   @ContentType("json")
-  async getAll(@Req() request: Req) {
+  async getAll(
+    @Req() request: Req,
+    @QueryParams("q")query: string = "",
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0) {
 
-    const perms = Utils.getAccessibleClubResources(<Administrator>request.user);
-
-    const result = await DB.query(`SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
-                                   FROM team t
-                                            INNER JOIN club c on t.clubid = c.id
-                                            INNER JOIN league l on t.leagueid = l.id
-                                   WHERE c.id = ANY ($1)`, [perms]);
-    return result.rows.map(r => Team.hydrate<Team>(r));
+    const perms = await Utils.getAccessibleClubResources(<Administrator>request.user);
+    return new Paginator(Team)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM team t
+                   INNER JOIN club c on t.clubid = c.id
+          WHERE c.id = ANY ($1)
+      `, [perms])
+      .setQuery(`
+          SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
+          FROM team t
+                   INNER JOIN club c on t.clubid = c.id
+                   INNER JOIN league l on t.leagueid = l.id
+          WHERE c.id = ANY ($1)
+            AND t.name ILIKE $2
+      `, [perms])
+      .create({query, limit, offset});
   }
 
   @Get("/:id/player")

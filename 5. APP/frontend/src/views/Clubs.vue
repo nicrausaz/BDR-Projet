@@ -1,19 +1,19 @@
 <template>
   <v-container fluid style="max-width: 1500px">
     <v-toolbar rounded>
-      <v-toolbar-title>Mes équipes</v-toolbar-title>
+      <v-toolbar-title>Mes Clubs</v-toolbar-title>
       <v-spacer />
       <v-btn icon @click="dialog = true">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="750">
-      <CreateTeam />
+      <CreateClub />
     </v-dialog>
     <v-list two-line>
-      <v-list-item link v-for="team in pagination.result" :key="team.uid">
+      <v-list-item link v-for="club in pagination.result" :key="club.id">
         <v-list-item-content>
-          <v-list-item-title>{{ team.name }}</v-list-item-title>
+          <v-list-item-title>{{ club.name }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -29,17 +29,18 @@ import MyClubInput from "@/components/input/MyClubInput.vue";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
 import Pagination from "@/models/Pagination";
-import Team from "@/models/Team";
 import CreateTeam from "@/components/CreateTeam.vue";
+import Club from "@/models/Club";
+import CreateClub from "@/components/CreateClub.vue";
 
 @Component({
-  components: {CreateTeam, LeagueInput, MyClubInput}
+  components: {CreateClub, CreateTeam, LeagueInput, MyClubInput}
 })
-export default class Teams extends Vue {
+export default class Clubs extends Vue {
   private dialog = false;
   private page = 1;
   private limit = 20;
-  private pagination: Pagination<Team> | null = null;
+  private pagination: Pagination<Club> | null = null;
 
   private get nbPage(): number {
     if (!this.pagination) return 0;
@@ -49,7 +50,7 @@ export default class Teams extends Vue {
   async setPage() {
     const limit = this.limit;
     const offset = (this.page - 1) * limit;
-    this.pagination = (await API.axios.get<Pagination<Team>>(`my/team?limit=${limit}&offset=${offset}`)).data;
+    this.pagination = (await API.axios.get<Pagination<Club>>(`my/club?limit=${limit}&offset=${offset}`)).data;
   }
 
   async mounted() {

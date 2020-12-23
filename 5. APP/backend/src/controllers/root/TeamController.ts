@@ -5,7 +5,7 @@ import Team from "../../models/Team";
 import {NotFound} from "@tsed/exceptions";
 import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../../Utils";
+import Utils from "../../utils/Utils";
 
 @Controller("/team")
 @Authenticate()

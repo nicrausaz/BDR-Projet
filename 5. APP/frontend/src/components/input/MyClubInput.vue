@@ -26,8 +26,8 @@ export default class MyClubInput extends Vue {
   private isLoading = false;
   private items: Club[] = [];
   private search: Club | null = null;
-  private select: number = null;
-  private value!: string;
+  private select: number | null = null;
+  private value!: number;
 
   @Watch("value") valueChanged(newVal: Club) {
     this.select = newVal.id;

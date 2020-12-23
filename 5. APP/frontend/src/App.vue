@@ -97,7 +97,7 @@ export default class App extends Vue {
     {
       text: "Mes clubs",
       icon: "mdi-soccer",
-      path: null
+      path: {name: "Clubs"}
     },
     {
       text: "Les matchs",

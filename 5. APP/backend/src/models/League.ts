@@ -1,4 +1,4 @@
-import {Enum, Property} from "@tsed/schema";
+import {Allow, Enum, Property, Required} from "@tsed/schema";
 import Model, {Hydrator} from "./Model";
 import Federation from "./Federation";
 
@@ -19,5 +19,6 @@ export default class League extends Model {
 
   @Hydrator({model: Federation})
   @Property()
+  @Allow(null)
   federation: Federation;
 }

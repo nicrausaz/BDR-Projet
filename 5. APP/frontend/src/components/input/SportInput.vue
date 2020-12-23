@@ -5,32 +5,32 @@
     :search-input.sync="search"
     @focus="searchChange"
     cache-items
-    item-text="level"
+    item-text="name"
     item-value="id"
-    label="League"
+    label="Sport"
     filled
     v-model="select"
   >
-    <template v-slot:selection="data">{{ data.item.level }}</template>
-    <template v-slot:item="data">{{ data.item.level }}</template>
+    <template v-slot:selection="data">{{ data.item.name }}</template>
+    <template v-slot:item="data">{{ data.item.name }}</template>
   </v-autocomplete>
 </template>
 
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator";
-import League from "@/models/League";
 import API from "@/plugins/API";
+import Sport from "@/models/Sport";
 import Pagination from "@/models/Pagination";
 
 @Component
-export default class LeagueInput extends Vue {
+export default class SportInput extends Vue {
   private isLoading = false;
-  private items: League[] = [];
-  private search: League | null = null;
+  private items: Sport[] = [];
+  private search: Sport | null = null;
   private select: number | null = null;
   private value!: number;
 
-  @Watch("value") valueChanged(newVal: League) {
+  @Watch("value") valueChanged(newVal: Sport) {
     this.select = newVal.id;
   }
 
@@ -47,7 +47,7 @@ export default class LeagueInput extends Vue {
     if (this.items.length > 0) return;
     this.isLoading = true;
     API.axios
-      .get<Pagination<League>>(`league`)
+      .get<Pagination<Sport>>(`sport`)
       .then(({data}) => {
         this.items = data.result;
       })

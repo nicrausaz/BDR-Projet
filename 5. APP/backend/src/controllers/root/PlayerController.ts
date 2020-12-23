@@ -5,7 +5,7 @@ import Player from "../../models/Player";
 import {NotFound} from "@tsed/exceptions";
 import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
-import {Utils} from "../../Utils";
+import Utils from "../../utils/Utils";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import {Readable} from "stream";

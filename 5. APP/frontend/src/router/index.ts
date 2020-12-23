@@ -13,6 +13,7 @@ import GameList from "@/views/GameList.vue";
 import Register from "@/views/Register.vue";
 import About from "@/views/About.vue";
 import UserProfile from "@/views/UserProfile.vue";
+import Clubs from "@/views/Clubs.vue";
 
 Vue.use(VueRouter);
 
@@ -56,6 +57,15 @@ const routes: Array<RouteConfig> = [
     path: "/teams",
     name: "Teams",
     component: Teams,
+    meta: {
+      authenticate: true
+    }
+  },
+
+  {
+    path: "/clubs",
+    name: "Clubs",
+    component: Clubs,
     meta: {
       authenticate: true
     }
