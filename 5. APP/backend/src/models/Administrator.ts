@@ -1,6 +1,7 @@
 import Model, {Hydrator} from "./Model";
 import {Email, MinLength, Property, Required} from "@tsed/schema";
 import bcrypt from "bcrypt";
+import {Utils} from "../Utils";
 
 export default class Administrator extends Model {
   @Hydrator()
@@ -29,8 +30,8 @@ export default class Administrator extends Model {
   password: string;
 
   @Property()
-  get avatar(){
-    return `https://i.pravatar.cc/150?u=${this.uid}`;
+  get avatar() {
+    return `http://localhost:8083/api/administrator/${this.uid}/avatar`;
   }
 
   public verifyPassword(password: string): Promise<boolean> {

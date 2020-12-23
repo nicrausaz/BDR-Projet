@@ -40,7 +40,7 @@ export const rootDir = __dirname;
     ]
   },
   multer: {
-    dest: `${rootDir}/storage`
+    dest: `${rootDir}/storage/tmp`
   },
   exclude: [
     "**/*.spec.ts"

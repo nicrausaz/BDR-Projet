@@ -17,6 +17,12 @@ export default class AdministratorModule extends VuexModule {
     this.administrator = administrator;
   }
 
+  @Mutation
+  public setAvatar(url: string) {
+    if (!this.administrator?.avatar) return;
+    this.administrator.avatar = url;
+  }
+
   @Action
   public login({email, password}: Credentials): Promise<true | Error> {
     return API.axios

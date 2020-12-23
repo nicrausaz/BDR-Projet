@@ -15,7 +15,6 @@
     "noUnusedParameters": false,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "newLine": "LF",
     "noEmit": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
