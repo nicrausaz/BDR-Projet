@@ -100,6 +100,11 @@ export default class App extends Vue {
       path: {name: "Clubs"}
     },
     {
+      text: "Mes joueurs",
+      icon: "mdi-account-multiple",
+      path: {name: "Players"}
+    },
+    {
       text: "Les matchs",
       icon: "mdi-basketball",
       path: {name: "Game"}

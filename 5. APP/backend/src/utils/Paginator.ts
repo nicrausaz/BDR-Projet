@@ -54,6 +54,6 @@ export default class Paginator<T extends typeof Model> {
   }
 
   private async getTotal() {
-    return (await DB.query(this.totalQuery, this.totalQueryValues)).rows[0]?.count;
+    return parseInt((await DB.query(this.totalQuery, this.totalQueryValues)).rows[0]?.count);
   }
 }

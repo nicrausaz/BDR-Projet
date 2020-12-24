@@ -1,12 +1,14 @@
 import {
   BodyParams,
   Controller,
+  Get,
   MultipartFile,
   Patch,
   PathParams,
   PlatformMulterFile,
   Post,
   Put,
+  QueryParams,
   Req
 } from "@tsed/common";
 import {Authenticate} from "@tsed/passport";
@@ -19,10 +21,36 @@ import {Unauthorized} from "@tsed/exceptions";
 import {ContentType} from "@tsed/schema";
 import Player from "../../models/Player";
 import DB, {PoolClient} from "../../db/DB";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/player")
 @Authenticate()
 export class MyPlayerController {
+
+  @Get("/")
+  @ContentType("json")
+  @Authenticate()
+  async getAll(
+    @Req() request: Req,
+    @QueryParams("q")query: string = "",
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    const perms = await Utils.getAccessiblePlayersResources(<Administrator>request.user);
+    return new Paginator(Player)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM player
+          WHERE uid = ANY ($1)
+      `, [perms])
+      .setQuery(`
+          SELECT *
+          FROM player
+          WHERE uid = ANY ($1)
+            AND (firstname ILIKE $2 OR lastname ILIKE $2)
+      `, [perms])
+      .create({query, limit, offset});
+  }
 
   @Put()
   @ContentType("json")
