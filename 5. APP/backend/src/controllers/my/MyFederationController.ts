@@ -31,20 +31,36 @@ export class MyFederationController {
 
   /**
    * PUT Insert a new federation
+   *
+   * @param request
    * @param federation
    */
   @Put("/")
   @ContentType("json")
-  async insert(@BodyParams() federation: Federation) {
-    const result = await DB.query(`INSERT INTO federation (name, sportid)
-                                   VALUES ($1, $2)
-                                   RETURNING *`,
-      [federation.name, federation.sport.id]
-    );
+  async insert(@Req() request: Req, @BodyParams() federation: Federation) {
 
-    // TODO: transaction pour create + ajout dans admin_federation
+    const client = await PoolClient();
 
-    return result.rows.map((r) => Federation.hydrate<Federation>(r))[0];
+    try {
+      await client.query("BEGIN");
+
+      const res1 = await client.query(`INSERT INTO federation (name, sportid)
+                                       VALUES ($1, $2)
+                                       RETURNING *`, [federation.name, federation.sport.id]);
+
+      const res2 = await client.query(`INSERT INTO administrator_federation (administratoruid, federationid)
+                                       VALUES ($1, $2)`, [(<Administrator>request.user).uid, res1.rows[0].id]);
+
+      await client.query("COMMIT");
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
+
+    // return result.rows.map((r) => Federation.hydrate<Federation>(r))[0];
   }
 
   /**
@@ -114,24 +130,13 @@ export class MyFederationController {
   async insertLeague(@Req() request: Req, @BodyParams() league: League, @PathParams("id") id: number) {
 
     if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
-    const client = await PoolClient();
 
-    try {
-      await client.query("BEGIN");
 
-      const res = await client.query(`INSERT INTO league (level, gender, federationid)
-                                      VALUES ($1, $2, $3)
-                                      RETURNING *`, [league.level, league.gender, id]);
+    const result = await DB.query(`INSERT INTO league (level, gender, federationid)
+                                   VALUES ($1, $2, $3)
+                                   RETURNING *`, [league.level, league.gender, id]);
 
-      await client.query("COMMIT");
-
-      return res.rows.map(r => League.hydrate<League>(r))[0];
-    } catch (e) {
-      await client.query("ROLLBACK");
-      throw e;
-    } finally {
-      client.release();
-    }
+    return result.rows.map(r => League.hydrate<League>(r))[0];
   }
 
   /**
