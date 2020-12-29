@@ -38,3 +38,56 @@ FROM (
     );
 
 
+-- Triggers
+CREATE TABLE event_log
+(
+    id          SERIAL PRIMARY KEY,
+    event       VARCHAR NOT NULL,
+    ressourceid VARCHAR NOT NULL,
+    executedat  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE OR REPLACE FUNCTION log_event()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+BEGIN
+    IF tg_op = 'DELETE'
+    THEN
+        INSERT INTO event_log (event, ressourceid) VALUES (CONCAT(tg_op, ' ', tg_table_name), OLD.id);
+        RETURN OLD;
+    ELSE
+        INSERT INTO event_log (event, ressourceid) VALUES (CONCAT(tg_op, ' ', tg_table_name), NEW.id);
+        RETURN NEW;
+    END IF;
+END
+$$;
+
+DROP TRIGGER log_federation_trigger ON federation;
+
+DROP TRIGGER log_league_trigger ON league;
+
+DROP TRIGGER log_team_trigger ON team;
+
+
+CREATE TRIGGER log_federation_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON federation
+    FOR EACH ROW
+EXECUTE FUNCTION log_event();
+
+CREATE TRIGGER log_league_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON league
+    FOR EACH ROW
+EXECUTE FUNCTION log_event();
+
+CREATE TRIGGER log_team_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON team
+    FOR EACH ROW
+EXECUTE FUNCTION log_event();
+
+
