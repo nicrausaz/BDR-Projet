@@ -7,11 +7,12 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-dialog v-model="dialog" max-width="750">
-      <CreatePlayer @confirm="afterConfirm" :prefill="editedPlayer" />
+    <v-dialog v-model="dialog" max-width="750" persistent>
+      <CreatePlayer @confirm="afterConfirm" @close="() => (this.dialog = false)" :prefill="editedPlayer" />
     </v-dialog>
     <v-list two-line>
-      <v-list-item link v-for="player in pagination.result" :key="player.uid" :to="{name: 'Player', params: {id: player.uid}}">
+      <v-list-item link v-for="player in pagination.result" :key="player.uid"
+                   :to="{name: 'Player', params: {id: player.uid}}">
         <v-list-item-avatar>
           <v-img :src="player.avatar" />
         </v-list-item-avatar>
@@ -66,8 +67,8 @@ export default class Players extends Vue {
   }
 
   private async afterConfirm() {
-    this.dialog = false;
-    this.setPage();
+    this.editedPlayer = null;
+    await this.setPage();
   }
 
   async setPage() {

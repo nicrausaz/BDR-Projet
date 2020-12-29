@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
+import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Sport from "@/models/Sport";
 import Pagination from "@/models/Pagination";
@@ -28,7 +28,7 @@ export default class SportInput extends Vue {
   private items: Sport[] = [];
   private search: Sport | null = null;
   private select: number | null = null;
-  private value!: number;
+  @Prop() private value!: number;
 
   @Watch("value") valueChanged(newVal: Sport) {
     this.select = newVal.id;

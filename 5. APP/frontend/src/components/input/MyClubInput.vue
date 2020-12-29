@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
+import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import Club from "@/models/Club";
 import API from "@/plugins/API";
 
@@ -27,7 +27,7 @@ export default class MyClubInput extends Vue {
   private items: Club[] = [];
   private search: Club | null = null;
   private select: number | null = null;
-  private value!: number;
+  @Prop() private value!: number;
 
   @Watch("value") valueChanged(newVal: Club) {
     this.select = newVal.id;
@@ -46,7 +46,7 @@ export default class MyClubInput extends Vue {
     if (this.items.length > 0) return;
     this.isLoading = true;
     API.axios
-      .get<Club>(`my/club`)
+      .get<Club[]>(`my/club`)
       .then(({data}) => {
         this.items = data;
       })

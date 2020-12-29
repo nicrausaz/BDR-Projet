@@ -14,7 +14,7 @@ export default class Upload extends Vue {
 
   @Prop() value: File | null = null;
 
-  @Watch("value") valueChanged(value) {
+  @Watch("value") valueChanged(value: any) {
     URL.revokeObjectURL(this.src ?? "");
     if (!value) return (this.src = null);
     this.src = URL.createObjectURL(value);

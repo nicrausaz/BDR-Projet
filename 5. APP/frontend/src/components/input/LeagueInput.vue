@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Watch} from "vue-property-decorator";
+import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import League from "@/models/League";
 import API from "@/plugins/API";
 import Pagination from "@/models/Pagination";
@@ -28,7 +28,7 @@ export default class LeagueInput extends Vue {
   private items: League[] = [];
   private search: League | null = null;
   private select: number | null = null;
-  private value!: number;
+  @Prop() private value!: number;
 
   @Watch("value") valueChanged(newVal: League) {
     this.select = newVal.id;

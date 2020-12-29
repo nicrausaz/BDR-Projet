@@ -35,4 +35,7 @@ export default class Player extends Model {
   get avatar(): string {
     return `http://localhost:8083/api/player/${this.uid}/avatar`;
   }
+
+  set avatar(value) {
+  };
 }
