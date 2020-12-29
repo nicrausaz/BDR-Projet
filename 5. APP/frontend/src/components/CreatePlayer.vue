@@ -33,17 +33,23 @@
       </v-container>
       <v-card-actions>
         <v-spacer />
-        <v-btn depressed :disabled="!valid" @click="create">
+        <v-btn v-if="prefill" depressed :disabled="!valid" @click="update">
+          <v-icon left>mdi-pencil</v-icon>
+          Update
+        </v-btn>
+        <v-btn v-else depressed :disabled="!valid" @click="create">
           <v-icon left>mdi-plus</v-icon>
           Create
         </v-btn>
       </v-card-actions>
     </v-form>
+    <pre>Current data: {{ player }}</pre>
+    <pre>PROPS: {{ prefill }}</pre>
   </v-card>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import MyClubInput from "@/components/input/MyClubInput.vue";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
@@ -53,13 +59,16 @@ import LeagueInput from "@/components/input/LeagueInput.vue";
   components: {LeagueInput, MyClubInput}
 })
 export default class CreatePlayer extends Vue {
+  @Prop() prefill!: Player;
+
   private valid = false;
   private loading = false;
   private menu = false;
-  private player = new Player();
+  private player = this.prefill || new Player();
 
   private create() {
     this.loading = true;
+
     API.axios
       .put<Player>(`my/player`, this.player)
       .then((e) => console.log(e))
@@ -68,6 +77,16 @@ export default class CreatePlayer extends Vue {
         this.loading = false;
         this.$emit("confirm");
       });
+  }
+
+  private update() {
+    this.loading = true;
+  }
+
+  async mounted() {
+    // TODO: A fix: Le composant est mount 1 seule fois donc player n'est pas bon
+    this.player = this.prefill;
+    console.log("Mounted");
   }
 }
 </script>

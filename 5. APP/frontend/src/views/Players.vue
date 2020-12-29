@@ -3,12 +3,12 @@
     <v-toolbar rounded>
       <v-toolbar-title>Mes joueurs</v-toolbar-title>
       <v-spacer />
-      <v-btn icon @click="dialog = true">
+      <v-btn icon @click="addPlayer">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="750">
-      <CreatePlayer @confirm="afterConfirm" />
+      <CreatePlayer @confirm="afterConfirm" :prefill="editedPlayer" />
     </v-dialog>
     <v-list two-line>
       <v-list-item link v-for="player in pagination.result" :key="player.uid" :to="{name: 'Player', params: {id: player.uid}}">
@@ -18,6 +18,11 @@
         <v-list-item-content>
           <v-list-item-title>{{ player.firstname }} {{ player.lastname }}</v-list-item-title>
         </v-list-item-content>
+        <v-list-item-action>
+          <v-btn small @click.prevent="editPlayer(player)">
+            <v-icon small>mdi-pencil</v-icon>
+          </v-btn>
+        </v-list-item-action>
       </v-list-item>
     </v-list>
     <v-footer app inset elevation="20" class="justify-center" v-if="nbPage > 1">
@@ -43,10 +48,21 @@ export default class Players extends Vue {
   private page = 1;
   private limit = 10;
   private pagination: Pagination<Player> | null = null;
+  private editedPlayer: Player | null = null;
 
   private get nbPage(): number {
     if (!this.pagination) return 0;
     return Math.ceil(this.pagination.total / this.pagination.limit);
+  }
+
+  private async addPlayer() {
+    this.editedPlayer = null;
+    this.dialog = true;
+  }
+
+  private async editPlayer(player: Player) {
+    this.editedPlayer = player;
+    this.dialog = true;
   }
 
   private async afterConfirm() {
