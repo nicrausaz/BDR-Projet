@@ -43,7 +43,10 @@ export default class CreateTeam extends Vue {
       .put<Team>(`my/team`, this.team)
       .then((e) => console.log(e))
       .catch((e) => console.log(e))
-      .finally(() => (this.loading = false));
+      .finally(() => {
+        this.loading = false;
+        this.$emit("confirm");
+      });
   }
 }
 </script>

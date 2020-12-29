@@ -42,7 +42,10 @@ export default class CreateClub extends Vue {
       .put<Team>(`my/club`, this.club)
       .then((e) => console.log(e))
       .catch((e) => console.log(e))
-      .finally(() => (this.loading = false));
+      .finally(() => {
+        this.loading = false;
+        this.$emit("confirm");
+      });
   }
 }
 </script>

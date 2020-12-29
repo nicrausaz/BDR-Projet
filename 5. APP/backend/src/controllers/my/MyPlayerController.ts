@@ -66,16 +66,16 @@ export class MyPlayerController {
       const res2 = await client.query(`INSERT INTO administrator_player (administratoruid, playeruid)
                                        VALUES ($1, $2)`, [(<Administrator>request.user).uid, res1.rows[0].uid]);
 
+
       await client.query("COMMIT");
 
+      return res1.rows.map((r) => Player.hydrate<Player>(r))[0];
     } catch (e) {
       await client.query("ROLLBACK");
       throw e;
     } finally {
       client.release();
     }
-
-    //return result.rows.map((r) => Player.hydrate<Player>(r))[0];
   }
 
   @Patch("/:uid")

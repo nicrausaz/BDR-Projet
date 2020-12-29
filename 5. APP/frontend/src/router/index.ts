@@ -5,7 +5,7 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import Teams from "@/views/Teams.vue";
 import Team from "@/views/Team.vue";
-
+import Club from "@/views/Club.vue";
 import Error from "@/views/Error.vue";
 import PlayerProfile from "@/views/PlayerProfile.vue";
 import GameResult from "@/views/GameResult.vue";
@@ -98,6 +98,16 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
+
+  {
+    path: "/club/:id",
+    name: "Club",
+    component: Club,
+    meta: {
+      authenticate: true
+    }
+  },
+
   {
     path: "/game",
     name: "Game",
@@ -106,6 +116,7 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
+
   {
     path: "/game/:id",
     name: "GameResult",

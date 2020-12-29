@@ -8,10 +8,10 @@
       </v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="750">
-      <CreateClub />
+      <CreateClub @confirm="afterConfirm" />
     </v-dialog>
     <v-list two-line>
-      <v-list-item link v-for="club in pagination.result" :key="club.id">
+      <v-list-item link v-for="club in pagination.result" :key="club.id" :to="{name: 'Club', params: {id: club.id}}">
         <v-list-item-content>
           <v-list-item-title>{{ club.name }}</v-list-item-title>
         </v-list-item-content>
@@ -45,6 +45,11 @@ export default class Clubs extends Vue {
   private get nbPage(): number {
     if (!this.pagination) return 0;
     return Math.ceil(this.pagination.total / this.pagination.limit);
+  }
+
+  private async afterConfirm() {
+    this.dialog = false;
+    this.setPage();
   }
 
   async setPage() {

@@ -8,11 +8,10 @@
       </v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="750">
-      <CreatePlayer />
+      <CreatePlayer @confirm="afterConfirm" />
     </v-dialog>
     <v-list two-line>
-      <v-list-item link v-for="player in pagination.result" :key="player.uid"
-                   :to="{name: 'Player', params: {id: player.uid}}">
+      <v-list-item link v-for="player in pagination.result" :key="player.uid" :to="{name: 'Player', params: {id: player.uid}}">
         <v-list-item-avatar>
           <v-img :src="player.avatar" />
         </v-list-item-avatar>
@@ -48,6 +47,11 @@ export default class Players extends Vue {
   private get nbPage(): number {
     if (!this.pagination) return 0;
     return Math.ceil(this.pagination.total / this.pagination.limit);
+  }
+
+  private async afterConfirm() {
+    this.dialog = false;
+    this.setPage();
   }
 
   async setPage() {

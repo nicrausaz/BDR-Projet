@@ -9,8 +9,7 @@
       <v-container>
         <v-text-field required filled v-model="player.firstname" label="Firstname" />
         <v-text-field required filled v-model="player.lastname" label="Lastname" />
-        <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y
-                min-width="290px">
+        <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
           <template v-slot:activator="{on, attrs}">
             <v-text-field
               required
@@ -29,10 +28,8 @@
           <v-radio label="Male" value="M"></v-radio>
           <v-radio label="Female" value="F"></v-radio>
         </v-radio-group>
-        <v-slider required label="Height" v-model="player.height" step="1" thumb-label ticks min="100"
-                  max="250"></v-slider>
-        <v-slider required label="Weight" v-model="player.weight" step="1" thumb-label ticks min="30"
-                  max="150"></v-slider>
+        <v-slider required label="Height" v-model="player.height" step="1" thumb-label ticks min="100" max="250"></v-slider>
+        <v-slider required label="Weight" v-model="player.weight" step="1" thumb-label ticks min="30" max="150"></v-slider>
       </v-container>
       <v-card-actions>
         <v-spacer />
@@ -67,7 +64,10 @@ export default class CreatePlayer extends Vue {
       .put<Player>(`my/player`, this.player)
       .then((e) => console.log(e))
       .catch((e) => console.log(e))
-      .finally(() => (this.loading = false));
+      .finally(() => {
+        this.loading = false;
+        this.$emit("confirm");
+      });
   }
 }
 </script>
