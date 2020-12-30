@@ -1,7 +1,8 @@
-import Model, {Property} from "@/models/Model";
+import Model, {ModelDecorator, PrimaryKey, Property} from "@/models/Model";
 
+@ModelDecorator
 export default class League extends Model {
-  @Property() id!: number;
+  @Property() @PrimaryKey() id!: number;
   @Property() level!: string;
   @Property() gender!: "M" | "F";
 }

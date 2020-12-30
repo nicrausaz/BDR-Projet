@@ -1,6 +1,7 @@
 import Player from "@/models/Player";
-import {Property} from "@/models/Model";
+import {ModelDecorator, Property} from "@/models/Model";
 
+@ModelDecorator
 export default class PlayerTeam extends Player {
   @Property() jerseyNumber!: number;
   @Property() startAt!: Date;

@@ -10,7 +10,7 @@
     <v-dialog v-model="dialog" max-width="750">
       <CreateClub @confirm="afterConfirm" />
     </v-dialog>
-    <v-list two-line>
+    <v-list two-line v-if="pagination">
       <v-list-item link v-for="club in pagination.result" :key="club.id" :to="{name: 'Club', params: {id: club.id}}">
         <v-list-item-content>
           <v-list-item-title>{{ club.name }}</v-list-item-title>
@@ -55,7 +55,7 @@ export default class Clubs extends Vue {
   async setPage() {
     const limit = this.limit;
     const offset = (this.page - 1) * limit;
-    this.pagination = (await API.axios.get<Pagination<Club>>(`my/club?limit=${limit}&offset=${offset}`)).data;
+    this.pagination = await API.get<Pagination<Club>>(Pagination, `my/club?limit=${limit}&offset=${offset}`);
   }
 
   async mounted() {

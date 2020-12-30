@@ -1,6 +1,7 @@
-import Model, {Property} from "@/models/Model";
+import Model, {ModelDecorator, PrimaryKey, Property} from "@/models/Model";
 
+@ModelDecorator
 export default class Sport extends Model {
-  @Property() id!: number;
+  @Property() @PrimaryKey() id!: number;
   @Property() name!: string;
 }

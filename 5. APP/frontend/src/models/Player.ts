@@ -1,7 +1,8 @@
-import Model, {Property} from "@/models/Model";
+import Model, {ModelDecorator, PrimaryKey, Property} from "@/models/Model";
 
+@ModelDecorator
 export default class Player extends Model {
-  @Property() uid!: string;
+  @Property() @PrimaryKey() uid!: string;
   @Property() lastname!: string;
   @Property() firstname!: string;
   @Property() birthdate!: Date;

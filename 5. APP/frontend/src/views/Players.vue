@@ -10,7 +10,7 @@
     <v-dialog v-model="dialog" max-width="750" persistent>
       <CreatePlayer @confirm="afterConfirm" @close="() => (this.dialog = false)" :prefill="editedPlayer" />
     </v-dialog>
-    <v-list two-line>
+    <v-list two-line v-if="pagination">
       <v-list-item link v-for="player in pagination.result" :key="player.uid"
                    :to="{name: 'Player', params: {id: player.uid}}">
         <v-list-item-avatar>
@@ -74,7 +74,7 @@ export default class Players extends Vue {
   async setPage() {
     const limit = this.limit;
     const offset = (this.page - 1) * limit;
-    this.pagination = (await API.axios.get<Pagination<Player>>(`my/player?limit=${limit}&offset=${offset}`)).data;
+    this.pagination = await API.get<Pagination<Player>>(Pagination, `my/player?limit=${limit}&offset=${offset}`);
   }
 
   async mounted() {

@@ -50,7 +50,7 @@ export default class AdministratorModule extends VuexModule {
   public async getProfile(): Promise<boolean> {
     if (localStorage.getItem("token")) {
       try {
-        const {data} = await API.axios.get<Administrator>("/auth/getProfile");
+        const data = await API.get<Administrator>(Administrator, "/auth/getProfile");
         this.context.commit("setAdministrator", data);
         return true;
       } catch (e) {

@@ -1,7 +1,8 @@
-import Model, {Property} from "@/models/Model";
+import Model, {ModelDecorator, PrimaryKey, Property} from "@/models/Model";
 
+@ModelDecorator
 export default class Administrator extends Model {
-  @Property() uid!: string;
+  @Property() @PrimaryKey() uid!: string;
   @Property() email!: string;
   @Property() lastname!: string;
   @Property() firstname!: string;

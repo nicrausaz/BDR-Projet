@@ -54,7 +54,7 @@ export default class Teams extends Vue {
   async setPage() {
     const limit = this.limit;
     const offset = (this.page - 1) * limit;
-    this.pagination = (await API.axios.get<Pagination<Team>>(`my/team?limit=${limit}&offset=${offset}`)).data;
+    this.pagination = await API.get<Pagination<Team>>(Pagination, `my/team?limit=${limit}&offset=${offset}`);
   }
 
   async mounted() {

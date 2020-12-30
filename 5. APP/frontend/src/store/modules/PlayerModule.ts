@@ -14,8 +14,8 @@ export default class PlayerModule extends VuexModule {
 
   @Action
   public async fetchAll() {
-    const response = await API.axios.get<Pagination<Player>>("/player");
-    this.context.commit("setPlayers", response.data.result);
+    const response = await API.get<Pagination<Player>>(Pagination, "/player");
+    this.context.commit("setPlayers", response.result);
   }
 
   // @MutationAction({ mutate: ['events', 'conferences'] })

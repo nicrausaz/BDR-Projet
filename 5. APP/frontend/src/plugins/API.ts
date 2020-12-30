@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 
 class API {
   public axios: AxiosInstance;
@@ -27,6 +27,41 @@ class API {
   public clearToken() {
     localStorage.removeItem("token");
     this.axios.defaults.headers.common.Authorization = ``;
+  }
+
+  public async get<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.get(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
+  }
+
+  public async delete<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.delete(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
+  }
+
+  public async head<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.head(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
+  }
+
+  public async options<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.options(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
+  }
+
+  public async post<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.post(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
+  }
+
+  public async put<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.put(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
+  }
+
+  public async patch<M>(Class: any, url: string, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.patch(url, config);
+    return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
   }
 }
 

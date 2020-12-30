@@ -53,8 +53,9 @@ export default class CreatePlayer extends Vue {
   private player = new Player();
 
   private request() {
+    console.log(this.model, this.model.primaryKey);
     return this.prefill
-      ? API.axios.patch<Player>(`my/player/${this.model.uid}`, this.model)
+      ? API.axios.patch<Player>(`my/player/${this.model.primaryKey}`, this.model)
       : API.axios.put<Player>(`my/player`, this.model);
   }
 

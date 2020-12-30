@@ -1,8 +1,9 @@
-import Model, {Property} from "@/models/Model";
+import Model, {ModelDecorator, PrimaryKey, Property} from "@/models/Model";
 import Sport from "@/models/Sport";
 
+@ModelDecorator
 export default class Federation extends Model {
-  @Property() id!: number;
+  @Property() @PrimaryKey() id!: number;
   @Property() name!: string;
   @Property() sport!: Sport;
 }

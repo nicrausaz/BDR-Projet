@@ -82,7 +82,7 @@ export default class PlayerProfile extends Vue {
 
   async mounted() {
     const {id} = this.$route.params;
-    this.player = (await API.axios.get<Player>(`player/${id}`)).data;
+    this.player = await API.get<Player>(Player, `player/${id}`);
   }
 }
 </script>

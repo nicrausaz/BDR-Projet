@@ -87,16 +87,16 @@ export default class GameResult extends Vue {
 
   async mounted() {
     const {id} = this.$route.params;
-    this.game = (await API.axios.get<Game>(`game/${id}`)).data;
+    this.game = await API.get<Game>(Game, `game/${id}`);
     if (this.game) {
       this.teams = [
         {
           team: this.game.teamHome,
-          players: (await API.axios.get<PlayerTeam[]>(`team/${this.game?.teamHome.id}/player`)).data
+          players: await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.game?.teamHome.id}/player`)
         },
         {
           team: this.game.teamGuest,
-          players: (await API.axios.get<PlayerTeam[]>(`team/${this.game?.teamGuest.id}/player`)).data
+          players: await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.game?.teamGuest.id}/player`)
         }
       ];
     }

@@ -16,7 +16,7 @@ export default class PlayerModule extends VuexModule {
 
   @Action
   public async fetchTeams(uid: string) {
-    const {data} = await API.axios.get<Pagination<Team>>("/player/" + uid + "/teams");
+    const data = await API.get<Pagination<Team>>(Pagination, "/player/" + uid + "/teams");
     this.context.commit("setTeams", data.result);
   }
 }
