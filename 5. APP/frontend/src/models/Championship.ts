@@ -8,6 +8,6 @@ export default class Championship extends Model {
   @Property() name!: string;
   @Property() startAt!: Date;
   @Property() endAt!: Date;
-  @Property() season!: Season;
-  @Property() league!: League;
+  @Property({model: Season}) season!: Season;
+  @Property({model: League}) league!: League;
 }

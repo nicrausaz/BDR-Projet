@@ -7,6 +7,7 @@
     </v-toolbar>
     <v-form v-model="valid">
       <v-container>
+        <v-alert type="error" v-if="error">{{ error }}</v-alert>
         <v-text-field required filled v-model="model.firstname" label="Firstname" />
         <v-text-field required filled v-model="model.lastname" label="Lastname" />
         <BirthdateInput v-model="model.birthdate" />
@@ -47,36 +48,34 @@ import BirthdateInput from "@/components/input/BirthdateInput.vue";
 })
 export default class CreatePlayer extends Vue {
   @Prop() prefill!: Player;
-
   private valid = false;
   private loading = false;
+  private error: string | null = null;
   private player = new Player();
 
-  private request() {
-    console.log(this.model, this.model.primaryKey);
+  private request(path: string) {
     return this.prefill
-      ? API.axios.patch<Player>(`my/player/${this.model.primaryKey}`, this.model)
-      : API.axios.put<Player>(`my/player`, this.model);
+      ? API.axios.patch<Player>(`${path}/${this.model.primaryKey}`, this.model)
+      : API.axios.put<Player>(`${path}`, this.model);
   }
 
-  get model(): Player {
+  private get model(): Player {
     return this.prefill ? this.prefill : this.player;
   }
 
   private send() {
     this.loading = true;
-    this.request()
-      .then((e) => console.log(e))
-      .catch((e) => console.log(e))
-      .finally(() => {
-        this.loading = false;
+    this.request("my/player")
+      .then(() => {
         this.close();
         this.$emit("confirm");
+      })
+      .catch((e) => {
+        this.error = e?.message;
+      })
+      .finally(() => {
+        this.loading = false;
       });
-  }
-
-  async mounted() {
-    console.log("Mounted");
   }
 
   private close() {

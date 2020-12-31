@@ -28,10 +28,12 @@ export default class LeagueInput extends Vue {
   private items: League[] = [];
   private search: League | null = null;
   private select: number | null = null;
-  @Prop() private value!: number;
+  @Prop() private value!: League;
 
-  @Watch("value") valueChanged(newVal: League) {
-    this.select = newVal.id;
+  @Watch("value")
+  async valueChanged() {
+    await this.searchChange();
+    this.select = this.value?.id;
   }
 
   @Watch("select")
@@ -43,19 +45,18 @@ export default class LeagueInput extends Vue {
   }
 
   @Watch("search")
-  public searchChange() {
+  public async searchChange() {
     if (this.items.length > 0) return;
     this.isLoading = true;
-    API.axios
-      .get<Pagination<League>>(`league`)
-      .then(({data}) => {
-        this.items = data.result;
+    return API.get<Pagination<League>>(Pagination, `league`)
+      .then(({result}) => {
+        this.items = result;
       })
       .finally(() => (this.isLoading = false));
   }
 
-  public mounted() {
-    this.select = this.value;
+  public async mounted() {
+    await this.valueChanged();
   }
 }
 </script>

@@ -35,8 +35,7 @@ export default class BirthdateInput extends Vue {
   }
 
   public mounted() {
-    console.log(this.value);
-    this.date = new Date(this.value).toISOString().substr(0, 10);
+    this.valueChanged();
   }
 }
 </script>

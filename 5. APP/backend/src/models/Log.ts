@@ -10,9 +10,9 @@ export default class Log extends Model {
   @Property()
   event: string;
 
-  @Hydrator({alias: "ressourceid"})
+  @Hydrator({alias: "resourceid"})
   @Property()
-  ressourceId: string;
+  resourceId: string;
 
   @Hydrator({alias: "executedat"})
   @Property()

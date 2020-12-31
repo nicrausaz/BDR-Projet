@@ -1,4 +1,4 @@
-export function Property(options?: {alias?: string}): PropertyDecorator {
+export function Property(options?: {alias?: string; model?: typeof Model}): PropertyDecorator {
   return (target: any, propertyKey) => {
     target.__hydratedProps = [...(target.__hydratedProps ?? []), [propertyKey, options?.alias]];
     target[propertyKey] = null;

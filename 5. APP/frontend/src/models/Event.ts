@@ -9,5 +9,5 @@ export default class Event extends Model {
   @Property() endAt!: Date;
   @Property() createdAt!: Date;
   @Property() updatedAt!: Date;
-  @Property() stadium!: Stadium;
+  @Property({model: Stadium}) stadium!: Stadium;
 }

@@ -6,6 +6,6 @@ import League from "@/models/League";
 export default class Team extends Model {
   @Property() @PrimaryKey() id!: number;
   @Property() name!: string;
-  @Property() club!: Club;
-  @Property() league!: League;
+  @Property({model: Club}) club!: Club;
+  @Property({model: League}) league!: League;
 }

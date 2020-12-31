@@ -5,5 +5,5 @@ import {ModelDecorator, Property} from "@/models/Model";
 @ModelDecorator
 export default class Training extends Event {
   @Property() description!: string;
-  @Property() team!: Team;
+  @Property({model: Team}) team!: Team;
 }

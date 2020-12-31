@@ -13,4 +13,8 @@ export default class Pagination<T extends Model> extends Model {
 
   @Property()
   result!: T[];
+
+  public get nbPage(): number {
+    return Math.ceil(this.total / this.limit);
+  }
 }

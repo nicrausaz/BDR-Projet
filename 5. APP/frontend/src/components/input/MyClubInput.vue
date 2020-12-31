@@ -20,6 +20,7 @@
 import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import Club from "@/models/Club";
 import API from "@/plugins/API";
+import Pagination from "@/models/Pagination";
 
 @Component
 export default class MyClubInput extends Vue {
@@ -27,10 +28,12 @@ export default class MyClubInput extends Vue {
   private items: Club[] = [];
   private search: Club | null = null;
   private select: number | null = null;
-  @Prop() private value!: number;
+  @Prop() private value!: Club;
 
-  @Watch("value") valueChanged(newVal: Club) {
-    this.select = newVal.id;
+  @Watch("value")
+  async valueChanged() {
+    await this.searchChange();
+    this.select = this.value?.id;
   }
 
   @Watch("select")
@@ -42,19 +45,18 @@ export default class MyClubInput extends Vue {
   }
 
   @Watch("search")
-  public searchChange() {
+  public async searchChange() {
     if (this.items.length > 0) return;
     this.isLoading = true;
-    API.axios
-      .get<Club[]>(`my/club`)
-      .then(({data}) => {
-        this.items = data;
+    return API.get<Pagination<Club>>(Pagination, `my/club`)
+      .then(({result}) => {
+        this.items = result;
       })
       .finally(() => (this.isLoading = false));
   }
 
-  public mounted() {
-    this.select = this.value;
+  public async mounted() {
+    await this.valueChanged();
   }
 }
 </script>

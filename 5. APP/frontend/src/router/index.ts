@@ -15,6 +15,7 @@ import About from "@/views/About.vue";
 import UserProfile from "@/views/UserProfile.vue";
 import Clubs from "@/views/Clubs.vue";
 import Players from "@/views/Players.vue";
+import Logs from "@/views/Logs.vue";
 
 Vue.use(VueRouter);
 
@@ -85,6 +86,15 @@ const routes: Array<RouteConfig> = [
     path: "/team/:id",
     name: "Team",
     component: Team,
+    meta: {
+      authenticate: true
+    }
+  },
+
+  {
+    path: "/logs",
+    name: "Logs",
+    component: Logs,
     meta: {
       authenticate: true
     }

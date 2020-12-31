@@ -28,10 +28,12 @@ export default class SportInput extends Vue {
   private items: Sport[] = [];
   private search: Sport | null = null;
   private select: number | null = null;
-  @Prop() private value!: number;
+  @Prop() private value!: Sport;
 
-  @Watch("value") valueChanged(newVal: Sport) {
-    this.select = newVal.id;
+  @Watch("value")
+  async valueChanged() {
+    await this.searchChange();
+    this.select = this.value?.id;
   }
 
   @Watch("select")
@@ -43,19 +45,18 @@ export default class SportInput extends Vue {
   }
 
   @Watch("search")
-  public searchChange() {
+  public async searchChange() {
     if (this.items.length > 0) return;
     this.isLoading = true;
-    API.axios
-      .get<Pagination<Sport>>(`sport`)
-      .then(({data}) => {
-        this.items = data.result;
+    return API.get<Pagination<Sport>>(Pagination, `sport`)
+      .then(({result}) => {
+        this.items = result;
       })
       .finally(() => (this.isLoading = false));
   }
 
-  public mounted() {
-    this.select = this.value;
+  public async mounted() {
+    await this.valueChanged();
   }
 }
 </script>

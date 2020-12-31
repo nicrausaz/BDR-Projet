@@ -110,6 +110,11 @@ export default class App extends Vue {
       path: {name: "Game"}
     },
     {
+      text: "Logs",
+      icon: "mdi-alert",
+      path: {name: "Logs"}
+    },
+    {
       text: "About",
       icon: "mdi-information",
       path: {name: "About"}

@@ -15,7 +15,6 @@ export class LogController {
     @QueryParams("q")query: string = "",
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0,
-    @QueryParams("search")search: string = ""
   ) {
     return new Paginator(Log)
       .setTotalQuery(`SELECT count(*) FROM event_log`)

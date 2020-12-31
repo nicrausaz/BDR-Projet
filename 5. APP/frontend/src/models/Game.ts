@@ -9,7 +9,7 @@ export default class Game extends Event {
   @Property() scoreGuest!: number;
   @Property() canceled!: boolean;
   @Property() gameId!: string;
-  @Property() championship!: Championship;
-  @Property() teamHome!: Team;
-  @Property() teamGuest!: Team;
+  @Property({model: Championship}) championship!: Championship;
+  @Property({model: Team}) teamHome!: Team;
+  @Property({model: Team}) teamGuest!: Team;
 }

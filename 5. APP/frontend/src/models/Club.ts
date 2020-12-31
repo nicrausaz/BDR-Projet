@@ -5,5 +5,5 @@ import Sport from "@/models/Sport";
 export default class Club extends Model {
   @Property() @PrimaryKey() id!: number;
   @Property() name!: string;
-  @Property() sport!: Sport;
+  @Property({model: Sport}) sport!: Sport;
 }
