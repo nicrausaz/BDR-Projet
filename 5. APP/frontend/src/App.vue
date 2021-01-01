@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
       <v-container class="pa-4" v-if="administrator">
-        <v-card>
+        <v-card outlined>
           <v-list-item dense>
             <v-list-item-avatar color="gray">
               <v-img :src="administrator.avatar" />
@@ -34,7 +34,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar app elevate-on-scroll fixed>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-avatar tile>
         <v-img :src="require('@/assets/logo.svg')" />

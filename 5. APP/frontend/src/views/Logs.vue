@@ -3,14 +3,13 @@
     <v-list>
       <v-list-item v-for="item in pagination.result" :key="item.id">
         <v-list-item-avatar color="warning">
-          <v-icon dark>mdi-alert</v-icon>
+          <v-icon dark>{{ getIcon(item).icon }}</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>{{ item.event }} ({{ item.resourceId }})</v-list-item-title>
+          <v-list-item-title>{{ item.operation }} {{ item.tableName }} ({{ item.resourceId }})</v-list-item-title>
           <v-list-item-subtitle
           >{{ item.executedAt.toLocaleDateString() }} at {{ item.executedAt.toLocaleTimeString() }}
-          </v-list-item-subtitle
-          >
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -30,7 +29,7 @@ import Log from "@/models/Log";
 export default class Logs extends Vue {
   private page = 1;
   private limit = 20;
-  private pagination: Pagination<Log> = null;
+  private pagination: Pagination<Log> | null = null;
 
   async setPage() {
     const limit = this.limit;
@@ -40,6 +39,19 @@ export default class Logs extends Vue {
 
   async mounted() {
     await this.setPage();
+  }
+
+  private getIcon(log: Log) {
+    switch (log.operation) {
+      case "delete":
+        return {icon: "mdi-delete-circle-outline"};
+      case "insert":
+        return {icon: "mdi-plus-circle-outline"};
+      case "update":
+        return {icon: "mdi-circle-edit-outline"};
+      default:
+        return {icon: "mdi-bell"};
+    }
   }
 }
 </script>

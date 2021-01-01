@@ -12,6 +12,12 @@ export default class Log extends Model {
   @Property({alias: "resourceid"})
   resourceId!: string;
 
+  @Property({alias: "tablename"})
+  tableName!: string;
+
+  @Property()
+  operation!: "update" | "delete" | "insert";
+
   @Property({alias: "executedat"})
   executedAt!: Date;
 }

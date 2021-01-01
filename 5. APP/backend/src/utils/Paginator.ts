@@ -13,7 +13,7 @@ export default class Paginator<T extends typeof Model> {
   private query: string;
   private values: any[] = [];
   private totalQuery: string;
-  private totalQueryValues?: any[];
+  private totalQueryValues: any[] = [];
 
   constructor(model: T) {
     this.model = model;
@@ -27,7 +27,7 @@ export default class Paginator<T extends typeof Model> {
 
   public setTotalQuery(query: string, values?: any[]) {
     this.totalQuery = query;
-    this.totalQueryValues = values;
+    this.totalQueryValues = values ?? [];
     return this;
   }
 
@@ -38,7 +38,7 @@ export default class Paginator<T extends typeof Model> {
   }): Promise<Pagination<InstanceType<T>>> {
     return Pagination.create(
       await this.getResults(options),
-      await this.getTotal(),
+      await this.getTotal(options),
       options.limit,
       options.offset
     );
@@ -53,7 +53,7 @@ export default class Paginator<T extends typeof Model> {
     return result.rows.map(r => this.model.hydrate(r));
   }
 
-  private async getTotal() {
-    return parseInt((await DB.query(this.totalQuery, this.totalQueryValues)).rows[0]?.count);
+  private async getTotal({query}: PaginatorInterface) {
+    return parseInt((await DB.query(this.totalQuery, [...this.totalQueryValues, `%${query}%`])).rows[0]?.count);
   }
 }

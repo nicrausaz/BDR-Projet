@@ -1,6 +1,7 @@
 import {
   BodyParams,
   Controller,
+  Delete,
   Get,
   MultipartFile,
   Patch,
@@ -42,6 +43,7 @@ export class MyPlayerController {
           SELECT count(*)
           FROM player
           WHERE uid = ANY ($1)
+            AND (firstname ILIKE $2 OR lastname ILIKE $2)
       `, [perms])
       .setQuery(`
           SELECT *
@@ -95,6 +97,24 @@ export class MyPlayerController {
                                    RETURNING *`, [player.lastname, player.firstname, player.birthdate, player.height, player.weight, player.sex, uid]);
 
     return result.rows.map((r) => Player.hydrate<Player>(r))[0];
+  }
+
+  /**
+   * DELETE a player
+   * @param request
+   * @param uid
+   */
+  @Delete("/:uid")
+  @ContentType("json")
+  async delete(@Req() request: Req, @PathParams("uid") uid: string) {
+    if (!await Utils.checkAccessToPlayerResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized Resource");
+    try {
+      fs.unlinkSync(`${rootDir}/storage/player/${uid}.png`);
+    } finally {
+      await DB.query(`DELETE
+                      FROM player
+                      WHERE uid = $1`, [uid]);
+    }
   }
 
   @Post("/:uid/avatar")

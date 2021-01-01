@@ -27,6 +27,7 @@ export class MyClubController {
           FROM club c
                    INNER JOIN sport s ON s.id = c.sportid
           WHERE c.id = ANY ($1)
+            AND c.name ILIKE $2
       `, [perms])
       .setQuery(`SELECT c.*, row_to_json(s.*) as sport
                  FROM club c

@@ -8,6 +8,24 @@
     <v-form v-model="valid">
       <v-container>
         <v-alert type="error" v-if="error">{{ error }}</v-alert>
+        <template v-if="editMode">
+          <v-dialog v-model="uploadDialog" max-width="750">
+            <UploadForm :path="`my/player/${model.uid}/avatar`" @close="uploadDialog = false" />
+          </v-dialog>
+          <div class="text-center mb-5">
+            <v-hover v-slot="{hover}">
+              <v-avatar :size="200" color="grey">
+                <v-img :src="model.avatar">
+                  <div v-if="hover" class="d-flex align-center justify-center" style="width: 100%">
+                    <v-btn fab @click="uploadDialog = true">
+                      <v-icon>mdi-camera</v-icon>
+                    </v-btn>
+                  </div>
+                </v-img>
+              </v-avatar>
+            </v-hover>
+          </div>
+        </template>
         <v-text-field required filled v-model="model.firstname" label="Firstname" />
         <v-text-field required filled v-model="model.lastname" label="Lastname" />
         <BirthdateInput v-model="model.birthdate" />
@@ -15,10 +33,10 @@
           <v-radio label="Male" value="M"></v-radio>
           <v-radio label="Female" value="F"></v-radio>
         </v-radio-group>
-        <v-slider required label="Height" v-model="model.height" step="1" thumb-label ticks min="100"
-                  max="250"></v-slider>
-        <v-slider required label="Weight" v-model="model.weight" step="1" thumb-label ticks min="30"
-                  max="150"></v-slider>
+        <v-slider v-model="model.height" label="Height" max="250" min="100" required step="1" thumb-label
+                  ticks></v-slider>
+        <v-slider v-model="model.weight" label="Weight" max="150" min="30" required step="1" thumb-label
+                  ticks></v-slider>
       </v-container>
       <v-card-actions>
         <v-spacer />
@@ -42,9 +60,10 @@ import Player from "@/models/Player";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
 import BirthdateInput from "@/components/input/BirthdateInput.vue";
+import UploadForm from "@/components/UploadForm.vue";
 
 @Component({
-  components: {BirthdateInput, LeagueInput, MyClubInput}
+  components: {UploadForm, BirthdateInput, LeagueInput, MyClubInput}
 })
 export default class CreatePlayer extends Vue {
   @Prop() prefill!: Player;
@@ -52,9 +71,14 @@ export default class CreatePlayer extends Vue {
   private loading = false;
   private error: string | null = null;
   private player = new Player();
+  private uploadDialog = false;
+
+  private get editMode() {
+    return !!this.prefill;
+  }
 
   private request(path: string) {
-    return this.prefill
+    return this.editMode
       ? API.axios.patch<Player>(`${path}/${this.model.primaryKey}`, this.model)
       : API.axios.put<Player>(`${path}`, this.model);
   }

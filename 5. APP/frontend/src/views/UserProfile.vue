@@ -59,7 +59,7 @@ export default class UserProfile extends Vue {
   @administrator.Mutation
   setAvatar!: (url: string) => void;
 
-  uploadDialog = false;
+  private uploadDialog = false;
 
   private setPicture(file: File) {
     this.setAvatar(URL.createObjectURL(file));
