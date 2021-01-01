@@ -4,7 +4,7 @@ import DB from "../../db/DB";
 import {NotFound} from "@tsed/exceptions";
 import Game from "../../models/Game";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/game")
 @Authenticate()
@@ -16,14 +16,22 @@ export class GameController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSearchPaginate(Game, "event_game", `
-        SELECT g.*, row_to_json(s.*) as stadium, row_to_json(th.*) as teamHome, row_to_json(tg.*) as teamGuest
-        FROM event_game g
-                 INNER JOIN stadium s ON s.id = g.stadiumid
-                 INNER JOIN team th ON th.id = g.teamhomeid
-                 INNER JOIN team tg ON tg.id = g.teamguestid
-        WHERE g.name ILIKE $1
-    `, [], query, limit, offset);
+    return new Paginator(Game)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM event_game
+          WHERE name ILIKE $1
+      `)
+      .setQuery(`
+          SELECT g.*, row_to_json(s.*) as stadium, row_to_json(th.*) as teamHome, row_to_json(tg.*) as teamGuest
+          FROM event_game g
+                   INNER JOIN stadium s ON s.id = g.stadiumid
+                   INNER JOIN team th ON th.id = g.teamhomeid
+                   INNER JOIN team tg ON tg.id = g.teamguestid
+          WHERE g.name ILIKE $1
+          ORDER BY g.startat DESC
+      `)
+      .create({query, limit, offset});
   }
 
   @Get("/:uid")

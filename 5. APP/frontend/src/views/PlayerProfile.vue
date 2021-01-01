@@ -1,6 +1,6 @@
 <template>
   <v-container fluid v-if="player" style="max-width: 1500px">
-    <v-card class="mx-auto" dark>
+    <v-card class="mx-auto" dark flat>
       <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-row align="end">
           <v-col class="align-self-middle text-center" cols="12">
@@ -14,17 +14,19 @@
         </v-row>
       </v-parallax>
     </v-card>
-    <v-card class="mx-auto mt-4">
+    <v-card class="mx-auto mt-4" flat outlined>
       <v-list>
         <v-list-item>
           <v-list-item-icon>
             <v-icon color="primary">
-              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female" }}
+              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female"
+              }}
             </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ !player.sex ? "Not specified" : player.sex === "M" ? "Male" : "Female" }} </v-list-item-title>
+            <v-list-item-title>{{ !player.sex ? "Not specified" : player.sex === "M" ? "Male" : "Female" }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 

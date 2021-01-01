@@ -1,6 +1,7 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
+    <v-progress-linear v-if="routeIsLoading" fixed indeterminate style="z-index: 10" />
+    <v-navigation-drawer v-model="drawer" app width="300">
       <v-container class="pa-4" v-if="administrator">
         <v-card outlined>
           <v-list-item dense>
@@ -79,6 +80,7 @@ import {namespace} from "vuex-class";
 import Administrator from "@/models/Administrator"; // @ is an alias to /src
 
 const administrator = namespace("administrator");
+const router = namespace("router");
 
 @Component
 export default class App extends Vue {
@@ -126,6 +128,9 @@ export default class App extends Vue {
 
   @administrator.Action
   logout!: () => void;
+
+  @router.State
+  private routeIsLoading!: boolean;
 
   get darkMode() {
     return this.$vuetify.theme.dark;

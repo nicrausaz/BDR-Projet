@@ -37,6 +37,7 @@ export class MyTeamController {
                    INNER JOIN league l on t.leagueid = l.id
           WHERE c.id = ANY ($1)
             AND t.name ILIKE $2
+          ORDER BY name
       `, [perms])
       .create({query, limit, offset});
   }

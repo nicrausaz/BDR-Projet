@@ -43,8 +43,10 @@ CREATE TABLE event_log
 (
     id          SERIAL PRIMARY KEY,
     event       VARCHAR NOT NULL,
-    ressourceid VARCHAR NOT NULL,
-    executedat  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    resourceid VARCHAR NOT NULL,
+    operation  VARCHAR NOT NULL,
+    tablename  VARCHAR NOT NULL,
+    executedat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE OR REPLACE FUNCTION log_event()
@@ -56,14 +58,46 @@ DECLARE
 BEGIN
     IF tg_op = 'DELETE'
     THEN
-        INSERT INTO event_log (event, ressourceid) VALUES (CONCAT(tg_op, ' ', tg_table_name), OLD.id);
+        INSERT INTO event_log (event, resourceid, operation, tablename) VALUES (CONCAT(lower(tg_op), ' ', tg_table_name), OLD.id, lower(tg_op), tg_table_name);
         RETURN OLD;
     ELSE
-        INSERT INTO event_log (event, ressourceid) VALUES (CONCAT(tg_op, ' ', tg_table_name), NEW.id);
+        INSERT INTO event_log (event, resourceid, operation, tablename) VALUES (CONCAT(lower(tg_op), ' ', tg_table_name), NEW.id, lower(tg_op), tg_table_name);
         RETURN NEW;
     END IF;
 END
 $$;
+
+CREATE OR REPLACE FUNCTION log_event_uid()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
+$$
+DECLARE
+BEGIN
+    IF tg_op = 'DELETE'
+    THEN
+        INSERT INTO event_log (event, resourceid, operation, tablename) VALUES (CONCAT(lower(tg_op), ' ', tg_table_name), OLD.uid, lower(tg_op), tg_table_name);
+        RETURN OLD;
+    ELSE
+        INSERT INTO event_log (event, resourceid, operation, tablename) VALUES (CONCAT(lower(tg_op), ' ', tg_table_name), NEW.uid, lower(tg_op), tg_table_name);
+        RETURN NEW;
+    END IF;
+END
+$$;
+
+
+CREATE TRIGGER log_player_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON player
+    FOR EACH ROW
+EXECUTE FUNCTION log_event_uid();
+
+CREATE TRIGGER log_club_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON club
+    FOR EACH ROW
+EXECUTE FUNCTION log_event();
+
 
 DROP TRIGGER log_federation_trigger ON federation;
 
@@ -87,6 +121,18 @@ EXECUTE FUNCTION log_event();
 CREATE TRIGGER log_team_trigger
     AFTER INSERT OR UPDATE OR DELETE
     ON team
+    FOR EACH ROW
+EXECUTE FUNCTION log_event();
+
+CREATE TRIGGER log_player_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON player
+    FOR EACH ROW
+EXECUTE FUNCTION log_event_uid();
+
+CREATE TRIGGER log_club_trigger
+    AFTER INSERT OR UPDATE OR DELETE
+    ON club
     FOR EACH ROW
 EXECUTE FUNCTION log_event();
 

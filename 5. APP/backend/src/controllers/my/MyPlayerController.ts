@@ -50,6 +50,7 @@ export class MyPlayerController {
           FROM player
           WHERE uid = ANY ($1)
             AND (firstname ILIKE $2 OR lastname ILIKE $2)
+          ORDER BY firstname, lastname
       `, [perms])
       .create({query, limit, offset});
   }

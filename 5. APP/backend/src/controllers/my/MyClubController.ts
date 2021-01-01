@@ -34,6 +34,7 @@ export class MyClubController {
                           INNER JOIN sport s ON s.id = c.sportid
                  WHERE c.id = ANY ($1)
                    AND c.name ILIKE $2
+                 ORDER BY name
       `, [perms])
       .create({query, limit, offset});
   }

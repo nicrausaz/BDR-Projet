@@ -1,6 +1,6 @@
 <template>
   <v-container fluid v-if="administrator" style="max-width: 1500px">
-    <v-card class="mx-auto" dark>
+    <v-card class="mx-auto" dark flat>
       <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-row align="end">
           <v-col class="align-self-middle text-center" cols="12">
@@ -22,7 +22,7 @@
         </v-row>
       </v-parallax>
     </v-card>
-    <v-card class="mx-auto mt-4">
+    <v-card class="mx-auto mt-4" flat outlined>
       <v-list>
         <v-list-item>
           <v-list-item-icon>

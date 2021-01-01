@@ -56,8 +56,9 @@ export default class Login extends Vue {
     this.log(this.data)
       .then((e) => {
         if (e instanceof Error) {
-          this.error = e.message;
+          return (this.error = e.message);
         }
+        this.$router.push((this.$route.query.to as string) ?? "/");
       })
       .finally(() => {
         this.data = new Credentials();

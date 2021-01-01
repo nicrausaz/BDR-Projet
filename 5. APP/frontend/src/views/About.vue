@@ -1,6 +1,6 @@
 <template>
   <v-container style="max-width: 1500px">
-    <v-card>
+    <v-card flat outlined>
       <v-container class="text-center">
         <v-avatar tile size="250" class="ma-5 ghost">
           <v-img :src="require('@/assets/logo.svg')" />

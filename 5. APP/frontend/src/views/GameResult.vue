@@ -37,8 +37,8 @@
     </Header>
     <v-row>
       <v-col cols="12" md="6" v-for="team in teams" :key="team.team.id">
-        <v-card>
-          <v-card dark>
+        <v-card flat outlined>
+          <v-card :to="{name: 'Team', params: {id: team.team.id}}" dark flat>
             <v-card-title class="text-uppercase">
               <v-avatar size="64" tile class="mr-3">
                 <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
@@ -47,7 +47,7 @@
             </v-card-title>
           </v-card>
           <v-list two-line>
-            <v-card v-for="player in team.players" :key="player.uid" class="ma-3">
+            <v-card v-for="player in team.players" :key="player.uid" class="ma-3" flat outlined>
               <v-list-item link :to="{name: 'Player', params: {id: player.uid}}">
                 <v-list-item-avatar color="grey">
                   <v-img :src="player.avatar" />

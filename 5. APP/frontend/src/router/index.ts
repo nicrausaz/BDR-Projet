@@ -33,7 +33,6 @@ const routes: Array<RouteConfig> = [
     name: "About",
     component: About
   },
-
   {
     path: "/account",
     name: "Account",
@@ -42,19 +41,16 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/login",
     name: "Login",
     component: Login
   },
-
   {
     path: "/register",
     name: "Register",
     component: Register
   },
-
   {
     path: "/teams",
     name: "Teams",
@@ -63,7 +59,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/clubs",
     name: "Clubs",
@@ -72,7 +67,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/players",
     name: "Players",
@@ -81,7 +75,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/team/:id",
     name: "Team",
@@ -90,7 +83,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/logs",
     name: "Logs",
@@ -99,7 +91,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/player/:id",
     name: "Player",
@@ -108,7 +99,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/club/:id",
     name: "Club",
@@ -117,7 +107,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/game",
     name: "Game",
@@ -126,7 +115,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "/game/:id",
     name: "GameResult",
@@ -135,7 +123,6 @@ const routes: Array<RouteConfig> = [
       authenticate: true
     }
   },
-
   {
     path: "*",
     name: "err",
@@ -150,10 +137,20 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  await store.dispatch("router/startLoad");
   if (!(await store.dispatch("administrator/getProfile")) && to.meta?.authenticate) {
     await store.dispatch("administrator/logout");
-    if (to.name !== "Login") return next({name: "Login"});
+    if (to.name !== "Login")
+      return next({
+        name: "Login",
+        query: {
+          to: to.fullPath
+        }
+      });
   }
   next();
+});
+router.afterEach(async () => {
+  await store.dispatch("router/endLoad");
 });
 export default router;

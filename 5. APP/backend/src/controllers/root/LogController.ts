@@ -25,6 +25,7 @@ export class LogController {
           SELECT *
           FROM event_log e
           WHERE e.event ILIKE $1
+          ORDER BY executedat DESC 
       `)
       .create({query, limit, offset});
   }

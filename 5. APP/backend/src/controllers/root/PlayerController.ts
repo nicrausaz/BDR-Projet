@@ -5,10 +5,10 @@ import Player from "../../models/Player";
 import {NotFound} from "@tsed/exceptions";
 import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import {Readable} from "stream";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/player")
 export class PlayerController {
@@ -20,7 +20,19 @@ export class PlayerController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSimpleSearchPaginate(Player, "player", ["firstname", "lastname"], query, limit, offset);
+    return new Paginator(Player)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM player
+          WHERE (firstname ILIKE $1 OR lastname ILIKE $1)
+      `)
+      .setQuery(`
+          SELECT *
+          FROM player
+          WHERE (firstname ILIKE $1 OR lastname ILIKE $1)
+          ORDER BY firstname, lastname
+      `)
+      .create({query, limit, offset});
   }
 
   @Get("/:uid")

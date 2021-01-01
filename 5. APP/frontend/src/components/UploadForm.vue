@@ -11,7 +11,15 @@
             <Upload v-model="file" />
           </v-col>
           <v-col cols="12">
-            <v-file-input v-model="file" accept="image/png, image/jpeg" filled prepend-icon="mdi-camera" show-size label="Upload file" />
+            <v-file-input
+              v-model="file"
+              accept="image/png, image/jpeg"
+              label="Upload file"
+              prepend-icon=""
+              prepend-inner-icon="mdi-camera"
+              show-size
+              solo
+            />
           </v-col>
         </v-row>
       </v-container>

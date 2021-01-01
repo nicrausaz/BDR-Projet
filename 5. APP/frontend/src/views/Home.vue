@@ -1,28 +1,16 @@
 <template>
-  <div class="home">
-    <Upload />
-    <v-btn @click="fetchAll">Coucou</v-btn>
-    <li v-for="player in players" :key="player.uid">
-      {{ player.firstname }}
-    </li>
-  </div>
+  <Header>
+    <h1>StarSport</h1>
+  </Header>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import {namespace} from "vuex-class";
-import Player from "@/models/Player";
-import Upload from "@/components/Upload.vue";
+import Header from "@/components/Header.vue";
 
-const player = namespace("player");
 @Component({
-  components: {Upload}
+  components: {Header}
 })
 export default class Home extends Vue {
-  @player.State
-  public players!: Player[];
-
-  @player.Action
-  public fetchAll!: () => void;
 }
 </script>

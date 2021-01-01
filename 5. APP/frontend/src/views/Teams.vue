@@ -25,6 +25,14 @@
           <v-list-item :to="{name: 'Team', params: {id: team.id}}" link>
             <v-list-item-content>
               <v-list-item-title>{{ team.name }}</v-list-item-title>
+              <v-list-item-subtitle>
+                <v-chip class="mr-2" label small>
+                  {{ team.club.name }}
+                </v-chip>
+                <v-chip class="mr-2" label small>
+                  {{ team.league.level }}
+                </v-chip>
+              </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
               <div>
