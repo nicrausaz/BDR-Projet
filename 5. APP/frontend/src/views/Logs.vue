@@ -1,9 +1,10 @@
 <template>
-  <v-container fluid style="max-width: 1000px" v-if="pagination">
+  <v-container v-if="pagination" fluid style="max-width: 1500px">
     <v-toolbar class="mb-3" flat outlined rounded>
       <v-toolbar-title>Logs</v-toolbar-title>
       <v-spacer />
-      <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
+      <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify"
+                    single-line></v-text-field>
     </v-toolbar>
     <v-card flat outlined>
       <v-list>

@@ -28,7 +28,7 @@
         </template>
         <v-text-field required filled v-model="model.firstname" label="Firstname" />
         <v-text-field required filled v-model="model.lastname" label="Lastname" />
-        <BirthdateInput v-model="model.birthdate" />
+        <DateInput v-model="model.birthdate" label="Birthdate" />
         <v-radio-group required label="Sex" v-model="model.sex" row mandatory>
           <v-radio label="Male" value="M"></v-radio>
           <v-radio label="Female" value="F"></v-radio>
@@ -57,11 +57,11 @@ import MyClubInput from "@/components/input/MyClubInput.vue";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
-import BirthdateInput from "@/components/input/BirthdateInput.vue";
+import DateInput from "@/components/input/DateInput.vue";
 import UploadForm from "@/components/UploadForm.vue";
 
 @Component({
-  components: {UploadForm, BirthdateInput, LeagueInput, MyClubInput}
+  components: {UploadForm, DateInput, LeagueInput, MyClubInput}
 })
 export default class CreatePlayer extends Vue {
   @Prop() prefill!: Player;

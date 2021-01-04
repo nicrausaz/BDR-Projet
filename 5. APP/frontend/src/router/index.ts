@@ -16,6 +16,7 @@ import UserProfile from "@/views/UserProfile.vue";
 import Clubs from "@/views/Clubs.vue";
 import Players from "@/views/Players.vue";
 import Logs from "@/views/Logs.vue";
+import Calendar from "@/views/Calendar.vue";
 
 Vue.use(VueRouter);
 
@@ -119,6 +120,14 @@ const routes: Array<RouteConfig> = [
     path: "/game/:id",
     name: "GameResult",
     component: GameResult,
+    meta: {
+      authenticate: true
+    }
+  },
+  {
+    path: "/calendar",
+    name: "Calendar",
+    component: Calendar,
     meta: {
       authenticate: true
     }

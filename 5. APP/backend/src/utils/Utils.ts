@@ -123,8 +123,9 @@ export default class Utils {
     return result.rows.map(p => p.federationid);
   }
 
+  //TODO
   static async getAccessibleChampionshipResources(administrator: Administrator) {
-
+    return [];
   }
 
 }

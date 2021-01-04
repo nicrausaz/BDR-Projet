@@ -5,7 +5,7 @@
         required
         filled
         v-model="date"
-        label="Birthdate"
+        :label="label"
         prepend-inner-icon="mdi-calendar"
         readonly
         v-bind="attrs"
@@ -20,8 +20,9 @@
 import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 
 @Component
-export default class BirthdateInput extends Vue {
+export default class DateInput extends Vue {
   @Prop() private value!: Date | string;
+  @Prop({default: "Date"}) private label!: string;
   private date = "";
   private menu = false;
 
@@ -30,7 +31,7 @@ export default class BirthdateInput extends Vue {
   }
 
   @Watch("value") valueChanged() {
-    this.date = new Date(this.value).toISOString().substr(0, 10);
+    this.date = new Date(this.value ?? new Date()).toISOString().substr(0, 10);
   }
 
   public mounted() {
