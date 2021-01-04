@@ -5,7 +5,7 @@ class API {
 
   constructor() {
     this.axios = axios.create({
-      baseURL: "http://192.168.2.3:8083/api"
+      baseURL: "http://localhost:8083/api"
     });
     this.axios.interceptors.response.use((response) => {
       const isoDatePattern = new RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/);
