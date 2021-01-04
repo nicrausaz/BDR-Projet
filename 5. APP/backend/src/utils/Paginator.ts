@@ -49,11 +49,11 @@ export default class Paginator<T extends typeof Model> {
     const result = await DB.query(`
         ${this.query}
         LIMIT $${i + 2} OFFSET $${i + 3}
-    `, [...this.values, `%${query}%`, limit, offset]);
+    `, [...this.values, `%${query.trim()}%`, limit, offset]);
     return result.rows.map(r => this.model.hydrate(r));
   }
 
   private async getTotal({query}: PaginatorInterface) {
-    return parseInt((await DB.query(this.totalQuery, [...this.totalQueryValues, `%${query}%`])).rows[0]?.count);
+    return parseInt((await DB.query(this.totalQuery, [...this.totalQueryValues, `%${query.trim()}%`])).rows[0]?.count);
   }
 }

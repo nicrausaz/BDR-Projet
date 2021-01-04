@@ -29,6 +29,16 @@
                 </v-chip>
               </v-list-item-subtitle>
             </v-list-item-content>
+            <v-list-item-action>
+              <div>
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteGame(game)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editGame(game)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </div>
+            </v-list-item-action>
           </v-list-item>
         </v-card>
       </v-list>
@@ -65,7 +75,7 @@ export default class GameList extends Vue {
     const limit = this.limit;
     const offset = (this.page - 1) * limit;
     const query = this.searchQuery.trim();
-    this.pagination = (await API.axios.get<Pagination<Game>>(`game?q=${query}&limit=${limit}&offset=${offset}`)).data;
+    this.pagination = await API.get<Pagination<Game>>(Pagination, `game?q=${query}&limit=${limit}&offset=${offset}`);
   }
 
   private async afterConfirm() {
@@ -76,6 +86,16 @@ export default class GameList extends Vue {
   private async addGame() {
     this.editedGame = null;
     this.dialog = true;
+  }
+
+  private async editGame(game: Game) {
+    this.editedGame = game;
+    this.dialog = true;
+  }
+
+  private async deleteGame(game: Game) {
+    await API.delete<Game>(Game, `my/event/game/${game.uid}`);
+    await this.setPage();
   }
 
   async mounted() {

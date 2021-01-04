@@ -9,16 +9,50 @@
       <v-container>
         <v-alert v-if="error" type="error">{{ error }}</v-alert>
         <template v-if="editMode">
-          <h1>Score</h1>
+          <Header :height="250">
+            <v-row align="center" justify="center">
+              <v-col class="text-right text-h6 text-md-h5 text-uppercase">
+                <v-row align="center" no-gutters>
+                  <v-col class="text-break" cols="12">{{ model.teamHome.name }}</v-col>
+                </v-row>
+              </v-col>
+              <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ model.scoreHome }}:{{ model.scoreGuest
+                }}
+              </v-col>
+              <v-col class="text-left text-h6 text-md-h5 text-uppercase">
+                <v-row align="center" no-gutters>
+                  <v-col class="text-break" cols="12">{{ model.teamGuest.name }}</v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </Header>
         </template>
-        <v-text-field v-model="model.name" filled label="Name" required />
-        <v-text-field v-model="model.gameId" filled label="Game ID" required />
-        <DateInput v-model="model.startAt" label="Start At" />
-        <DateInput v-model="model.endAt" label="End At" />
-        <StadiumInput v-model="model.stadium" />
-        <MyChampionshipInput v-model="model.championship" />
-        <TeamInput v-model="model.teamHome" />
-        <TeamInput v-model="model.teamGuest" />
+        <v-row>
+          <v-col cols="8">
+            <v-text-field v-model="model.name" filled label="Name" required />
+          </v-col>
+          <v-col cols="4">
+            <v-text-field v-model="model.gameId" filled label="Game ID" required />
+          </v-col>
+          <v-col cols="6">
+            <DateInput v-model="model.startAt" label="Start At" />
+          </v-col>
+          <v-col cols="6">
+            <DateInput v-model="model.endAt" label="End At" />
+          </v-col>
+          <v-col cols="6">
+            <StadiumInput v-model="model.stadium" />
+          </v-col>
+          <v-col cols="6">
+            <MyChampionshipInput v-model="model.championship" />
+          </v-col>
+          <v-col cols="6">
+            <TeamInput v-model="model.teamHome" />
+          </v-col>
+          <v-col cols="6">
+            <TeamInput v-model="model.teamGuest" />
+          </v-col>
+        </v-row>
       </v-container>
       <v-card-actions>
         <v-spacer />
@@ -45,9 +79,10 @@ import DateInput from "@/components/input/DateInput.vue";
 import TeamInput from "@/components/input/TeamInput.vue";
 import StadiumInput from "@/components/input/StadiumInput.vue";
 import MyChampionshipInput from "@/components/input/MyChampionshipInput.vue";
+import Header from "@/components/Header.vue";
 
 @Component({
-  components: {MyChampionshipInput, StadiumInput, TeamInput, DateInput, LeagueInput, MyClubInput}
+  components: {Header, MyChampionshipInput, StadiumInput, TeamInput, DateInput, LeagueInput, MyClubInput}
 })
 export default class CreateGame extends Vue {
   @Prop() prefill!: Game;

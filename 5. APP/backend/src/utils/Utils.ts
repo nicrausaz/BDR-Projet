@@ -125,7 +125,7 @@ export default class Utils {
 
   //TODO
   static async getAccessibleChampionshipResources(administrator: Administrator) {
-    return [];
+    return [7,8,9,10];
   }
 
 }

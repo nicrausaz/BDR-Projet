@@ -19,7 +19,7 @@ export class MyChampionshipController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0) {
     const perms = await Utils.getAccessibleChampionshipResources(<Administrator>request.user);
-    return new Paginator(Championship)
+    const page = new Paginator(Championship)
       .setTotalQuery(`
           SELECT count(*)
           FROM championship
@@ -34,7 +34,7 @@ export class MyChampionshipController {
           ORDER BY name
       `, [perms])
       .create({query, limit, offset});
-
+    return JSON.stringify(await page);
   }
 
 }

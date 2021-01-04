@@ -32,23 +32,21 @@ export default class StadiumInput extends Vue {
 
   @Watch("value")
   async valueChanged() {
-    await this.searchChange();
+    await this.searchChange(this.value?.name);
     this.select = this.value?.id;
   }
 
   @Watch("select")
   public onSelect() {
-    this.$emit(
-      "input",
-      this.items.find((i) => i.id === this.select)
-    );
+    const item = this.items.find((i) => i.id === this.select);
+    if (item) this.$emit("input", item);
   }
 
   @Watch("search")
-  public async searchChange() {
-    if (this.items.length > 0) return;
+  public async searchChange(query?: string) {
+    const q = query ?? this.search;
     this.isLoading = true;
-    return API.get<Pagination<Stadium>>(Pagination, `stadium`)
+    return API.get<Pagination<Stadium>>(Pagination, `stadium?q=${q}`)
       .then(({result}) => {
         this.items = result;
       })

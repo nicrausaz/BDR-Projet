@@ -94,6 +94,11 @@ export default class Teams extends Vue {
     this.dialog = true;
   }
 
+  private async deleteTeam(team: Team) {
+    await API.delete<Team>(Team, `my/team/${team.id}`);
+    await this.setPage();
+  }
+
   private async afterConfirm() {
     this.editedTeam = null;
     await this.setPage();
@@ -102,11 +107,6 @@ export default class Teams extends Vue {
   private async addTeam() {
     this.editedTeam = null;
     this.dialog = true;
-  }
-
-  private async deleteTeam(team: Team) {
-    await API.delete<Team>(Team, `my/team/${team.id}`);
-    await this.setPage();
   }
 
   async mounted() {
