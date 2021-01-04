@@ -19,14 +19,12 @@
         <v-list-item>
           <v-list-item-icon>
             <v-icon color="primary">
-              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female"
-              }}
+              {{ !player.sex ? "mdi-gender-male-female" : player.sex === "M" ? "mdi-gender-male" : "mdi-gender-female" }}
             </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ !player.sex ? "Not specified" : player.sex === "M" ? "Male" : "Female" }}
-            </v-list-item-title>
+            <v-list-item-title>{{ !player.sex ? "Not specified" : player.sex === "M" ? "Male" : "Female" }} </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 

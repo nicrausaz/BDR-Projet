@@ -11,6 +11,5 @@ import Header from "@/components/Header.vue";
 @Component({
   components: {Header}
 })
-export default class Home extends Vue {
-}
+export default class Home extends Vue {}
 </script>

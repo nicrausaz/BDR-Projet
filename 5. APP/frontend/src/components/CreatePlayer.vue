@@ -33,10 +33,8 @@
           <v-radio label="Male" value="M"></v-radio>
           <v-radio label="Female" value="F"></v-radio>
         </v-radio-group>
-        <v-slider v-model="model.height" label="Height" max="250" min="100" required step="1" thumb-label
-                  ticks></v-slider>
-        <v-slider v-model="model.weight" label="Weight" max="150" min="30" required step="1" thumb-label
-                  ticks></v-slider>
+        <v-slider v-model="model.height" label="Height" max="250" min="100" required step="1" thumb-label ticks></v-slider>
+        <v-slider v-model="model.weight" label="Weight" max="150" min="30" required step="1" thumb-label ticks></v-slider>
       </v-container>
       <v-card-actions>
         <v-spacer />

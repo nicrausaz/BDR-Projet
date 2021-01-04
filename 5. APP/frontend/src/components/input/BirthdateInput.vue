@@ -1,6 +1,5 @@
 <template>
-  <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" min-width="290px" offset-y
-          transition="scale-transition">
+  <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" min-width="290px" offset-y transition="scale-transition">
     <template v-slot:activator="{on, attrs}">
       <v-text-field
         required

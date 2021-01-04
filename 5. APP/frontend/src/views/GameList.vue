@@ -3,8 +3,7 @@
     <v-toolbar class="mb-3" flat outlined rounded>
       <v-toolbar-title>Les Matchs</v-toolbar-title>
       <v-spacer />
-      <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify"
-                    single-line></v-text-field>
+      <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
     </v-toolbar>
     <v-card flat outlined>
       <v-list two-line>
@@ -28,8 +27,7 @@
       </v-list>
     </v-card>
     <v-footer app inset elevation="20" class="justify-center">
-      <v-pagination @input="setPage" v-model="page" circle
-                    :length="Math.ceil(pagination.total / pagination.limit)"></v-pagination>
+      <v-pagination @input="setPage" v-model="page" circle :length="Math.ceil(pagination.total / pagination.limit)"></v-pagination>
     </v-footer>
   </v-container>
 </template>
