@@ -26,9 +26,9 @@
                 <v-list-item-content>
                   <v-list-item-title>{{ team.name }}</v-list-item-title>
                   <v-list-item-subtitle>
-                    <!--                    <v-chip label small>-->
-                    <!--                      <v-icon left small>mdi-tshirt-crew</v-icon>-->
-                    <!--                    </v-chip>-->
+                    <!-- <v-chip label small>-->
+                    <!-- <v-icon left small>mdi-tshirt-crew</v-icon>-->
+                    <!-- </v-chip>-->
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>

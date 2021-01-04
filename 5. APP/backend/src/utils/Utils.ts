@@ -88,8 +88,8 @@ export default class Utils {
                                             INNER JOIN league l on c.leagueid = l.id
                                             INNER JOIN federation f on l.federationid = f.id
                                             INNER JOIN administrator_federation af on f.id = af.federationid
-                                   WHERE c.id = $1
-                                     AND af.administratoruid = $2
+                                   WHERE af.administratoruid = $1
+                                     AND c.id = $2
                                    LIMIT 1;`, [administrator.uid, championshipId]);
 
     return result.rows.length == 1;

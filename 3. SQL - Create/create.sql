@@ -136,8 +136,8 @@ CREATE TABLE event
     name      VARCHAR(100) NOT NULL,
     startAt   TIMESTAMP    NOT NULL,
     endAt     TIMESTAMP    NOT NULL,
-    createdAt TIMESTAMP,
-    updatedAt TIMESTAMP,
+    createdAt TIMESTAMP    DEFAULT current_timestamp,
+    updatedAt TIMESTAMP    DEFAULT current_timestamp,
     stadiumId SERIAL,
 
     CONSTRAINT fk_stadiumId FOREIGN KEY (stadiumId) REFERENCES stadium (id) ON DELETE SET NULL
