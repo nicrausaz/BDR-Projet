@@ -78,7 +78,7 @@ export default class Clubs extends Vue {
   }
 
   private async editClub(club: Club) {
-    this.editedClub = club;
+    this.editedClub = new Club(club);
     this.dialog = true;
   }
 
