@@ -79,10 +79,14 @@ export default class TeamIndex extends Vue {
   private games: Game[] = [];
 
   async mounted() {
-    const {id} = this.$route.params;
-    this.team = await API.get<Team>(Team, `team/${id}`);
-    this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${id}/player`);
-    this.games = await API.get<Game[]>(Game, `team/${id}/games`);
+    try {
+      const {id} = this.$route.params;
+      this.team = await API.get<Team>(Team, `team/${id}`);
+      this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${id}/player`);
+      this.games = await API.get<Game[]>(Game, `team/${id}/games`);
+    } catch {
+      return this.$router.push({name: "Error"});
+    }
   }
 }
 </script>

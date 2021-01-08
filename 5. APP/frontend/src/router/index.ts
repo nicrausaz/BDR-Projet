@@ -4,12 +4,12 @@ import store from "@/store";
 import Home from "@/views/Home.vue";
 import Login from "@/views/auth/Login.vue";
 import Teams from "@/views/team/Teams.vue";
-import Team from "@/views/team/TeamIndex.vue";
-import Club from "@/views/club/ClubIndex.vue";
+import TeamIndex from "@/views/team/TeamIndex.vue";
+import ClubIndex from "@/views/club/ClubIndex.vue";
 import Error from "@/views/Error.vue";
 import PlayerIndex from "@/views/player/PlayerIndex.vue";
-import GameResult from "@/views/game/GameIndex.vue";
-import GameList from "@/views/game/Games.vue";
+import GameIndex from "@/views/game/GameIndex.vue";
+import Games from "@/views/game/Games.vue";
 import Register from "@/views/auth/Register.vue";
 import About from "@/views/About.vue";
 import UserProfile from "@/views/auth/UserProfile.vue";
@@ -79,7 +79,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/team/:id",
     name: "Team",
-    component: Team,
+    component: TeamIndex,
     meta: {
       authenticate: true
     }
@@ -103,7 +103,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/club/:id",
     name: "Club",
-    component: Club,
+    component: ClubIndex,
     meta: {
       authenticate: true
     }
@@ -111,7 +111,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/game",
     name: "Game",
-    component: GameList,
+    component: Games,
     meta: {
       authenticate: true
     }
@@ -119,7 +119,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/game/:id",
     name: "GameResult",
-    component: GameResult,
+    component: GameIndex,
     meta: {
       authenticate: true
     }

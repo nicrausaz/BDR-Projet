@@ -86,19 +86,23 @@ export default class GameIndex extends Vue {
   private teams: {team: Team; players: PlayerTeam[]}[] = [];
 
   async mounted() {
-    const {id} = this.$route.params;
-    this.game = await API.get<Game>(Game, `game/${id}`);
-    if (this.game) {
-      this.teams = [
-        {
-          team: this.game.teamHome,
-          players: await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.game?.teamHome.id}/player`)
-        },
-        {
-          team: this.game.teamGuest,
-          players: await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.game?.teamGuest.id}/player`)
-        }
-      ];
+    try {
+      const {id} = this.$route.params;
+      this.game = await API.get<Game>(Game, `game/${id}`);
+      if (this.game) {
+        this.teams = [
+          {
+            team: this.game.teamHome,
+            players: await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.game?.teamHome.id}/player`)
+          },
+          {
+            team: this.game.teamGuest,
+            players: await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.game?.teamGuest.id}/player`)
+          }
+        ];
+      }
+    } catch {
+      return this.$router.push({name: "Error"});
     }
   }
 }

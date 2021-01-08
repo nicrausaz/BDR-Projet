@@ -54,8 +54,12 @@ export default class ClubIndex extends Vue {
 
   async mounted() {
     const {id} = this.$route.params;
-    this.club = await API.get<Club>(Club, `club/${id}`);
-    this.teams = await API.get<Team[]>(Team, `club/${id}/teams`);
+    try {
+      this.club = await API.get<Club>(Club, `club/${id}`);
+      this.teams = await API.get<Team[]>(Team, `club/${id}/teams`);
+    } catch {
+      return this.$router.push({name: "Error"});
+    }
   }
 }
 </script>
