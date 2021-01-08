@@ -71,6 +71,7 @@ import API from "@/plugins/API";
 import Team from "@/models/Team";
 import PlayerTeam from "@/models/PlayerTeam";
 import Game from "@/models/Game";
+import {RedirectError} from "@/plugins/Utils";
 
 @Component
 export default class TeamIndex extends Vue {
@@ -84,8 +85,8 @@ export default class TeamIndex extends Vue {
       this.team = await API.get<Team>(Team, `team/${id}`);
       this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${id}/player`);
       this.games = await API.get<Game[]>(Game, `team/${id}/games`);
-    } catch {
-      return this.$router.push({name: "Error"});
+    } catch (e: Error) {
+      return RedirectError(e);
     }
   }
 }

@@ -77,6 +77,7 @@ import Game from "@/models/Game";
 import PlayerTeam from "@/models/PlayerTeam";
 import Team from "@/models/Team";
 import Header from "@/components/Header.vue";
+import {RedirectError} from "@/plugins/Utils";
 
 @Component({
   components: {Header}
@@ -101,8 +102,8 @@ export default class GameIndex extends Vue {
           }
         ];
       }
-    } catch {
-      return this.$router.push({name: "Error"});
+    } catch (e: Error) {
+      return RedirectError(e);
     }
   }
 }

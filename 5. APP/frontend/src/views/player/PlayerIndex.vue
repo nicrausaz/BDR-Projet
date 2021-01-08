@@ -73,6 +73,7 @@ import {Component, Vue} from "vue-property-decorator";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
 import Header from "@/components/Header.vue";
+import {RedirectError} from "@/plugins/Utils";
 
 @Component({
   components: {Header}
@@ -84,8 +85,8 @@ export default class PlayerIndex extends Vue {
     const {id} = this.$route.params;
     try {
       this.player = await API.get<Player>(Player, `player/${id}`);
-    } catch {
-      return this.$router.push({name: "Error"});
+    } catch (e: Error) {
+      return RedirectError(e);
     }
   }
 }

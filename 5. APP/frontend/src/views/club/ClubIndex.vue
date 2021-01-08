@@ -46,6 +46,7 @@ import {Component, Vue} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Club from "@/models/Club";
 import Team from "@/models/Team";
+import {RedirectError} from "@/plugins/Utils";
 
 @Component
 export default class ClubIndex extends Vue {
@@ -57,8 +58,8 @@ export default class ClubIndex extends Vue {
     try {
       this.club = await API.get<Club>(Club, `club/${id}`);
       this.teams = await API.get<Team[]>(Team, `club/${id}/teams`);
-    } catch {
-      return this.$router.push({name: "Error"});
+    } catch (e: Error) {
+      return RedirectError(e);
     }
   }
 }
