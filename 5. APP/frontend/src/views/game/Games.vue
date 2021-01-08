@@ -58,7 +58,7 @@ import CreateGame from "@/components/CreateGame.vue";
 @Component({
   components: {CreateGame}
 })
-export default class GameList extends Vue {
+export default class Games extends Vue {
   private dialog = false;
   private page = 1;
   private limit = 20;

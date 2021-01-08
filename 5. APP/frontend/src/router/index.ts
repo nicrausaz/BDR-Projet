@@ -2,19 +2,19 @@ import Vue from "vue";
 import VueRouter, {RouteConfig} from "vue-router";
 import store from "@/store";
 import Home from "@/views/Home.vue";
-import Login from "@/views/Login.vue";
-import Teams from "@/views/Teams.vue";
-import Team from "@/views/TeamIndex.vue";
-import Club from "@/views/Club.vue";
+import Login from "@/views/auth/Login.vue";
+import Teams from "@/views/team/Teams.vue";
+import Team from "@/views/team/TeamIndex.vue";
+import Club from "@/views/club/ClubIndex.vue";
 import Error from "@/views/Error.vue";
-import PlayerProfile from "@/views/PlayerProfile.vue";
-import GameResult from "@/views/GameResult.vue";
-import GameList from "@/views/GameList.vue";
-import Register from "@/views/Register.vue";
+import PlayerIndex from "@/views/player/PlayerIndex.vue";
+import GameResult from "@/views/game/GameIndex.vue";
+import GameList from "@/views/game/Games.vue";
+import Register from "@/views/auth/Register.vue";
 import About from "@/views/About.vue";
-import UserProfile from "@/views/UserProfile.vue";
-import Clubs from "@/views/Clubs.vue";
-import Players from "@/views/Players.vue";
+import UserProfile from "@/views/auth/UserProfile.vue";
+import Clubs from "@/views/club/Clubs.vue";
+import Players from "@/views/player/Players.vue";
 import Logs from "@/views/Logs.vue";
 import Calendar from "@/views/Calendar.vue";
 
@@ -95,7 +95,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/player/:id",
     name: "Player",
-    component: PlayerProfile,
+    component: PlayerIndex,
     meta: {
       authenticate: true
     }
@@ -134,7 +134,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: "*",
-    name: "err",
+    name: "Error",
     component: Error
   }
 ];

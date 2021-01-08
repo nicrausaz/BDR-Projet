@@ -81,7 +81,7 @@ import Header from "@/components/Header.vue";
 @Component({
   components: {Header}
 })
-export default class GameResult extends Vue {
+export default class GameIndex extends Vue {
   private game: Game | null = null;
   private teams: {team: Team; players: PlayerTeam[]}[] = [];
 

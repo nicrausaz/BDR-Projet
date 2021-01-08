@@ -77,12 +77,16 @@ import Header from "@/components/Header.vue";
 @Component({
   components: {Header}
 })
-export default class PlayerProfile extends Vue {
+export default class PlayerIndex extends Vue {
   private player: Player | null = null;
 
   async mounted() {
     const {id} = this.$route.params;
-    this.player = await API.get<Player>(Player, `player/${id}`);
+    try {
+      this.player = await API.get<Player>(Player, `player/${id}`);
+    } catch {
+      return this.$router.push({name: "Error"});
+    }
   }
 }
 </script>

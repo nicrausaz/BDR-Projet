@@ -48,7 +48,7 @@ import Club from "@/models/Club";
 import Team from "@/models/Team";
 
 @Component
-export default class TeamIndex extends Vue {
+export default class ClubIndex extends Vue {
   private club: Club | null = null;
   private teams: Team[] = [];
 
