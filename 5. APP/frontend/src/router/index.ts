@@ -109,6 +109,14 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/training/:id",
+    name: "Training",
+    component: () => import("@/views/training/Training.vue"),
+    meta: {
+      authenticate: true
+    }
+  },
+  {
     path: "/calendar",
     name: "Calendar",
     component: () => import("@/views/Calendar.vue"),
