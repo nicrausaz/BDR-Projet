@@ -23,7 +23,7 @@
           <v-list two-line>
             <v-card v-if="!players.length" class="ma-3 justify-center" flat>No player</v-card>
             <v-card v-for="player in players" :key="player.uid" class="ma-3" flat outlined>
-              <v-list-item :to="{name: 'Player', params: {id: player.uid}}" link>
+              <v-list-item :to="{name: 'PlayerIndex', params: {id: player.uid}}" link>
                 <v-list-item-avatar color="grey">
                   <v-img :src="player.avatar" />
                 </v-list-item-avatar>
@@ -48,7 +48,7 @@
           </v-card>
           <v-list two-line>
             <v-card v-if="!games.length" class="ma-3 justify-center" flat>No game</v-card>
-            <v-list-item link v-for="game in games" :key="game.gameId" :to="{name: 'GameResult', params: {id: game.uid}}">
+            <v-list-item v-for="game in games" :key="game.gameId" :to="{name: 'GameIndex', params: {id: game.uid}}" link>
               <v-list-item-content>
                 <v-list-item-title>{{ game.name }}</v-list-item-title>
                 <v-list-item-subtitle>

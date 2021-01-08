@@ -23,7 +23,7 @@
           <v-list two-line>
             <v-card v-if="!teams.length" class="ma-3 justify-center" flat>No team</v-card>
             <v-card v-for="team in teams" :key="team.id" class="ma-3" flat outlined>
-              <v-list-item :to="{name: 'Team', params: {id: team.id}}" link>
+              <v-list-item :to="{name: 'TeamIndex', params: {id: team.id}}" link>
                 <v-list-item-content>
                   <v-list-item-title>{{ team.name }}</v-list-item-title>
                   <v-list-item-subtitle>

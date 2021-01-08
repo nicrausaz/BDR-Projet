@@ -1,22 +1,6 @@
 import Vue from "vue";
 import VueRouter, {RouteConfig} from "vue-router";
 import store from "@/store";
-import Home from "@/views/Home.vue";
-import Login from "@/views/auth/Login.vue";
-import Teams from "@/views/team/Teams.vue";
-import TeamIndex from "@/views/team/TeamIndex.vue";
-import ClubIndex from "@/views/club/ClubIndex.vue";
-import Error from "@/views/Error.vue";
-import PlayerIndex from "@/views/player/PlayerIndex.vue";
-import GameIndex from "@/views/game/GameIndex.vue";
-import Games from "@/views/game/Games.vue";
-import Register from "@/views/auth/Register.vue";
-import About from "@/views/About.vue";
-import UserProfile from "@/views/auth/UserProfile.vue";
-import Clubs from "@/views/club/Clubs.vue";
-import Players from "@/views/player/Players.vue";
-import Logs from "@/views/Logs.vue";
-import Calendar from "@/views/Calendar.vue";
 
 Vue.use(VueRouter);
 
@@ -24,7 +8,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import("@/views/Home.vue"),
     meta: {
       authenticate: true
     }
@@ -32,12 +16,12 @@ const routes: Array<RouteConfig> = [
   {
     path: "/about",
     name: "About",
-    component: About
+    component: () => import("@/views/About.vue")
   },
   {
     path: "/account",
     name: "Account",
-    component: UserProfile,
+    component: () => import("@/views/auth/UserProfile.vue"),
     meta: {
       authenticate: true
     }
@@ -45,17 +29,17 @@ const routes: Array<RouteConfig> = [
   {
     path: "/login",
     name: "Login",
-    component: Login
+    component: () => import("@/views/auth/Login.vue")
   },
   {
     path: "/register",
     name: "Register",
-    component: Register
+    component: () => import("@/views/auth/Register.vue")
   },
   {
     path: "/teams",
     name: "Teams",
-    component: Teams,
+    component: () => import("@/views/team/Teams.vue"),
     meta: {
       authenticate: true
     }
@@ -63,7 +47,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/clubs",
     name: "Clubs",
-    component: Clubs,
+    component: () => import("@/views/club/Clubs.vue"),
     meta: {
       authenticate: true
     }
@@ -71,15 +55,15 @@ const routes: Array<RouteConfig> = [
   {
     path: "/players",
     name: "Players",
-    component: Players,
+    component: () => import("@/views/player/Players.vue"),
     meta: {
       authenticate: true
     }
   },
   {
     path: "/team/:id",
-    name: "Team",
-    component: TeamIndex,
+    name: "TeamIndex",
+    component: () => import("@/views/team/TeamIndex.vue"),
     meta: {
       authenticate: true
     }
@@ -87,23 +71,23 @@ const routes: Array<RouteConfig> = [
   {
     path: "/logs",
     name: "Logs",
-    component: Logs,
+    component: () => import("@/views/Logs.vue"),
     meta: {
       authenticate: true
     }
   },
   {
     path: "/player/:id",
-    name: "Player",
-    component: PlayerIndex,
+    name: "PlayerIndex",
+    component: () => import("@/views/player/PlayerIndex.vue"),
     meta: {
       authenticate: true
     }
   },
   {
     path: "/club/:id",
-    name: "Club",
-    component: ClubIndex,
+    name: "ClubIndex",
+    component: () => import("@/views/club/ClubIndex.vue"),
     meta: {
       authenticate: true
     }
@@ -111,15 +95,15 @@ const routes: Array<RouteConfig> = [
   {
     path: "/game",
     name: "Game",
-    component: Games,
+    component: () => import("@/views/game/Games.vue"),
     meta: {
       authenticate: true
     }
   },
   {
     path: "/game/:id",
-    name: "GameResult",
-    component: GameIndex,
+    name: "GameIndex",
+    component: () => import("@/views/game/GameIndex.vue"),
     meta: {
       authenticate: true
     }
@@ -127,7 +111,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/calendar",
     name: "Calendar",
-    component: Calendar,
+    component: () => import("@/views/Calendar.vue"),
     meta: {
       authenticate: true
     }
@@ -135,7 +119,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "*",
     name: "Error",
-    component: Error
+    component: () => import("@/views/Error.vue")
   }
 ];
 

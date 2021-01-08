@@ -21,7 +21,7 @@
           </v-list-item>
         </v-card>
         <v-card v-for="player in pagination.result" :key="player.uid" class="ma-3" outlined>
-          <v-list-item :to="{name: 'Player', params: {id: player.uid}}" link>
+          <v-list-item :to="{name: 'PlayerIndex', params: {id: player.uid}}" link>
             <v-list-item-avatar color="grey">
               <v-img :src="player.avatar" />
             </v-list-item-avatar>

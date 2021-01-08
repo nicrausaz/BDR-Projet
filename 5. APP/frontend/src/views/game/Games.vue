@@ -14,7 +14,7 @@
     <v-card flat outlined>
       <v-list two-line>
         <v-card v-for="game in pagination.result" :key="game.uid" class="ma-3" flat outlined>
-          <v-list-item :to="{name: 'GameResult', params: {id: game.uid}}" link>
+          <v-list-item :to="{name: 'GameIndex', params: {id: game.uid}}" link>
             <v-list-item-content>
               <v-list-item-title>{{ game.name }}</v-list-item-title>
               <v-list-item-subtitle>

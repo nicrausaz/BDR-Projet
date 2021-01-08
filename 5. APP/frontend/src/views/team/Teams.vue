@@ -21,7 +21,7 @@
           </v-list-item>
         </v-card>
         <v-card v-for="team in pagination.result" :key="team.id" class="ma-3" outlined>
-          <v-list-item :to="{name: 'Team', params: {id: team.id}}" link>
+          <v-list-item :to="{name: 'TeamIndex', params: {id: team.id}}" link>
             <v-list-item-content>
               <v-list-item-title>{{ team.name }}</v-list-item-title>
               <v-list-item-subtitle>

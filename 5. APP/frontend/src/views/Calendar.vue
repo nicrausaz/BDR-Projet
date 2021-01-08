@@ -105,7 +105,7 @@ export default class Calendar extends Vue {
       case "training":
         break;
       case "game":
-        return this.$router.push({name: "GameIndex.vue", params: {id: event.uid}});
+        return this.$router.push({name: "GameIndex", params: {id: event.uid}});
     }
   }
 
