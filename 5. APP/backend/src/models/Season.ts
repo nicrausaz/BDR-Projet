@@ -10,11 +10,11 @@ export default class Season extends Model {
   @Property()
   name: string;
 
-  @Hydrator({alias: "startat"})
+  @Hydrator()
   @Property()
   startAt: Date;
 
-  @Hydrator({alias: "endat"})
+  @Hydrator()
   @Property()
   endAt: Date;
 }

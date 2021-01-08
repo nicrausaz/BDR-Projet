@@ -16,9 +16,7 @@
                   <v-col class="text-break" cols="12">{{ model.teamHome.name }}</v-col>
                 </v-row>
               </v-col>
-              <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ model.scoreHome }}:{{ model.scoreGuest
-                }}
-              </v-col>
+              <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ model.scoreHome }}:{{ model.scoreGuest }} </v-col>
               <v-col class="text-left text-h6 text-md-h5 text-uppercase">
                 <v-row align="center" no-gutters>
                   <v-col class="text-break" cols="12">{{ model.teamGuest.name }}</v-col>

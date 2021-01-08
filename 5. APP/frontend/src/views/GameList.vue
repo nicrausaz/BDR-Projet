@@ -3,8 +3,7 @@
     <v-toolbar class="mb-3" flat outlined rounded>
       <v-toolbar-title>Les Matchs</v-toolbar-title>
       <v-spacer />
-      <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify"
-                    single-line></v-text-field>
+      <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
       <v-btn icon @click="addGame">
         <v-icon>mdi-plus</v-icon>
       </v-btn>

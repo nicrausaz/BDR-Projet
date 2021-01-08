@@ -1,5 +1,5 @@
 import Team from "./Team";
-import {Property} from "@tsed/schema";
+import {Allow, Property} from "@tsed/schema";
 import {Hydrator} from "./Model";
 
 export default class Training extends Event {
@@ -8,6 +8,7 @@ export default class Training extends Event {
   description: string;
 
   @Hydrator()
-  @Property()
+  @Property({model: Team})
+  @Allow({}, null)
   team: Team;
 }

@@ -1,6 +1,6 @@
 import Stadium from "./Stadium";
 import Model, {Hydrator} from "./Model";
-import {Property} from "@tsed/schema";
+import {Allow, Property} from "@tsed/schema";
 
 export default class Event extends Model {
   @Hydrator()
@@ -27,7 +27,8 @@ export default class Event extends Model {
   @Property()
   updatedAt: Date;
 
-  @Hydrator()
+  @Hydrator({model: Stadium})
   @Property()
+  @Allow({}, null)
   stadium: Stadium;
 }

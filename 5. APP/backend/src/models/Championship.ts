@@ -1,7 +1,6 @@
 import Season from "./Season";
 import League from "./League";
-import {Property} from "@tsed/schema";
-import {DateMapper} from "@tsed/json-mapper";
+import {Allow, Property} from "@tsed/schema";
 import Model, {Hydrator} from "./Model";
 
 export default class Championship extends Model {
@@ -13,19 +12,21 @@ export default class Championship extends Model {
   @Hydrator()
   name: string;
 
-  @Property(DateMapper)
-  @Hydrator({alias: "startat"})
+  @Property()
+  @Hydrator()
   startAt: Date;
 
-  @Property(DateMapper)
-  @Hydrator({alias: "endat"})
+  @Property()
+  @Hydrator()
   endAt: Date;
 
   @Property()
   @Hydrator()
+  @Allow({}, null)
   season: Season;
 
   @Property()
   @Hydrator()
+  @Allow({}, null)
   league: League;
 }

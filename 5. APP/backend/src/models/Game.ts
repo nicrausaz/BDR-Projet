@@ -2,7 +2,7 @@ import Championship from "./Championship";
 import Team from "./Team";
 import Event from "./Event";
 import {Hydrator} from "./Model";
-import {Property} from "@tsed/schema";
+import {Allow, Property} from "@tsed/schema";
 
 export default class Game extends Event {
   @Hydrator()
@@ -21,16 +21,19 @@ export default class Game extends Event {
   @Property()
   gameId: string;
 
-  @Hydrator()
+  @Hydrator({model: Championship})
   @Property()
+  @Allow({}, null)
   championship: Championship;
 
-  @Hydrator()
+  @Hydrator({model: Team})
   @Property()
+  @Allow({}, null)
   teamHome: Team;
 
-  @Hydrator()
+  @Hydrator({model: Team})
   @Property()
+  @Allow({}, null)
   teamGuest: Team;
 
 }

@@ -125,7 +125,14 @@ export default class Utils {
 
   //TODO
   static async getAccessibleChampionshipResources(administrator: Administrator) {
-    return [7,8,9,10];
+    const result = await DB.query(`SELECT c.id
+                                   FROM championship c
+                                            INNER JOIN league l on c.leagueid = l.id
+                                            INNER JOIN federation f on l.federationid = f.id
+                                            INNER JOIN administrator_federation af on f.id = af.federationid
+                                   WHERE af.administratoruid = $1
+                                     `, [administrator.uid]);
+    return result.rows.map(p => p.id);
   }
 
 }
