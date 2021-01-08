@@ -1,5 +1,5 @@
-import Event from "@/models/Event";
 import Team from "@/models/Team";
+import Event from "@/models/Event";
 import {ModelDecorator, Property} from "@/models/Model";
 
 @ModelDecorator
