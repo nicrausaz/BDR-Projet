@@ -21,6 +21,7 @@
           :events="events"
           type="month"
           @change="updateRange"
+          @click:event="onEvent"
         ></v-calendar>
       </v-sheet>
     </div>
@@ -97,6 +98,15 @@ export default class Calendar extends Vue {
 
   next() {
     this.calendar?.next();
+  }
+
+  onEvent({event}: {event: CalendarEntry}) {
+    switch (event.eventType) {
+      case "training":
+        break;
+      case "game":
+        return this.$router.push({name: "GameResult", params: {id: event.uid}});
+    }
   }
 
   async updateRange(e: ChangeEventInterface) {

@@ -25,7 +25,7 @@ export class MyEventController {
 
     console.log(start, end);
     const result = await DB.query(`SELECT *
-                                   FROM event
+                                   FROM event_list
                                    WHERE startat BETWEEN $1 AND $2
                                      AND endat BETWEEN $1 AND $2`,
       [start, end]);
