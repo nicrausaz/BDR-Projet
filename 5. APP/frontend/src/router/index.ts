@@ -133,6 +133,11 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/server-stats",
+    name: "ServerStats",
+    component: () => import("@/views/ServerStats.vue")
+  },
+  {
     path: "*",
     name: "Error",
     component: () => import("@/views/Error.vue")

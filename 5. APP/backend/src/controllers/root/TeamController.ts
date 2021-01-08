@@ -1,4 +1,4 @@
-import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import Team from "../../models/Team";
@@ -7,8 +7,10 @@ import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import Game from "../../models/Game";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/team")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class TeamController {
 

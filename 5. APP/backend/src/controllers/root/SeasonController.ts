@@ -1,12 +1,14 @@
-import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams} from "@tsed/common";
+import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import Season from "../../models/Season";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/season")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class SeasonController {
 

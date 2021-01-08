@@ -1,9 +1,11 @@
-import {Controller, MultipartFile, PlatformMulterFile, Post} from "@tsed/common";
+import {Controller, MultipartFile, PlatformMulterFile, Post, UseBefore} from "@tsed/common";
 import * as fs from "fs";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/test")
+@UseBefore(RouteLogMiddleware)
 export class TestController {
 
   @Post("/file")

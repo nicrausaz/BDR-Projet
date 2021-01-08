@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import Federation from "../../models/Federation";
@@ -8,8 +8,10 @@ import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import League from "../../models/League";
 import Championship from "../../models/Championship";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/federation")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyFederationController {
 

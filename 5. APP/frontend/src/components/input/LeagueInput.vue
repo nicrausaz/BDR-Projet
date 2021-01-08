@@ -32,7 +32,7 @@ export default class LeagueInput extends Vue {
 
   @Watch("value")
   async valueChanged() {
-    await this.searchChange(this.value?.name);
+    await this.searchChange(this.value?.level);
     this.select = this.value?.id;
   }
 

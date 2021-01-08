@@ -1,12 +1,14 @@
-import {Controller, Get, QueryParams, Req} from "@tsed/common";
+import {Controller, Get, QueryParams, Req, UseBefore} from "@tsed/common";
 import {Authenticate} from "@tsed/passport";
 import {ContentType, Returns} from "@tsed/schema";
 import Championship from "../../models/Championship";
 import Paginator from "../../utils/Paginator";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/championship")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyChampionshipController {
 

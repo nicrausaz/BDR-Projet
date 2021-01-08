@@ -1,11 +1,14 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
+import io from "socket.io-client";
 
 class API {
-  public axios: AxiosInstance;
+  public readonly server = "http://localhost:8083";
+  public readonly axios: AxiosInstance;
+  public socket?: SocketIOClient.Socket;
 
   constructor() {
     this.axios = axios.create({
-      baseURL: "http://localhost:8083/api"
+      baseURL: `${this.server}/api`
     });
     this.axios.interceptors.response.use((response) => {
       const isoDatePattern = new RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/);
@@ -21,11 +24,16 @@ class API {
 
   public setToken(token: string) {
     localStorage.setItem("token", token);
+    this.socket = io(`${this.server}`, {
+      query: {token}
+    });
     this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 
   public clearToken() {
     localStorage.removeItem("token");
+    this.socket?.close();
+    this.socket = undefined;
     this.axios.defaults.headers.common.Authorization = ``;
   }
 

@@ -1,9 +1,11 @@
-import {Controller, Get} from "@tsed/common";
+import {Controller, Get, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import {Authenticate} from "@tsed/passport";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/event")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class EventController {
   @Get("/test")

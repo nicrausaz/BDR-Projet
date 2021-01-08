@@ -1,10 +1,12 @@
-import {Controller, Get, QueryParams} from "@tsed/common";
+import {Controller, Get, QueryParams, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import {Authenticate} from "@tsed/passport";
 import Log from "../../models/Log";
 import Paginator from "../../utils/Paginator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/log")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class LogController {
 

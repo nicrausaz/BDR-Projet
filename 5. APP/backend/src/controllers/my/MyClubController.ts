@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
+import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import Club from "../../models/Club";
@@ -7,8 +7,10 @@ import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import Paginator from "../../utils/Paginator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/club")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyClubController {
 

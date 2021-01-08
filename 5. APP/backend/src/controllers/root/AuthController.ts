@@ -1,12 +1,14 @@
-import {BodyParams, Controller, Get, Post, Req} from "@tsed/common";
+import {BodyParams, Controller, Get, Post, Req, UseBefore} from "@tsed/common";
 import {Authenticate} from "@tsed/passport";
 import jwt from "jsonwebtoken";
 import DB from "../../db/DB";
 import Administrator from "../../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
 import bcrypt from "bcrypt";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/auth")
+@UseBefore(RouteLogMiddleware)
 export class AuthController {
   @Post("/login")
   async login(@Req() req: Req, @BodyParams("email") email: string, @BodyParams("password") password: string) {

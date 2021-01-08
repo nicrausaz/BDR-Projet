@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, Put, QueryParams, Req} from "@tsed/common";
+import {BodyParams, Controller, Get, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import {Authenticate} from "@tsed/passport";
@@ -8,8 +8,10 @@ import Administrator from "../../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
 import CalendarEntry from "../../models/CalendarEntry";
 import Training from "../../models/Training";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/event")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyEventController {
   @Get("/")

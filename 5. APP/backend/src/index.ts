@@ -8,7 +8,6 @@ import DB from "./db/DB";
     $log.debug("Start server...");
     await DB.connect();
     const platform = await PlatformExpress.bootstrap(Server);
-
     await platform.listen();
     $log.debug("Server initialized");
   } catch (er) {

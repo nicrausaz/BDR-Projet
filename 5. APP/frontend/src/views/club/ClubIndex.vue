@@ -58,7 +58,7 @@ export default class ClubIndex extends Vue {
     try {
       this.club = await API.get<Club>(Club, `club/${id}`);
       this.teams = await API.get<Team[]>(Team, `club/${id}/teams`);
-    } catch (e: Error) {
+    } catch (e) {
       return RedirectError(e);
     }
   }

@@ -102,7 +102,7 @@ export default class GameIndex extends Vue {
           }
         ];
       }
-    } catch (e: Error) {
+    } catch (e) {
       return RedirectError(e);
     }
   }

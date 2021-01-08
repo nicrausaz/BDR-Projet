@@ -1,12 +1,15 @@
-import "@tsed/platform-express"; // /!\ keep this import
+import "@tsed/platform-express";
+import "@tsed/socketio";
+import "@tsed/ajv";
+import "@tsed/swagger";
+import "@tsed/passport";
+
 import bodyParser from "body-parser";
 import compress from "compression";
 import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
 import cors from "cors";
-import "@tsed/ajv";
-import "@tsed/swagger";
-import "@tsed/passport";
+
 import {Configuration, Inject} from "@tsed/di";
 import {PlatformApplication} from "@tsed/common";
 
@@ -26,7 +29,9 @@ export const rootDir = __dirname;
     ]
   },
   componentsScan: [
-    `${rootDir}/protocols/*{.ts,.js}` // scan protocols directory
+    `${rootDir}/protocols/*{.ts,.js}`,
+    `${rootDir}/services/*{.ts,.js}`,
+    `${rootDir}/middlewares/*{.ts,.js}`
   ],
   passport: {},
   swagger: [

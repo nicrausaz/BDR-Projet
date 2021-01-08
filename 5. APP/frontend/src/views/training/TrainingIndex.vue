@@ -51,7 +51,7 @@ export default class TrainingIndex extends Vue {
     try {
       const {id} = this.$route.params;
       this.training = await API.get<Training>(Training, `my/training/${id}`);
-    } catch (e: Error) {
+    } catch (e) {
       return RedirectError(e);
     }
   }

@@ -1,11 +1,13 @@
-import {Controller, Get, MultipartFile, PlatformMulterFile, Post, Req} from "@tsed/common";
+import {Controller, Get, MultipartFile, PlatformMulterFile, Post, Req, UseBefore} from "@tsed/common";
 import {Authenticate} from "@tsed/passport";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import fs from "fs";
 import Administrator from "../../models/Administrator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/account")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyAccountController {
 

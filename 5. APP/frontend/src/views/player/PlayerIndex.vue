@@ -85,7 +85,7 @@ export default class PlayerIndex extends Vue {
     const {id} = this.$route.params;
     try {
       this.player = await API.get<Player>(Player, `player/${id}`);
-    } catch (e: Error) {
+    } catch (e) {
       return RedirectError(e);
     }
   }

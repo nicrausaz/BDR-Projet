@@ -4,6 +4,9 @@
       <v-toolbar-title>Logs</v-toolbar-title>
       <v-spacer />
       <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
+      <v-btn icon :to="{name: 'ServerStats'}">
+        <v-icon>mdi-earth</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-card flat outlined>
       <v-list>

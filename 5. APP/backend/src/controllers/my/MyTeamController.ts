@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import {Unauthorized} from "@tsed/exceptions";
@@ -8,8 +8,10 @@ import Administrator from "../../models/Administrator";
 import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";
 import Paginator from "../../utils/Paginator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/team")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyTeamController {
 

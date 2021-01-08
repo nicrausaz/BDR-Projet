@@ -85,7 +85,7 @@ export default class TeamIndex extends Vue {
       this.team = await API.get<Team>(Team, `team/${id}`);
       this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${id}/player`);
       this.games = await API.get<Game[]>(Game, `team/${id}/games`);
-    } catch (e: Error) {
+    } catch (e) {
       return RedirectError(e);
     }
   }

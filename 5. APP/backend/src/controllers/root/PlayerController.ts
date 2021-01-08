@@ -1,4 +1,4 @@
-import {Controller, Get, PathParams, QueryParams} from "@tsed/common";
+import {Controller, Get, PathParams, QueryParams, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import Player from "../../models/Player";
@@ -9,8 +9,10 @@ import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import {Readable} from "stream";
 import Paginator from "../../utils/Paginator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/player")
+@UseBefore(RouteLogMiddleware)
 export class PlayerController {
   @Get("/")
   @ContentType("json")

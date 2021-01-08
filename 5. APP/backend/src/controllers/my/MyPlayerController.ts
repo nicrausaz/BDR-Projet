@@ -10,7 +10,7 @@ import {
   Post,
   Put,
   QueryParams,
-  Req
+  Req, UseBefore
 } from "@tsed/common";
 import {Authenticate} from "@tsed/passport";
 import Jimp from "jimp";
@@ -23,8 +23,10 @@ import {ContentType} from "@tsed/schema";
 import Player from "../../models/Player";
 import DB, {PoolClient} from "../../db/DB";
 import Paginator from "../../utils/Paginator";
+import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/player")
+@UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyPlayerController {
 
