@@ -48,7 +48,7 @@
           </v-card>
           <v-list two-line>
             <v-card v-if="!games.length" class="ma-3 justify-center" flat>No game</v-card>
-            <v-list-item link v-for="game in games" :key="game.gameId">
+            <v-list-item link v-for="game in games" :key="game.gameId" :to="{name: 'GameResult', params: {id: game.uid}}">
               <v-list-item-content>
                 <v-list-item-title>{{ game.name }}</v-list-item-title>
                 <v-list-item-subtitle>
@@ -75,8 +75,8 @@ import Game from "@/models/Game";
 @Component
 export default class TeamIndex extends Vue {
   private team: Team | null = null;
-  private players: PlayerTeam[] | null = null;
-  private games: Game[] | null = null;
+  private players: PlayerTeam[] = [];
+  private games: Game[] = [];
 
   async mounted() {
     const {id} = this.$route.params;

@@ -50,7 +50,7 @@ import Team from "@/models/Team";
 @Component
 export default class TeamIndex extends Vue {
   private club: Club | null = null;
-  private teams: Team[] | null = null;
+  private teams: Team[] = [];
 
   async mounted() {
     const {id} = this.$route.params;

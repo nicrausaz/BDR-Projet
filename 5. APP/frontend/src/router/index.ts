@@ -4,7 +4,7 @@ import store from "@/store";
 import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import Teams from "@/views/Teams.vue";
-import Team from "@/views/Team.vue";
+import Team from "@/views/TeamIndex.vue";
 import Club from "@/views/Club.vue";
 import Error from "@/views/Error.vue";
 import PlayerProfile from "@/views/PlayerProfile.vue";
