@@ -79,7 +79,7 @@ export default class Players extends Vue {
   }
 
   private async editPlayer(player: Player) {
-    this.editedPlayer = player;
+    this.editedPlayer = new Player(player);
     this.dialog = true;
   }
 

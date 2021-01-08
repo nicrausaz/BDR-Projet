@@ -88,7 +88,7 @@ export default class GameList extends Vue {
   }
 
   private async editGame(game: Game) {
-    this.editedGame = game;
+    this.editedGame = new Game(game);
     this.dialog = true;
   }
 

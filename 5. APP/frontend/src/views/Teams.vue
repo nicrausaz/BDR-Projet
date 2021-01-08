@@ -90,7 +90,7 @@ export default class Teams extends Vue {
   }
 
   private async editTeam(team: Team) {
-    this.editedTeam = team;
+    this.editedTeam = new Team(team);
     this.dialog = true;
   }
 

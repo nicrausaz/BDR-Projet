@@ -6,6 +6,7 @@ import {NotFound} from "@tsed/exceptions";
 import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
+import Game from "../../models/Game";
 
 @Controller("/team")
 @Authenticate()
@@ -50,5 +51,32 @@ export class TeamController {
                                      AND (endat IS NULL OR endat > NOW());`, [id]);
 
     return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
+  }
+
+  @Get("/:id/games")
+  @ContentType("json")
+  async getGames(@PathParams("id") id: number) {
+    const result = await DB.query(`SELECT e.uid,
+                                          e.name,
+                                          e.startat,
+                                          e.endat,
+                                          createdat,
+                                          updatedat,
+                                          stadiumid,
+                                          gameid,
+                                          scorehome,
+                                          scoreguest,
+                                          teamhomeid,
+                                          teamguestid
+
+                                   FROM event e
+                                            INNER JOIN game g ON e.uid = g.eventuid
+                                            INNER JOIN championship c ON g.championshipid = c.id
+                                            INNER JOIN team t1 ON g.teamhomeid = t1.id
+                                            INNER JOIN team t2 ON g.teamguestid = t2.id
+                                   WHERE teamguestid = $1
+                                      OR teamhomeid = $1`, [id]);
+
+    return result.rows.map(r => Game.hydrate<Game>(r));
   }
 }

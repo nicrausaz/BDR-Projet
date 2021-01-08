@@ -14,6 +14,7 @@ export default class Team extends Model {
 
   @Hydrator({model: Club})
   @Property()
+  @Allow({}, null)
   club: Club;
 
   @Hydrator({model: League})

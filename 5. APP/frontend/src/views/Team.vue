@@ -21,6 +21,7 @@
             <v-card-title class="text-uppercase">Players</v-card-title>
           </v-card>
           <v-list two-line>
+            <v-card v-if="!players.length" class="ma-3 justify-center" flat>No player</v-card>
             <v-card v-for="player in players" :key="player.uid" class="ma-3" flat outlined>
               <v-list-item :to="{name: 'Player', params: {id: player.uid}}" link>
                 <v-list-item-avatar color="grey">
@@ -43,19 +44,16 @@
       <v-col cols="12" sm="6">
         <v-card flat outlined>
           <v-card dark flat>
-            <v-card-title class="text-uppercase"> Events</v-card-title>
+            <v-card-title class="text-uppercase">Games</v-card-title>
           </v-card>
           <v-list two-line>
-            <v-list-item link v-for="j in 5" :key="j">
-              <v-list-item-avatar color="grey">
-                <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg" />
-              </v-list-item-avatar>
+            <v-card v-if="!games.length" class="ma-3 justify-center" flat>No game</v-card>
+            <v-list-item link v-for="game in games" :key="game.gameId">
               <v-list-item-content>
-                <v-list-item-title>boby</v-list-item-title>
+                <v-list-item-title>{{ game.name }}</v-list-item-title>
                 <v-list-item-subtitle>
                   <v-chip label small>
-                    <v-icon small left>mdi-tshirt-crew</v-icon>
-                    1
+                    {{ game.startAt.toLocaleString() }}
                   </v-chip>
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -72,16 +70,19 @@ import {Component, Vue} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Team from "@/models/Team";
 import PlayerTeam from "@/models/PlayerTeam";
+import Game from "@/models/Game";
 
 @Component
 export default class TeamIndex extends Vue {
   private team: Team | null = null;
   private players: PlayerTeam[] | null = null;
+  private games: Game[] | null = null;
 
   async mounted() {
     const {id} = this.$route.params;
     this.team = await API.get<Team>(Team, `team/${id}`);
     this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${id}/player`);
+    this.games = await API.get<Game[]>(Game, `team/${id}/games`);
   }
 }
 </script>
