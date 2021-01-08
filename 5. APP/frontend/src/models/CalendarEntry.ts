@@ -6,7 +6,17 @@ export default class CalendarEntry extends Model {
   @Property() name!: string;
   @Property() startAt!: Date;
   @Property() endAt!: Date;
-  @Property() color!: string;
+  @Property() eventType!: "training" | "game";
+
+  get color() {
+    switch (this.eventType) {
+      case "training":
+        return "#c80b0b";
+      case "game":
+        return "#119215";
+    }
+    return "primary";
+  }
 
   get start() {
     return this.startAt?.toISOString().substr(0, 10);

@@ -44,7 +44,7 @@ export default class MyClubInput extends Vue {
 
   @Watch("search")
   public async searchChange(query?: string) {
-    const q = query ?? this.search;
+    const q = query ?? this.search ?? "";
     this.isLoading = true;
     return API.get<Pagination<Club>>(Pagination, `my/club?q=${q}`)
       .then(({result}) => {

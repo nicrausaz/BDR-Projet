@@ -20,5 +20,5 @@ export default class CalendarEntry extends Model {
 
   @Property()
   @Hydrator()
-  color: string = "#ff1517"
+  eventType: "training" | "game";
 }
