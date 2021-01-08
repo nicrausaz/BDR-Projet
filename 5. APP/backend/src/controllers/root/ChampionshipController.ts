@@ -26,8 +26,8 @@ export class ChampionshipController {
   async get(@PathParams("id") id: string) {
     const query = await DB.query(
       `SELECT *
-         FROM championship
-         WHERE id = $1`, [id]);
+       FROM championship
+       WHERE id = $1`, [id]);
 
     const result = query.rows.map(r => Championship.hydrate<Championship>(r))[0];
     if (result) return result;

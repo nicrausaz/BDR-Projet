@@ -1,39 +1,43 @@
 <template>
   <v-container fluid style="max-width: 1500px" v-if="pagination">
     <v-toolbar class="mb-3" flat outlined rounded>
-      <v-toolbar-title>Les Matchs</v-toolbar-title>
+      <v-toolbar-title>Les Entrainemnents</v-toolbar-title>
       <v-spacer />
       <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
-      <v-btn icon @click="addGame">
+      <v-btn icon @click="addTraining">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-toolbar>
     <v-dialog v-model="dialog" max-width="750" persistent>
-      <CreateGame :prefill="editedGame" @close="() => (this.dialog = false)" @confirm="afterConfirm" />
+      <CreateTraining :prefill="editedTraining" @close="() => (this.dialog = false)" @confirm="afterConfirm" />
     </v-dialog>
     <v-card flat outlined>
       <v-list two-line>
-        <v-card v-for="game in pagination.result" :key="game.uid" class="ma-3" flat outlined>
-          <v-list-item :to="{name: 'GameIndex', params: {id: game.uid}}" link>
+        <v-card v-for="training in pagination.result" :key="training.uid" class="ma-3" flat outlined>
+          <v-list-item :to="{name: 'TrainingIndex', params: {id: training.uid}}" link>
             <v-list-item-content>
-              <v-list-item-title>{{ game.name }}</v-list-item-title>
+              <v-list-item-title>{{ training.name }}</v-list-item-title>
               <v-list-item-subtitle>
                 <v-chip class="mr-2" label small>
                   <v-icon left small>mdi-calendar</v-icon>
-                  {{ game.startAt.toLocaleDateString() }}
+                  {{ training.startAt.toLocaleDateString() }}
                 </v-chip>
                 <v-chip class="mr-2" label small>
                   <v-icon left small>mdi-stadium</v-icon>
-                  {{ game.stadium.name }}
+                  {{ training.stadium.name }}
+                </v-chip>
+                <v-chip class="mr-2" label small>
+                  <v-icon left small>mdi-account-multiple</v-icon>
+                  {{ training.team.name }}
                 </v-chip>
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteGame(game)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteTraining(training)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editGame(game)">
+                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editTraining(training)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </div>
@@ -51,19 +55,19 @@
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator";
 import API from "@/plugins/API";
-import Game from "@/models/Game";
+import Training from "@/models/Training";
 import Pagination from "@/models/Pagination";
-import CreateGame from "@/components/CreateGame.vue";
+import CreateTraining from "@/components/CreateTraining.vue";
 
 @Component({
-  components: {CreateGame}
+  components: {CreateTraining}
 })
-export default class Games extends Vue {
+export default class Trainings extends Vue {
   private dialog = false;
   private page = 1;
   private limit = 20;
-  private pagination: Pagination<Game> | null = null;
-  private editedGame: Game | null = null;
+  private pagination: Pagination<Training> | null = null;
+  private editedTraining: Training | null = null;
   private searchQuery = "";
 
   @Watch("searchQuery") onQuery() {
@@ -74,26 +78,26 @@ export default class Games extends Vue {
     const limit = this.limit;
     const offset = (this.page - 1) * limit;
     const query = this.searchQuery.trim();
-    this.pagination = await API.get<Pagination<Game>>(Pagination, `my/game?q=${query}&limit=${limit}&offset=${offset}`);
+    this.pagination = await API.get<Pagination<Training>>(Pagination, `my/training?q=${query}&limit=${limit}&offset=${offset}`);
   }
 
   private async afterConfirm() {
-    this.editedGame = null;
+    this.editedTraining = null;
     await this.setPage();
   }
 
-  private async addGame() {
-    this.editedGame = null;
+  private async addTraining() {
+    this.editedTraining = null;
     this.dialog = true;
   }
 
-  private async editGame(game: Game) {
-    this.editedGame = new Game(game);
+  private async editTraining(training: Training) {
+    this.editedTraining = new Training(training);
     this.dialog = true;
   }
 
-  private async deleteGame(game: Game) {
-    await API.delete<Game>(Game, `my/event/game/${game.uid}`);
+  private async deleteTraining(training: Training) {
+    await API.delete<Training>(Training, `my/training/${training.uid}`);
     await this.setPage();
   }
 

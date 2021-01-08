@@ -103,7 +103,7 @@ export default class Calendar extends Vue {
   onEvent({event}: {event: CalendarEntry}) {
     switch (event.eventType) {
       case "training":
-        break;
+        return this.$router.push({name: "TrainingIndex", params: {id: event.uid}});
       case "game":
         return this.$router.push({name: "GameIndex", params: {id: event.uid}});
     }

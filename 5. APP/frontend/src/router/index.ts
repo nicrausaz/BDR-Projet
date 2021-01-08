@@ -109,9 +109,17 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
-    path: "/training/:id",
+    path: "/training/",
     name: "Training",
-    component: () => import("@/views/training/Training.vue"),
+    component: () => import("@/views/training/Trainings.vue"),
+    meta: {
+      authenticate: true
+    }
+  },
+  {
+    path: "/training/:id",
+    name: "TrainingIndex",
+    component: () => import("@/views/training/TrainingIndex.vue"),
     meta: {
       authenticate: true
     }

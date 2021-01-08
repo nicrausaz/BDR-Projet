@@ -47,7 +47,7 @@ export class MyClubController {
       await client.query("BEGIN");
 
       const res1 = await client.query(
-          `INSERT INTO club (name, sportid)
+        `INSERT INTO club (name, sportid)
            VALUES ($1, $2)
            RETURNING *`, [club.name, club.sport.id]);
 
@@ -72,7 +72,7 @@ export class MyClubController {
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(
-        `UPDATE club
+      `UPDATE club
          SET name    = $1,
              sportid = $2
          WHERE id = $3

@@ -14,19 +14,19 @@ export default class Championship extends Model {
 
   @Property()
   @Hydrator()
-  startAt: Date;
+  startAt: string;
 
   @Property()
   @Hydrator()
-  endAt: Date;
+  endAt: string;
 
   @Property()
-  @Hydrator()
+  @Hydrator({model: Season})
   @Allow({}, null)
   season: Season;
 
   @Property()
-  @Hydrator()
+  @Hydrator({model: League})
   @Allow({}, null)
   league: League;
 }

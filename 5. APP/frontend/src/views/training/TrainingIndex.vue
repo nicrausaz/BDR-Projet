@@ -20,7 +20,7 @@
     <v-row>
       <v-col>
         <v-card flat outlined>
-          <v-card :to="{name: 'Team', params: {id: training.team.id}}" dark flat>
+          <v-card :to="{name: 'TeamIndex', params: {id: training.team.id}}" dark flat>
             <v-card-title class="text-uppercase">
               <v-avatar size="64" tile class="mr-3">
                 <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
@@ -39,6 +39,7 @@ import {Component, Vue} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Header from "@/components/Header.vue";
 import Training from "@/models/Training";
+import {RedirectError} from "@/plugins/Utils";
 
 @Component({
   components: {Header}
@@ -47,8 +48,12 @@ export default class TrainingIndex extends Vue {
   private training: Training | null = null;
 
   async mounted() {
-    const {id} = this.$route.params;
-    this.training = await API.get<Training>(Training, `my/training/${id}`);
+    try {
+      const {id} = this.$route.params;
+      this.training = await API.get<Training>(Training, `my/training/${id}`);
+    } catch (e: Error) {
+      return RedirectError(e);
+    }
   }
 }
 </script>

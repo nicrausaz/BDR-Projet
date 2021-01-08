@@ -123,7 +123,6 @@ export default class Utils {
     return result.rows.map(p => p.federationid);
   }
 
-  //TODO
   static async getAccessibleChampionshipResources(administrator: Administrator) {
     const result = await DB.query(`SELECT c.id
                                    FROM championship c
@@ -131,8 +130,58 @@ export default class Utils {
                                             INNER JOIN federation f on l.federationid = f.id
                                             INNER JOIN administrator_federation af on f.id = af.federationid
                                    WHERE af.administratoruid = $1
-                                     `, [administrator.uid]);
+    `, [administrator.uid]);
     return result.rows.map(p => p.id);
+  }
+
+
+  static async getAccessibleTrainingResources(administrator: Administrator) {
+    const result = await DB.query(`SELECT t.uid
+                                   FROM event_training t
+                                            INNER JOIN team on t.teamid = team.id
+                                            INNER JOIN club c on team.clubid = c.id
+                                            INNER JOIN administrator_club ac on c.id = ac.clubid
+                                   WHERE ac.administratoruid = $1
+    `, [administrator.uid]);
+    return result.rows.map(p => p.uid);
+  }
+
+  static async getAccessibleGameResources(administrator: Administrator) {
+    const result = await DB.query(`SELECT g.uid
+                                   FROM event_game g
+                                            INNER JOIN championship c on g.championshipid = c.id
+                                            INNER JOIN league l on c.leagueid = l.id
+                                            INNER JOIN federation f on l.federationid = f.id
+                                            INNER JOIN administrator_federation af on f.id = af.federationid
+                                   WHERE af.administratoruid = $1
+    `, [administrator.uid]);
+    return result.rows.map(p => p.uid);
+  }
+
+  static async checkAccessToTrainingResource(administrator: Administrator, eventUid: string) {
+    const result = await DB.query(`SELECT t.uid
+                                   FROM event_training t
+                                            INNER JOIN team on t.teamid = team.id
+                                            INNER JOIN club c on team.clubid = c.id
+                                            INNER JOIN administrator_club ac on c.id = ac.clubid
+                                   WHERE ac.administratoruid = $1
+                                     AND t.uid = $2
+                                   LIMIT 1
+    `, [administrator.uid, eventUid]);
+    return result.rows.length == 1;
+  }
+
+  static async checkAccessToGameResource(administrator: Administrator, eventUid: string) {
+    const result = await DB.query(`SELECT g.uid
+                                   FROM event_game g
+                                            INNER JOIN championship c on g.championshipid = c.id
+                                            INNER JOIN league l on c.leagueid = l.id
+                                            INNER JOIN federation f on l.federationid = f.id
+                                            INNER JOIN administrator_federation af on f.id = af.federationid
+                                   WHERE af.administratoruid = $1
+                                     AND g.uid = $2
+    `, [administrator.uid, eventUid]);
+    return result.rows.length == 1;
   }
 
 }
