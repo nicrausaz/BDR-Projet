@@ -29,6 +29,7 @@ export default class MyClubInput extends Vue {
   private search: Club | null = null;
   private select: number | null = null;
   @Prop() private value!: Club;
+  @Prop() private restricted!: boolean;
 
   @Watch("value")
   async valueChanged() {
@@ -46,7 +47,9 @@ export default class MyClubInput extends Vue {
   public async searchChange(query?: string) {
     const q = query ?? this.search ?? "";
     this.isLoading = true;
-    return API.get<Pagination<Club>>(Pagination, `my/club?q=${q}`)
+    const url = this.restricted ? `my/club?q=${q}` : `club?q=${q}`;
+
+    return API.get<Pagination<Club>>(Pagination, url)
       .then(({result}) => {
         this.items = result;
       })

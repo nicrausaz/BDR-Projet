@@ -13,16 +13,16 @@
             <v-text-field v-model="model.name" filled label="Name" required />
           </v-col>
           <v-col cols="6">
-            <StadiumInput v-model="model.stadium" />
+            <StadiumInput v-model="model.stadium" required />
           </v-col>
           <v-col cols="6">
-            <TeamInput v-model="model.team" />
+            <TeamInput v-model="model.team" restricted="true" required />
           </v-col>
           <v-col cols="6">
-            <DateInput v-model="model.startAt" label="Start At" />
+            <DateInput v-model="model.startAt" label="Start At" required />
           </v-col>
           <v-col cols="6">
-            <DateInput v-model="model.endAt" label="End At" />
+            <DateInput v-model="model.endAt" label="End At" required />
           </v-col>
           <v-col cols="12">
             <v-textarea v-model="model.description" filled label="Description" required />

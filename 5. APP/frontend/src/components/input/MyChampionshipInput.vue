@@ -29,6 +29,7 @@ export default class ChampionshipInput extends Vue {
   private search: Championship | null = null;
   private select: number | null = null;
   @Prop() private value!: Championship;
+  @Prop() private restricted!: boolean;
 
   @Watch("value")
   async valueChanged() {
@@ -46,7 +47,9 @@ export default class ChampionshipInput extends Vue {
   public async searchChange(query?: string) {
     const q = query ?? this.search ?? "";
     this.isLoading = true;
-    return API.get<Pagination<Championship>>(Pagination, `my/championship?q=${q}`)
+    const url = this.restricted ? `my/championship?q=${q}` : `championship?q=${q}`;
+
+    return API.get<Pagination<Championship>>(Pagination, url)
       .then(({result}) => {
         this.items = result;
       })

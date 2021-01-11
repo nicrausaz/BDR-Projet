@@ -29,6 +29,7 @@ export default class TeamInput extends Vue {
   private search: Team | null = null;
   private select: number | null = null;
   @Prop() private value!: Team;
+  @Prop() private restricted!: boolean;
 
   @Watch("value")
   async valueChanged() {
@@ -46,7 +47,9 @@ export default class TeamInput extends Vue {
   public async searchChange(query?: string) {
     const q = query ?? this.search ?? "";
     this.isLoading = true;
-    return API.get<Pagination<Team>>(Pagination, `team?q=${q}`)
+    const url = this.restricted ? `my/team?q=${q}` : `team?q=${q}`;
+
+    return API.get<Pagination<Team>>(Pagination, url)
       .then(({result}) => {
         this.items = result;
       })

@@ -73,12 +73,12 @@ export default class App extends Vue {
     },
     {
       text: "Mes équipes",
-      icon: "mdi-domain",
+      icon: "mdi-account-group",
       path: {name: "Teams"}
     },
     {
       text: "Mes clubs",
-      icon: "mdi-soccer",
+      icon: "mdi-domain",
       path: {name: "Clubs"}
     },
     {
@@ -92,8 +92,8 @@ export default class App extends Vue {
       path: {name: "Game"}
     },
     {
-      text: "Les entrainments",
-      icon: "mdi-basketball",
+      text: "Les entraînements",
+      icon: "mdi-weight-lifter",
       path: {name: "Training"}
     },
     {

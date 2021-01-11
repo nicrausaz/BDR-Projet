@@ -1,6 +1,6 @@
-import {Controller, Get, PathParams, QueryParams, Req, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../../db/DB";
+import DB, {PoolClient} from "../../db/DB";
 import {NotFound, Unauthorized} from "@tsed/exceptions";
 import Training from "../../models/Training";
 import {Authenticate} from "@tsed/passport";
@@ -60,6 +60,72 @@ export class MyTrainingController {
     const result = query.rows.map(r => Training.hydrate<Training>(r))[0];
     if (result) return result;
     throw new NotFound("Training not found");
+  }
+
+  @Put("/")
+  @ContentType("json")
+  async put(@Req() request: Req, @BodyParams() training: Training) {
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, training.team.id)) throw new Unauthorized("Unauthorized Resource");
+
+    console.log(training);
+    const client = await PoolClient();
+    try {
+      await client.query("BEGIN");
+      const res1 = await client.query(
+          `INSERT INTO event (name, startat, endat, stadiumid)
+           VALUES ($1, $2, $3, $4)
+           RETURNING *`, [training.name, training.startAt, training.endAt, training.stadium.id]);
+
+      const res2 = await client.query(`INSERT INTO training (eventuid, description, teamid)
+                                       VALUES ($1, $2, $3)`, [res1.rows[0].uid, training.description, training.team.id]);
+
+      await client.query("COMMIT");
+
+      return res2.rows.map(r => Training.hydrate<Training>(r))[0];
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
+  }
+
+
+  @Patch("/:uid")
+  @ContentType("json")
+  async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() training: Training) {
+    if (!await Utils.checkAccessToTrainingResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, training.team.id)) throw new Unauthorized("Unauthorized ressource");
+
+    const client = await PoolClient();
+    try {
+      await client.query("BEGIN");
+      const res1 = await client.query(
+          `UPDATE event
+           SET name      = $1,
+               startat   = $2,
+               endat     = $3,
+               stadiumid = $4
+           WHERE uid = $5
+           RETURNING *`, [training.name, training.startAt, training.endAt, training.stadium.id, uid]);
+
+      const res2 = await client.query(`UPDATE training
+                                       SET description = $1,
+                                           teamid      = $2
+                                       WHERE eventuid = $3
+                                       RETURNING *`, [training.description, training.team.id, res1.rows[0].uid]);
+
+      await client.query("COMMIT");
+
+      return res2.rows.map(r => Training.hydrate<Training>(r))[0];
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
   }
 }
 

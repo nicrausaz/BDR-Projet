@@ -1,6 +1,6 @@
-import {Controller, Get, PathParams, QueryParams, Req, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Get, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../../db/DB";
+import DB, {PoolClient} from "../../db/DB";
 import {NotFound, Unauthorized} from "@tsed/exceptions";
 import Game from "../../models/Game";
 import {Authenticate} from "@tsed/passport";
@@ -72,6 +72,34 @@ export class MyGameController {
     const result = query.rows.map(r => Game.hydrate<Game>(r))[0];
     if (result) return result;
     throw new NotFound("Game not found");
+  }
+
+  @Put("/")
+  @ContentType("json")
+  async putGame(@Req() request: Req, @BodyParams() game: Game) {
+    if (!await Utils.checkAccessToChampionshipResource(<Administrator>request.user, game.championship.id)) throw new Unauthorized("Unauthorized Resource");
+
+    const client = await PoolClient();
+    try {
+      await client.query("BEGIN");
+      const res1 = await client.query(
+        `INSERT INTO event (name, startat, endat, stadiumid)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id]);
+
+      const res2 = await client.query(`INSERT INTO game (eventuid, gameid, championshipid, teamhomeid, teamguestid)
+                                       VALUES ($1, $2, $3, $4, $5)`, [res1.rows[0].uid, game.gameId, game.championship.id, game.teamHome.id, game.teamGuest.id]);
+
+      await client.query("COMMIT");
+
+      return res2.rows.map(r => Game.hydrate<Game>(r))[0];
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
   }
 }
 
