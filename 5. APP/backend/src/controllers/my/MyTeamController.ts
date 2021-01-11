@@ -48,7 +48,7 @@ export class MyTeamController {
   @ContentType("json")
   async getPlayers(@Req() request: Req, @PathParams("id") id: number) {
 
-    const perms = Utils.getAccessibleClubResources(<Administrator>request.user);
+    const perms = await Utils.getAccessibleClubResources(<Administrator>request.user);
 
     const result = await DB.query(`SELECT *
                                    FROM player

@@ -32,41 +32,41 @@ export default class Utils {
     return result.rows.length == 1;
   }
 
-  static async totalRows(tableName: string): Promise<number> {
-    return (await DB.query(`
-        SELECT count(*) as total
-        FROM ${tableName}
-    `)).rows[0]?.total;
+  static async checkAccessToLeagueResource(administrator: Administrator, leagueId: number): Promise<boolean> {
+    const result = await DB.query(`SELECT l.id
+                                   FROM administrator_federation
+                                            INNER JOIN league l on administrator_federation.federationid = l.federationid
+                                   WHERE administratoruid = $1
+                                     AND l.id = $2
+                                   LIMIT 1`, [administrator.uid, leagueId]);
+
+    return result.rows.length == 1;
   }
 
-  static async createSearchPaginate<T extends typeof Model>(model: T, tableName: string, sql: string, values: any[], query: string, limit: number, offset: number) {
-    const result = await DB.query(`
-        ${sql}
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset, ...values]);
-
-    return Pagination.create(
-      result.rows.map(r => model.hydrate(r)),
-      await Utils.totalRows(tableName),
-      limit,
-      offset
-    );
+  static async checkAccessToTrainingResource(administrator: Administrator, eventUid: string) {
+    const result = await DB.query(`SELECT t.uid
+                                   FROM event_training t
+                                            INNER JOIN team on t.teamid = team.id
+                                            INNER JOIN club c on team.clubid = c.id
+                                            INNER JOIN administrator_club ac on c.id = ac.clubid
+                                   WHERE ac.administratoruid = $1
+                                     AND t.uid = $2
+                                   LIMIT 1
+    `, [administrator.uid, eventUid]);
+    return result.rows.length == 1;
   }
 
-  static async createSimpleSearchPaginate<T extends typeof Model>(model: T, tableName: string, attributes: string[], query: string, limit: number, offset: number) {
-    const result = await DB.query(`
-        SELECT *
-        FROM ${tableName}
-        ${attributes.map((attribute, index) => `${(index > 0) ? "OR" : "WHERE"} ${attribute} ILIKE $1`).join("\n")}
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset]);
-
-    return Pagination.create(
-      result.rows.map(r => model.hydrate(r)),
-      await Utils.totalRows(tableName),
-      limit,
-      offset
-    );
+  static async checkAccessToGameResource(administrator: Administrator, eventUid: string) {
+    const result = await DB.query(`SELECT g.uid
+                                   FROM event_game g
+                                            INNER JOIN championship c on g.championshipid = c.id
+                                            INNER JOIN league l on c.leagueid = l.id
+                                            INNER JOIN federation f on l.federationid = f.id
+                                            INNER JOIN administrator_federation af on f.id = af.federationid
+                                   WHERE af.administratoruid = $1
+                                     AND g.uid = $2
+    `, [administrator.uid, eventUid]);
+    return result.rows.length == 1;
   }
 
   static async checkAccessToTeamResource(administrator: Administrator, teamId: number): Promise<boolean> {
@@ -134,6 +134,14 @@ export default class Utils {
     return result.rows.map(p => p.id);
   }
 
+  static async getAccessibleLeagueRessources(administrator: Administrator) {
+    const result = await DB.query(`SELECT l.id
+                                   FROM league l
+                                            INNER JOIN federation f on l.federationid = f.id
+                                            INNER JOIN administrator_federation af on f.id = af.federationid
+                                   WHERE af.administratoruid = $1`, [administrator.uid]);
+    return result.rows.map(p => p.id);
+  }
 
   static async getAccessibleTrainingResources(administrator: Administrator) {
     const result = await DB.query(`SELECT t.uid
@@ -158,30 +166,40 @@ export default class Utils {
     return result.rows.map(p => p.uid);
   }
 
-  static async checkAccessToTrainingResource(administrator: Administrator, eventUid: string) {
-    const result = await DB.query(`SELECT t.uid
-                                   FROM event_training t
-                                            INNER JOIN team on t.teamid = team.id
-                                            INNER JOIN club c on team.clubid = c.id
-                                            INNER JOIN administrator_club ac on c.id = ac.clubid
-                                   WHERE ac.administratoruid = $1
-                                     AND t.uid = $2
-                                   LIMIT 1
-    `, [administrator.uid, eventUid]);
-    return result.rows.length == 1;
+  static async totalRows(tableName: string): Promise<number> {
+    return (await DB.query(`
+        SELECT count(*) as total
+        FROM ${tableName}
+    `)).rows[0]?.total;
   }
 
-  static async checkAccessToGameResource(administrator: Administrator, eventUid: string) {
-    const result = await DB.query(`SELECT g.uid
-                                   FROM event_game g
-                                            INNER JOIN championship c on g.championshipid = c.id
-                                            INNER JOIN league l on c.leagueid = l.id
-                                            INNER JOIN federation f on l.federationid = f.id
-                                            INNER JOIN administrator_federation af on f.id = af.federationid
-                                   WHERE af.administratoruid = $1
-                                     AND g.uid = $2
-    `, [administrator.uid, eventUid]);
-    return result.rows.length == 1;
+  static async createSearchPaginate<T extends typeof Model>(model: T, tableName: string, sql: string, values: any[], query: string, limit: number, offset: number) {
+    const result = await DB.query(`
+        ${sql}
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset, ...values]);
+
+    return Pagination.create(
+      result.rows.map(r => model.hydrate(r)),
+      await Utils.totalRows(tableName),
+      limit,
+      offset
+    );
   }
 
+  static async createSimpleSearchPaginate<T extends typeof Model>(model: T, tableName: string, attributes: string[], query: string, limit: number, offset: number) {
+    const result = await DB.query(`
+        SELECT *
+        FROM ${tableName}
+        ${attributes.map((attribute, index) => `${(index > 0) ? "OR" : "WHERE"} ${attribute} ILIKE $1`).join("\n")}
+        LIMIT $2 OFFSET $3
+    `, [`%${query}%`, limit, offset]);
+
+    return Pagination.create(
+      result.rows.map(r => model.hydrate(r)),
+      await Utils.totalRows(tableName),
+      limit,
+      offset
+    );
+  }
 }
