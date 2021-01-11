@@ -47,7 +47,6 @@
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
 import MyClubInput from "@/components/input/MyClubInput.vue";
-import Training from "@/models/Training";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
 import DateInput from "@/components/input/DateInput.vue";
@@ -55,6 +54,7 @@ import TeamInput from "@/components/input/TeamInput.vue";
 import StadiumInput from "@/components/input/StadiumInput.vue";
 import MyChampionshipInput from "@/components/input/MyChampionshipInput.vue";
 import Header from "@/components/Header.vue";
+import Training from "@/models/Training";
 
 @Component({
   components: {Header, MyChampionshipInput, StadiumInput, TeamInput, DateInput, LeagueInput, MyClubInput}
