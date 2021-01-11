@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import {Component, Vue, Watch} from "vue-property-decorator";
-import MyClubInput from "@/components/input/MyClubInput.vue";
+import MyClubInput from "@/components/input/ClubInput.vue";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
 import Pagination from "@/models/Pagination";

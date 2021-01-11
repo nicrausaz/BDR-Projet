@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import MyClubInput from "@/components/input/MyClubInput.vue";
+import MyClubInput from "@/components/input/ClubInput.vue";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";

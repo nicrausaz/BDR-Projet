@@ -93,7 +93,7 @@ export default class Games extends Vue {
   }
 
   private async deleteGame(game: Game) {
-    await API.delete<Game>(Game, `my/event/game/${game.uid}`);
+    await API.delete<Game>(Game, `my/game/${game.uid}`);
     await this.setPage();
   }
 

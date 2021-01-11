@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import {NotFound, Unauthorized} from "@tsed/exceptions";
@@ -83,9 +83,9 @@ export class MyGameController {
     try {
       await client.query("BEGIN");
       const res1 = await client.query(
-        `INSERT INTO event (name, startat, endat, stadiumid)
-         VALUES ($1, $2, $3, $4)
-         RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id]);
+          `INSERT INTO event (name, startat, endat, stadiumid)
+           VALUES ($1, $2, $3, $4)
+           RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id]);
 
       const res2 = await client.query(`INSERT INTO game (eventuid, gameid, championshipid, teamhomeid, teamguestid)
                                        VALUES ($1, $2, $3, $4, $5)`, [res1.rows[0].uid, game.gameId, game.championship.id, game.teamHome.id, game.teamGuest.id]);
@@ -100,6 +100,51 @@ export class MyGameController {
     } finally {
       client.release();
     }
+  }
+
+  @Patch("/:uid")
+  @ContentType("json")
+  async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() game: Game) {
+    if (!await Utils.checkAccessToGameResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
+
+    const client = await PoolClient();
+    try {
+      await client.query("BEGIN");
+      const res1 = await client.query(
+          `UPDATE event
+           SET name      = $1,
+               startat   = $2,
+               endat     = $3,
+               stadiumid = $4
+           WHERE uid = $5
+           RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id, uid]);
+
+      const res2 = await client.query(`UPDATE game
+                                       SET gameid         = $1,
+                                           championshipid = $2,
+                                           teamhomeid     = $3,
+                                           teamguestid    = $4
+                                       WHERE eventuid = $5
+                                       RETURNING *`, [game.gameId, game.championship.id, game.teamHome.id, game.teamGuest.id, uid]);
+
+      await client.query("COMMIT");
+
+      return res2.rows.map(r => Game.hydrate<Game>(r))[0];
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
+  }
+
+  @Delete("/:uid")
+  @ContentType("json")
+  async delete(@Req() request: Req, @PathParams("uid") uid: string) {
+    if (!await Utils.checkAccessToGameResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
+
+    await DB.query(`DELETE FROM event WHERE uid = $1`, [uid]);
   }
 }
 

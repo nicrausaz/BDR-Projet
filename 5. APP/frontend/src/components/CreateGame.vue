@@ -42,7 +42,7 @@
             <StadiumInput v-model="model.stadium" />
           </v-col>
           <v-col cols="6">
-            <MyChampionshipInput v-model="model.championship" />
+            <MyChampionshipInput v-model="model.championship" restricted="true" />
           </v-col>
           <v-col cols="6">
             <TeamInput v-model="model.teamHome" />
@@ -69,14 +69,14 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import MyClubInput from "@/components/input/MyClubInput.vue";
+import MyClubInput from "@/components/input/ClubInput.vue";
 import Game from "@/models/Game";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
 import DateInput from "@/components/input/DateInput.vue";
 import TeamInput from "@/components/input/TeamInput.vue";
 import StadiumInput from "@/components/input/StadiumInput.vue";
-import MyChampionshipInput from "@/components/input/MyChampionshipInput.vue";
+import MyChampionshipInput from "@/components/input/ChampionshipInput.vue";
 import Header from "@/components/Header.vue";
 
 @Component({
@@ -105,7 +105,7 @@ export default class CreateGame extends Vue {
 
   private send() {
     this.loading = true;
-    this.request("my/event/game")
+    this.request("my/game")
       .then(() => {
         this.close();
         this.$emit("confirm");

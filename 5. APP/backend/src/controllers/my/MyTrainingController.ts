@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import {NotFound, Unauthorized} from "@tsed/exceptions";
@@ -126,6 +126,14 @@ export class MyTrainingController {
     } finally {
       client.release();
     }
+  }
+
+  @Delete("/:uid")
+  @ContentType("json")
+  async delete(@Req() request: Req, @PathParams("uid") uid: string) {
+    if (!await Utils.checkAccessToTrainingResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
+
+    await DB.query(`DELETE FROM event WHERE uid = $1`, [uid]);
   }
 }
 
