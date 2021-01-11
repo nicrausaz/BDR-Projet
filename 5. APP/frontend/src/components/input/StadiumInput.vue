@@ -1,5 +1,6 @@
 <template>
   <v-autocomplete
+    ref="input"
     v-model="select"
     :items="items"
     :loading="isLoading"
@@ -17,13 +18,18 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
 import Stadium from "@/models/Stadium";
 import API from "@/plugins/API";
 import Pagination from "@/models/Pagination";
 
 @Component
 export default class StadiumInput extends Vue {
+  @Ref("input") private input!: Vue & {
+    cacheItems: boolean;
+    cachedItems: any[];
+  };
+
   private isLoading = false;
   private items: Stadium[] = [];
   private search: Stadium | null = null;
@@ -38,7 +44,8 @@ export default class StadiumInput extends Vue {
 
   @Watch("select")
   public onSelect() {
-    const item = this.items.find((i) => i.id === this.select);
+    const items = this.input.cacheItems ? this.input.cachedItems : this.items;
+    const item = items.find((i) => i.id === this.select);
     if (item) this.$emit("input", item);
   }
 

@@ -1,5 +1,6 @@
 <template>
   <v-autocomplete
+    ref="input"
     :items="items"
     :loading="isLoading"
     :search-input.sync="search"
@@ -17,18 +18,24 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
 import League from "@/models/League";
 import API from "@/plugins/API";
 import Pagination from "@/models/Pagination";
 
 @Component
 export default class LeagueInput extends Vue {
+  @Ref("input") private input!: Vue & {
+    cacheItems: boolean;
+    cachedItems: any[];
+  };
+
   private isLoading = false;
   private items: League[] = [];
   private search: League | null = null;
   private select: number | null = null;
   @Prop() private value!: League;
+  @Prop() private restricted!: boolean;
 
   @Watch("value")
   async valueChanged() {
@@ -38,7 +45,8 @@ export default class LeagueInput extends Vue {
 
   @Watch("select")
   public onSelect() {
-    const item = this.items.find((i) => i.id === this.select);
+    const items = this.input.cacheItems ? this.input.cachedItems : this.items;
+    const item = items.find((i) => i.id === this.select);
     if (item) this.$emit("input", item);
   }
 
@@ -46,7 +54,9 @@ export default class LeagueInput extends Vue {
   public async searchChange(query?: string) {
     const q = query ?? this.search ?? "";
     this.isLoading = true;
-    return API.get<Pagination<League>>(Pagination, `league?q=${q}`)
+    const url = this.restricted ? `my/league?q=${q}` : `league?q=${q}`;
+
+    return API.get<Pagination<League>>(Pagination, url)
       .then(({result}) => {
         this.items = result;
       })
