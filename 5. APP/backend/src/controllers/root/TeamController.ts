@@ -81,4 +81,18 @@ export class TeamController {
 
     return result.rows.map(r => Game.hydrate<Game>(r));
   }
+
+  @Get("/:id/stats")
+  @ContentType("json")
+  async getStats(@PathParams("id") id: number) {
+    const result = await DB.query(`SELECT SUM(CASE WHEN result = 'W' then 1 else 0 end) AS nbWin,
+                                          SUM(CASE WHEN result = 'D' then 1 else 0 end) AS nbDraw,
+                                          SUM(CASE WHEN result = 'L' then 1 else 0 end) AS nbLost
+
+                                   FROM team_played_games
+                                   WHERE teamid = $1
+                                   GROUP BY teamid;`, [id]);
+
+    return Object.keys(result.rows[0]).map(k => result.rows[0][k]);
+  }
 }

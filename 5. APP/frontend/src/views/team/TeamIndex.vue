@@ -15,6 +15,16 @@
       </v-parallax>
     </v-card>
     <v-row>
+      <v-col>
+        <v-card flat outlined>
+          <v-card dark flat>
+            <v-card-title class="text-uppercase">Stats</v-card-title>
+          </v-card>
+          <GamesChart></GamesChart>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12" sm="6">
         <v-card flat outlined>
           <v-card dark flat>
@@ -72,8 +82,10 @@ import Team from "@/models/Team";
 import PlayerTeam from "@/models/PlayerTeam";
 import Game from "@/models/Game";
 import {RedirectError} from "@/plugins/Utils";
-
-@Component
+import GamesChart from "@/components/GamesChart.vue";
+@Component({
+  components: {GamesChart}
+})
 export default class TeamIndex extends Vue {
   private team: Team | null = null;
   private players: PlayerTeam[] = [];
