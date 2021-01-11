@@ -6,7 +6,6 @@ import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
-import Championship from "../../models/Championship";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/federation")

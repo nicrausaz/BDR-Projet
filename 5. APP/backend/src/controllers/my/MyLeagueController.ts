@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, Req, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import {Authenticate} from "@tsed/passport";
 import {ContentType} from "@tsed/schema";
@@ -7,6 +7,7 @@ import Administrator from "../../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
 import DB from "../../db/DB";
 import League from "../../models/League";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/league")
 @UseBefore(RouteLogMiddleware)
@@ -15,15 +16,28 @@ export class MyLeagueController {
 
   @Get("/")
   @ContentType("json")
-  async getAllLeagues(@Req() request: Req) {
+  async getAllLeagues(@Req() request: Req,
+                      @QueryParams("q")query: string = "",
+                      @QueryParams("limit")limit: number = 20,
+                      @QueryParams("offset")offset: number = 0) {
     const perms = await Utils.getAccessibleLeagueRessources(<Administrator>request.user);
 
-    const result = await DB.query(`SELECT *, row_to_json(f.*) as federation
-                                   FROM league l
-                                            INNER JOIN federation f on l.federationid = f.id
-                                   WHERE l.id = ANY ($1)`, [perms]);
-
-    return result.rows.map(r => League.hydrate<League>(r));
+    return new Paginator(League)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM league
+          WHERE id = ANY ($1)
+            AND level ILIKE $2
+      `, [perms])
+      .setQuery(`
+          SELECT l.*,
+                 row_to_json(f.*) as federation
+          FROM league l
+                   INNER JOIN federation f on l.federationid = f.id
+          WHERE l.id = ANY ($1)
+            AND l.level ILIKE $2
+      `, [perms])
+      .create({query, limit, offset});
   }
 
   @Put("/")

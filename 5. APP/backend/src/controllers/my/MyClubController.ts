@@ -58,14 +58,13 @@ export class MyClubController {
 
       await client.query("COMMIT");
 
+      return res1.rows.map(r => Club.hydrate<Club>(r))[0];
     } catch (e) {
       await client.query("ROLLBACK");
       throw e;
     } finally {
       client.release();
     }
-
-    // return result.rows.map(r => Club.hydrate<Club>(r))[0];
   }
 
   @Patch("/:id")
@@ -82,5 +81,4 @@ export class MyClubController {
 
     return result.rows.map(r => Club.hydrate<Club>(r))[0];
   }
-
 }

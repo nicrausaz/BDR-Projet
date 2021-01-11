@@ -1,13 +1,10 @@
-import {BodyParams, Controller, Get, Put, QueryParams, Req, UseBefore} from "@tsed/common";
+import {Controller, Get, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB, {PoolClient} from "../../db/DB";
+import DB from "../../db/DB";
 import {Authenticate} from "@tsed/passport";
-import Game from "../../models/Game";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
-import {Unauthorized} from "@tsed/exceptions";
 import CalendarEntry from "../../models/CalendarEntry";
-import Training from "../../models/Training";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
 @Controller("/event")
