@@ -5,9 +5,10 @@ import Team from "../../models/Team";
 import {NotFound} from "@tsed/exceptions";
 import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
 import Game from "../../models/Game";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Paginator from "../../utils/Paginator";
+import Championship from "../../models/Championship";
 
 @Controller("/team")
 @UseBefore(RouteLogMiddleware)
@@ -21,13 +22,20 @@ export class TeamController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSearchPaginate(Team, "team", `
-        SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
-        FROM team t
-                 INNER JOIN club c on t.clubid = c.id
-                 INNER JOIN league l on t.leagueid = l.id
-        WHERE t.name ILIKE $1
-    `, [], query, limit, offset);
+    return new Paginator(Championship)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM team
+          WHERE name ILIKE $1
+      `)
+      .setQuery(`
+          SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
+          FROM team t
+                   INNER JOIN club c on t.clubid = c.id
+                   INNER JOIN league l on t.leagueid = l.id
+          WHERE t.name ILIKE $1
+      `,)
+      .create({query, limit, offset});
   }
 
   @Get("/:id")

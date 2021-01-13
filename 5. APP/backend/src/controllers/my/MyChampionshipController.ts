@@ -31,11 +31,12 @@ export class MyChampionshipController {
             AND name ILIKE $2
       `, [perms])
       .setQuery(`
-          SELECT *
-          FROM championship
-          WHERE id = ANY ($1)
-            AND name ILIKE $2
-          ORDER BY name
+          SELECT c.*,row_to_json(l.*)  as league
+          FROM championship as c
+          INNER JOIN league l on l.id = c.leagueid
+          WHERE c.id = ANY ($1)
+            AND c.name ILIKE $2
+          ORDER BY c.name
       `, [perms])
       .create({query, limit, offset});
     return JSON.stringify(await page);
@@ -47,10 +48,10 @@ export class MyChampionshipController {
 
     if (!await Utils.checkAccessToChampionshipResource(<Administrator>request.user, championship.id)) throw new Unauthorized("Unauthorized Resource");
 
-    const result = await DB.query(`INSERT INTO championship (name, startat, endat, seasonid, leagueid)
-                                   VALUES ($1, $2, $3, $4, $5)
+    const result = await DB.query(`INSERT INTO championship (name, startat, endat, leagueid)
+                                   VALUES ($1, $2, $3, $4)
                                    RETURNING *`,
-      [championship.name, championship.startAt, championship.endAt, championship.season.id, championship.league.id]);
+      [championship.name, championship.startAt, championship.endAt, championship.league.id]);
 
     return result.rows.map(r => Championship.hydrate<Championship>(r))[0];
   }
@@ -64,11 +65,10 @@ export class MyChampionshipController {
     const result = await DB.query(`UPDATE championship
                                    SET name     = $1,
                                        startat  = $2,
-                                       endat    = $3,
-                                       seasonid = $4
-                                   WHERE id = $5
+                                       endat    = $3
+                                   WHERE id = $4
                                    RETURNING *`,
-      [championship.name, championship.startAt, championship.endAt, championship.season.id, id]
+      [championship.name, championship.startAt, championship.endAt, id]
     );
 
     return result.rows.map(r => Championship.hydrate<Championship>(r))[0];

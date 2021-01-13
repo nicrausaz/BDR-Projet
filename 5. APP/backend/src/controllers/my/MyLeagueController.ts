@@ -86,7 +86,7 @@ export class MyLeagueController {
 
       await client.query(`UPDATE championship
                     SET active = FALSE
-                    WHERE seasonid = $1`, [id]);
+                    WHERE leagueid = $1`, [id]);
 
       await client.query("COMMIT");
 

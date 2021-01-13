@@ -173,20 +173,6 @@ export default class Utils {
     `)).rows[0]?.total;
   }
 
-  static async createSearchPaginate<T extends typeof Model>(model: T, tableName: string, sql: string, values: any[], query: string, limit: number, offset: number) {
-    const result = await DB.query(`
-        ${sql}
-        LIMIT $2 OFFSET $3
-    `, [`%${query}%`, limit, offset, ...values]);
-
-    return Pagination.create(
-      result.rows.map(r => model.hydrate(r)),
-      await Utils.totalRows(tableName),
-      limit,
-      offset
-    );
-  }
-
   static async createSimpleSearchPaginate<T extends typeof Model>(model: T, tableName: string, attributes: string[], query: string, limit: number, offset: number) {
     const result = await DB.query(`
         SELECT *

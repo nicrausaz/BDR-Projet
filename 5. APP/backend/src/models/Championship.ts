@@ -1,4 +1,3 @@
-import Season from "./Season";
 import League from "./League";
 import {Allow, Property} from "@tsed/schema";
 import Model, {Hydrator} from "./Model";
@@ -19,11 +18,6 @@ export default class Championship extends Model {
   @Property()
   @Hydrator()
   endAt: string;
-
-  @Property()
-  @Hydrator({model: Season})
-  @Allow({}, null)
-  season: Season;
 
   @Property()
   @Hydrator({model: League})

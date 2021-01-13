@@ -11,6 +11,9 @@
         <v-text-field required filled v-model="model.name" label="Name" />
         <MyClubInput required v-model="model.club" />
         <LeagueInput required v-model="model.league" />
+        <template v-if="editMode">
+          <TeamAddPlayers :team="model" />
+        </template>
       </v-container>
       <v-card-actions>
         <v-spacer />
@@ -33,9 +36,10 @@ import MyClubInput from "@/components/input/ClubInput.vue";
 import Team from "@/models/Team";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
+import TeamAddPlayers from "@/components/TeamAddPlayers.vue";
 
 @Component({
-  components: {LeagueInput, MyClubInput}
+  components: {TeamAddPlayers, LeagueInput, MyClubInput}
 })
 export default class CreateTeam extends Vue {
   @Prop() prefill!: Team;
@@ -44,8 +48,12 @@ export default class CreateTeam extends Vue {
   private error: string | null = null;
   private team = new Team();
 
+  private get editMode() {
+    return !!this.prefill;
+  }
+
   private request(path: string) {
-    return this.prefill
+    return this.editMode
       ? API.axios.patch<Team>(`${path}/${this.model.primaryKey}`, this.model)
       : API.axios.put<Team>(`${path}`, this.model);
   }
