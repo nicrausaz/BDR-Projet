@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
+import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import Club from "../../models/Club";
@@ -30,12 +30,14 @@ export class MyClubController {
                    INNER JOIN sport s ON s.id = c.sportid
           WHERE c.id = ANY ($1)
             AND c.name ILIKE $2
+            AND c.active = TRUE
       `, [perms])
       .setQuery(`SELECT c.*, row_to_json(s.*) as sport
                  FROM club c
                           INNER JOIN sport s ON s.id = c.sportid
                  WHERE c.id = ANY ($1)
                    AND c.name ILIKE $2
+                   AND c.active = TRUE
                  ORDER BY name
       `, [perms])
       .create({query, limit, offset});
@@ -49,7 +51,7 @@ export class MyClubController {
       await client.query("BEGIN");
 
       const res1 = await client.query(
-        `INSERT INTO club (name, sportid)
+          `INSERT INTO club (name, sportid)
            VALUES ($1, $2)
            RETURNING *`, [club.name, club.sport.id]);
 
@@ -73,12 +75,42 @@ export class MyClubController {
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(
-      `UPDATE club
+        `UPDATE club
          SET name    = $1,
              sportid = $2
          WHERE id = $3
          RETURNING *`, [club.name, club.sport.id, id]);
 
     return result.rows.map(r => Club.hydrate<Club>(r))[0];
+  }
+
+  @Delete("/:id")
+  @ContentType("json")
+  async delete(@Req() request: Req, @PathParams("id") id: number) {
+    const client = await PoolClient();
+    try {
+      await client.query("BEGIN");
+
+      const res1 = await client.query(`UPDATE team
+                                       SET active = FALSE
+                                       WHERE clubid = $1 RETURNING id`, [id]);
+
+      const res2 = await client.query(`UPDATE player_play_for_team
+                                       SET endat = COALESCE(endat, NOW())
+                                       WHERE teamid = $1`, [res1.rows[0].id]);
+
+
+      const res3 = await client.query(`UPDATE club
+                                   SET active = FALSE
+                                   WHERE id = $1`, [id]);
+
+      await client.query("COMMIT");
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
   }
 }

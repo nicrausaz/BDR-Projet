@@ -46,6 +46,7 @@ export class GameController {
   async get(
     @PathParams("uid") uid: string
   ) {
+    // TODO: Il faut récupèrer les joueurs qui jouaient au moment du match !
     const query = await DB.query(
       `SELECT g.*,
               row_to_json(s.*)  as stadium,

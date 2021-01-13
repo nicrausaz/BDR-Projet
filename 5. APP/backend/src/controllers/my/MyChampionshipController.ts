@@ -80,9 +80,7 @@ export class MyChampionshipController {
 
     if (!await Utils.checkAccessToChampionshipResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
-    await DB.query(`DELETE
-                    FROM championship
-                    WHERE id = $1`, [id]);
+    await DB.query(`UPDATE championship SET active = FALSE WHERE id = $1`, [id]);
   }
 
 

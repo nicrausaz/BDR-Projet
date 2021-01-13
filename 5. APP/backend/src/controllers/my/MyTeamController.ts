@@ -1,6 +1,6 @@
 import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
-import DB from "../../db/DB";
+import DB, {PoolClient} from "../../db/DB";
 import {Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
@@ -9,6 +9,7 @@ import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Club from "../../models/Club";
 
 @Controller("/team")
 @UseBefore(RouteLogMiddleware)
@@ -31,6 +32,7 @@ export class MyTeamController {
                    INNER JOIN club c on t.clubid = c.id
           WHERE c.id = ANY ($1)
             AND t.name ILIKE $2
+            AND t.active = TRUE
       `, [perms])
       .setQuery(`
           SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
@@ -39,6 +41,7 @@ export class MyTeamController {
                    INNER JOIN league l on t.leagueid = l.id
           WHERE c.id = ANY ($1)
             AND t.name ILIKE $2
+            AND t.active = TRUE
           ORDER BY name
       `, [perms])
       .create({query, limit, offset});
@@ -57,6 +60,7 @@ export class MyTeamController {
                                             INNER JOIN club c on t.clubid = c.id
                                    WHERE t.id = $1
                                      AND c.id = ANY ($2)
+                                     AND t.active = TRUE
                                      AND (endat IS NULL OR endat > NOW());`, [id, perms]);
 
     return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
@@ -95,10 +99,27 @@ export class MyTeamController {
   async deleteTeam(@Req() request: Req, @PathParams("id") id: number) {
     if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
 
-    // TODO: set to active = false
-    // await DB.query(`DELETE
-    //                 FROM team
-    //                 WHERE id = $1`, [id]);
+    const client = await PoolClient();
+    try {
+      await client.query("BEGIN");
+
+
+      const res1 = await client.query(`UPDATE player_play_for_team
+                                       SET endat = COALESCE(endat, NOW())
+                                       WHERE teamid = $1`, [id]);
+
+      const res2 = await client.query(`UPDATE team
+                                       SET active = FALSE
+                                       WHERE id = $1`, [id]);
+
+      await client.query("COMMIT");
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
   }
 
   @Put("/:id/player")

@@ -72,8 +72,31 @@ export class MyFederationController {
   async delete(@Req() request: Req, @PathParams("id") id: number) {
     if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
-    await DB.query(`DELETE
-                    FROM federation
-                    WHERE id = $1`, [id]);
+    const client = await PoolClient();
+
+    try {
+      await client.query("BEGIN");
+
+      const res1 = await client.query(`UPDATE federation
+                                       SET active = FALSE
+                                       WHERE id = $1
+                                       RETURNING id`, [id]);
+
+      await client.query(`UPDATE league
+                          SET active = FALSE
+                          WHERE federationid = $1`, [res1.rows[0].id]);
+
+      await client.query(`UPDATE championship
+                          SET active = FALSE
+                          WHERE leagueid = $1`, [res1.rows[0].id]);
+
+      await client.query("COMMIT");
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
   }
 }

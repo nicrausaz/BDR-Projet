@@ -5,7 +5,7 @@
     Création des tables et contraintes
  ---------------------------------------
     Nicolas Crausaz & Maxime Scharwath
-    Version 3 - 30.11.2020
+    Version 4 - 13.01.2021
  ---------------------------------------
  */
 
@@ -23,20 +23,12 @@ CREATE TABLE sport
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE season
-(
-    id      SERIAL PRIMARY KEY,
-    name    VARCHAR(15) NOT NULL,
-    startAt DATE        NOT NULL,
-    endAt   DATE        NOT NULL
-);
-
-
 CREATE TABLE federation
 (
     id      SERIAL PRIMARY KEY,
     name    VARCHAR(100) NOT NULL,
     sportId SERIAL       NOT NULL,
+    active   BOOLEAN DEFAULT TRUE NOT NULL,
 
     CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id) ON DELETE SET NULL
 );
@@ -47,6 +39,7 @@ CREATE TABLE league
     level        VARCHAR(50) NOT NULL,
     gender       CHAR        NOT NULL,
     federationid SERIAL      NOT NULL,
+    active   BOOLEAN DEFAULT TRUE NOT NULL,
 
     CONSTRAINT fk_federationId FOREIGN KEY (federationid) REFERENCES federation (id)
 );
@@ -57,10 +50,9 @@ CREATE TABLE championship
     name     VARCHAR(30) NOT NULL,
     startAt  DATE        NOT NULL,
     endAt    DATE        NOT NULL,
-    seasonId SERIAL      NOT NULL,
     leagueId SERIAL      NOT NULL,
+    active   BOOLEAN DEFAULT TRUE NOT NULL,
 
-    CONSTRAINT fk_seasonId FOREIGN KEY (seasonId) REFERENCES season (id),
     CONSTRAINT fk_leagueId FOREIGN KEY (leagueId) REFERENCES league (id)
 );
 
@@ -93,6 +85,7 @@ CREATE TABLE club
     id      SERIAL PRIMARY KEY,
     name    VARCHAR(100) NOT NULL,
     sportId SERIAL,
+    active   BOOLEAN DEFAULT TRUE NOT NULL,
     CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id) ON DELETE SET NULL
 );
 
@@ -102,8 +95,9 @@ CREATE TABLE team
     name     VARCHAR(100) NOT NULL,
     clubId   SERIAL       NOT NULL,
     leagueId SERIAL       NOT NULL,
+    active   BOOLEAN DEFAULT TRUE NOT NULL,
 
-    CONSTRAINT fk_clubId FOREIGN KEY (clubId) REFERENCES club (id) ON DELETE CASCADE,
+    CONSTRAINT fk_clubId FOREIGN KEY (clubId) REFERENCES club (id),
     CONSTRAINT fk_leagueId FOREIGN KEY (leagueId) REFERENCES league (id)
 );
 

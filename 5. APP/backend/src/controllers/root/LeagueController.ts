@@ -1,4 +1,4 @@
-import {Controller, Get, PathParams, QueryParams, UseBefore} from "@tsed/common";
+import {Controller, Delete, Get, PathParams, QueryParams, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB from "../../db/DB";
 import League from "../../models/League";
@@ -24,11 +24,9 @@ export class LeagueController {
 
   @Get("/:id")
   @ContentType("json")
-  async get(
-    @PathParams("id") id: string
-  ) {
+  async get(@PathParams("id") id: string) {
     const query = await DB.query(
-      `SELECT *
+        `SELECT *
          FROM league
          WHERE id = $1`, [id]);
     const result = query.rows.map(r => League.hydrate<League>(r))[0];

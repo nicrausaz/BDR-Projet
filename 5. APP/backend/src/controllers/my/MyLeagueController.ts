@@ -5,9 +5,10 @@ import {ContentType} from "@tsed/schema";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import {Unauthorized} from "@tsed/exceptions";
-import DB from "../../db/DB";
+import DB, {PoolClient} from "../../db/DB";
 import League from "../../models/League";
 import Paginator from "../../utils/Paginator";
+import Federation from "../../models/Federation";
 
 @Controller("/league")
 @UseBefore(RouteLogMiddleware)
@@ -68,19 +69,32 @@ export class MyLeagueController {
     return result.rows.map((r) => League.hydrate<League>(r))[0];
   }
 
-  /**
-   * DELETE league
-   * @param request
-   * @param id
-   */
   @Delete("/:id")
   @ContentType("json")
   async deleteLeague(@Req() request: Req, @PathParams("id") id: number) {
 
     if (!await Utils.checkAccessToLeagueResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
-    await DB.query(`DELETE
-                    FROM league
+    const client = await PoolClient();
+
+    try {
+      await client.query("BEGIN");
+
+      await client.query(`UPDATE league
+                    SET active = FALSE
                     WHERE id = $1`, [id]);
+
+      await client.query(`UPDATE championship
+                    SET active = FALSE
+                    WHERE seasonid = $1`, [id]);
+
+      await client.query("COMMIT");
+
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
   }
 }
