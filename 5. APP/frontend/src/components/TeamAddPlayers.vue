@@ -1,80 +1,62 @@
 <template>
-  <v-list>
-    <v-card flat outlined>
-      <v-card dark flat>
-        <v-card-title class="text-uppercase">Players</v-card-title>
+  <div>
+    <v-btn @click="open">Add Player</v-btn>
+    <v-dialog v-model="dialog" max-width="750" persistent>
+      <v-card>
+        <v-form v-model="valid">
+          <v-container>
+            <PlayerInput v-model="player" />
+            <v-text-field v-model="jerseyNumber" filled label="jerseyNumber" type="number" />
+          </v-container>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn depressed @click="close">
+              <v-icon left>mdi-close</v-icon>
+              Cancel
+            </v-btn>
+            <v-btn :disabled="!valid" depressed @click="send">
+              <v-icon left>mdi-pencil</v-icon>
+              save
+            </v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
-      <PlayerInput />
-      <v-list two-line>
-        <v-card v-if="!players.length" class="ma-3 justify-center" flat>No player</v-card>
-        <v-card v-for="player in players" :key="player.uid" class="ma-3" flat outlined>
-          <v-list-item :to="{name: 'PlayerIndex', params: {id: player.uid}}" link>
-            <v-list-item-avatar color="grey">
-              <v-img :src="player.avatar" />
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title>{{ player.name }}</v-list-item-title>
-              <v-list-item-subtitle>
-                <v-chip label small>
-                  <v-icon left small>mdi-tshirt-crew</v-icon>
-                  {{ player.jerseyNumber }}
-                </v-chip>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action>
-              <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="removePlayer(player)">
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editPlayer(player)">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </div>
-            </v-list-item-action>
-          </v-list-item>
-        </v-card>
-      </v-list>
-    </v-card>
-  </v-list>
+    </v-dialog>
+  </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from "vue-property-decorator";
-import API from "@/plugins/API";
-import PlayerTeam from "@/models/PlayerTeam";
-import Team from "@/models/Team";
+import {Component, Emit, Vue} from "vue-property-decorator";
 import PlayerInput from "@/components/input/PlayerInput.vue";
+import Player from "@/models/Player";
 
 @Component({
   components: {PlayerInput}
 })
 export default class TeamAddPlayers extends Vue {
-  @Prop({required: true}) readonly team!: Team;
-  private players: PlayerTeam[] = [];
+  private dialog = false;
+  private valid = false;
+  private player: Player | null = null;
+  private jerseyNumber = 0;
 
-  @Watch("team")
-  async setPage() {
-    console.log(this.team.id);
-    this.players = await API.get<PlayerTeam[]>(PlayerTeam, `my/team/${this.team.id}/player`);
-    console.log(this.players);
+  open() {
+    this.dialog = true;
   }
 
-  mounted() {
-    this.setPage();
+  close() {
+    this.dialog = false;
+    this.jerseyNumber = 0;
+    this.player = null;
   }
 
-  async removePlayer(player: PlayerTeam) {
-    console.log("delete", player);
-    await API.delete<PlayerTeam>(PlayerTeam, `my/team/${this.team.id}/player`, {
-      data: {
-        playerUid: player.uid
-      }
-    });
-    await this.setPage();
-  }
-
-  async editPlayer(player: PlayerTeam) {
-    console.log(player);
+  @Emit("added")
+  send() {
+    const data = {
+      player: this.player,
+      jerseyNumber: this.jerseyNumber
+    };
+    this.close();
+    return data;
   }
 }
 </script>

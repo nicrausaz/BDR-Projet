@@ -57,18 +57,18 @@ class API {
     return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
   }
 
-  public async post<M>(Class: any, url: string, config?: AxiosRequestConfig) {
-    const {data} = await this.axios.post(url, config);
+  public async post<M>(Class: any, url: string, datas?: any, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.post(url, datas, config);
     return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
   }
 
-  public async put<M>(Class: any, url: string, config?: AxiosRequestConfig) {
-    const {data} = await this.axios.put(url, config);
+  public async put<M>(Class: any, url: string, datas?: any, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.put(url, datas, config);
     return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
   }
 
-  public async patch<M>(Class: any, url: string, config?: AxiosRequestConfig) {
-    const {data} = await this.axios.patch(url, config);
+  public async patch<M>(Class: any, url: string, datas?: any, config?: AxiosRequestConfig) {
+    const {data} = await this.axios.patch(url, datas, config);
     return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
   }
 }

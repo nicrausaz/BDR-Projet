@@ -8,7 +8,7 @@
     cache-items
     filled
     item-text="name"
-    item-value="id"
+    item-value="uid"
     label="Player"
     @focus="searchChange"
   >
@@ -28,6 +28,7 @@ import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
 import Player from "@/models/Player";
 import API from "@/plugins/API";
 import Pagination from "@/models/Pagination";
+
 @Component
 export default class PlayerInput extends Vue {
   @Ref("input") private input!: Vue & {

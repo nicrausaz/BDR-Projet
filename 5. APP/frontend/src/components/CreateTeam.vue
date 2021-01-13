@@ -12,7 +12,7 @@
         <MyClubInput required v-model="model.club" />
         <LeagueInput required v-model="model.league" />
         <template v-if="editMode">
-          <TeamAddPlayers :team="model" />
+          <TeamManagerPlayers :team="model" />
         </template>
       </v-container>
       <v-card-actions>
@@ -36,10 +36,10 @@ import MyClubInput from "@/components/input/ClubInput.vue";
 import Team from "@/models/Team";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
-import TeamAddPlayers from "@/components/TeamAddPlayers.vue";
+import TeamManagerPlayers from "@/components/TeamManagerPlayers.vue";
 
 @Component({
-  components: {TeamAddPlayers, LeagueInput, MyClubInput}
+  components: {TeamManagerPlayers: TeamManagerPlayers, LeagueInput, MyClubInput}
 })
 export default class CreateTeam extends Vue {
   @Prop() prefill!: Team;

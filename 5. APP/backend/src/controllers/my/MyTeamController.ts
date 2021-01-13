@@ -127,7 +127,7 @@ export class MyTeamController {
   async addPlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
 
     if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
-
+    console.log(data);
     await DB.query(`INSERT INTO player_play_for_team(playeruid, teamid, jerseynumber)
                     VALUES ($1, $2, $3)`, [data.playerUid, id, data.jerseyNumber]);
   }
