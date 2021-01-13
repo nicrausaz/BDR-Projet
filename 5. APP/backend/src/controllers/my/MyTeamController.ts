@@ -90,6 +90,17 @@ export class MyTeamController {
     return result.rows.map((r) => Team.hydrate<Team>(r))[0];
   }
 
+  @Delete("/:id")
+  @ContentType("json")
+  async deleteTeam(@Req() request: Req, @PathParams("id") id: number) {
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized ressource");
+
+    // TODO: set to active = false
+    // await DB.query(`DELETE
+    //                 FROM team
+    //                 WHERE id = $1`, [id]);
+  }
+
   @Put("/:id/player")
   @ContentType("json")
   async addPlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
