@@ -8,6 +8,12 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import Chart from "chart.js";
 import API from "@/plugins/API";
 
+interface StatInterface {
+  wins: number;
+  loses: number;
+  draws: number;
+}
+
 @Component({})
 export default class GamesChart extends Vue {
   @Prop({
@@ -15,26 +21,25 @@ export default class GamesChart extends Vue {
       return Chart.defaults.doughnut;
     }
   })
-  readonly options: any | undefined;
+  private stats: StatInterface | null = null;
 
-  private data!: Array<number>;
   private loaded!: boolean;
 
   async mounted() {
     const {id} = this.$route.params;
     this.loaded = false;
     try {
-      this.data = await API.get(Array, `team/${id}/stats`);
+      this.stats = (await API.axios.get<StatInterface>(`team/${id}/stats`)).data;
       this.loaded = true;
     } catch (e) {
       console.error(e);
     }
 
     this.createChart({
-      labels: ["Wins", "Draws", "Loses"],
+      labels: Object.keys(this.stats ?? {}).map((t) => t.toUpperCase()),
       datasets: [
         {
-          data: this.data,
+          data: Object.values(this.stats ?? {}),
           backgroundColor: ["Green", "Blue", "Red"]
         }
       ]
@@ -46,7 +51,7 @@ export default class GamesChart extends Vue {
     const options = {
       type: "doughnut",
       data: chartData,
-      options: this.options
+      options: {}
     };
     // eslint-disable-next-line no-new
     new Chart(canvas, options);

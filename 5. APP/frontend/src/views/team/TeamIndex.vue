@@ -20,7 +20,7 @@
           <v-card dark flat>
             <v-card-title class="text-uppercase">Stats</v-card-title>
           </v-card>
-          <GamesChart></GamesChart>
+          <GamesChart />
         </v-card>
       </v-col>
     </v-row>
@@ -83,6 +83,7 @@ import PlayerTeam from "@/models/PlayerTeam";
 import Game from "@/models/Game";
 import {RedirectError} from "@/plugins/Utils";
 import GamesChart from "@/components/GamesChart.vue";
+
 @Component({
   components: {GamesChart}
 })

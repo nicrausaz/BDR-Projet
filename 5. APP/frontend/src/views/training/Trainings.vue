@@ -46,8 +46,8 @@
         </v-card>
       </v-list>
     </v-card>
-    <v-footer app inset elevation="20" class="justify-center">
-      <v-pagination @input="setPage" v-model="page" circle :length="Math.ceil(pagination.total / pagination.limit)"></v-pagination>
+    <v-footer v-if="nbPage > 1" app class="justify-center" elevation="20" inset>
+      <v-pagination v-model="page" :length="nbPage" circle @input="setPage"></v-pagination>
     </v-footer>
   </v-container>
 </template>
@@ -72,6 +72,11 @@ export default class Trainings extends Vue {
 
   @Watch("searchQuery") onQuery() {
     this.setPage();
+  }
+
+  private get nbPage(): number {
+    if (!this.pagination) return 0;
+    return Math.ceil(this.pagination.total / this.pagination.limit);
   }
 
   async setPage() {
