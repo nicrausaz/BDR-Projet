@@ -30,7 +30,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteGame(game)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(game)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editGame(game)">
@@ -42,6 +42,12 @@
         </v-card>
       </v-list>
     </v-card>
+    <ConfirmModal
+      :open="openConfirm"
+      text="Are you sure ? This action cannot be undone."
+      @close="cancelDelete"
+      @confirm="deleteGame"
+    ></ConfirmModal>
     <v-footer v-if="nbPage > 1" app class="justify-center" elevation="20" inset>
       <v-pagination v-model="page" :length="nbPage" circle @input="setPage"></v-pagination>
     </v-footer>
@@ -54,16 +60,19 @@ import API from "@/plugins/API";
 import Game from "@/models/Game";
 import Pagination from "@/models/Pagination";
 import CreateGame from "@/components/CreateGame.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
-  components: {CreateGame}
+  components: {CreateGame, ConfirmModal}
 })
 export default class Games extends Vue {
   private dialog = false;
+  private openConfirm = false;
   private page = 1;
   private limit = 20;
   private pagination: Pagination<Game> | null = null;
   private editedGame: Game | null = null;
+  private deletedGame: Game | null = null;
   private searchQuery = "";
 
   @Watch("searchQuery") onQuery() {
@@ -97,9 +106,22 @@ export default class Games extends Vue {
     this.dialog = true;
   }
 
-  private async deleteGame(game: Game) {
-    await API.delete<Game>(Game, `my/game/${game.uid}`);
-    await this.setPage();
+  private async deleteGame() {
+    this.openConfirm = false;
+    if (this.deletedGame) {
+      await API.delete<Game>(Game, `my/game/${this.deletedGame.uid}`);
+      await this.setPage();
+    }
+  }
+
+  private async cancelDelete() {
+    this.openConfirm = false;
+    this.deletedGame = null;
+  }
+
+  private async prepareDelete(game: Game) {
+    this.openConfirm = true;
+    this.deletedGame = game;
   }
 
   async mounted() {

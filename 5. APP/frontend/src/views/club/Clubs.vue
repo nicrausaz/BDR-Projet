@@ -28,7 +28,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteClub(club)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(club)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editClub(club)">
@@ -40,6 +40,12 @@
         </v-card>
       </v-list>
     </v-card>
+    <ConfirmModal
+      :open="openConfirm"
+      text="Are you sure ? This action cannot be undone. All related teams will be deleted."
+      @close="cancelDelete"
+      @confirm="deleteClub"
+    ></ConfirmModal>
     <v-footer app inset elevation="20" class="justify-center" v-if="nbPage > 1">
       <v-pagination @input="setPage" v-model="page" circle :length="nbPage"></v-pagination>
     </v-footer>
@@ -55,16 +61,19 @@ import Pagination from "@/models/Pagination";
 import CreateTeam from "@/components/CreateTeam.vue";
 import Club from "@/models/Club";
 import CreateClub from "@/components/CreateClub.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
-  components: {CreateClub, CreateTeam, LeagueInput, MyClubInput}
+  components: {CreateClub, CreateTeam, LeagueInput, MyClubInput, ConfirmModal}
 })
 export default class Clubs extends Vue {
   private dialog = false;
+  private openConfirm = false;
   private page = 1;
   private limit = 20;
   private pagination: Pagination<Club> | null = null;
   private editedClub: Club | null = null;
+  private deletedClub: Club | null = null;
   private searchQuery = "";
 
   private get nbPage(): number {
@@ -93,9 +102,12 @@ export default class Clubs extends Vue {
     this.pagination = await API.get<Pagination<Club>>(Pagination, `my/club?q=${query}&limit=${limit}&offset=${offset}`);
   }
 
-  private async deleteClub(club: Club) {
-    await API.delete<Club>(Club, `my/club/${club.id}`);
-    await this.setPage();
+  private async deleteClub() {
+    this.openConfirm = false;
+    if (this.deletedClub) {
+      await API.delete<Club>(Club, `my/club/${this.deletedClub.id}`);
+      await this.setPage();
+    }
   }
 
   private async afterConfirm() {
@@ -105,6 +117,16 @@ export default class Clubs extends Vue {
 
   async mounted() {
     await this.setPage();
+  }
+
+  private async cancelDelete() {
+    this.openConfirm = false;
+    this.deletedClub = null;
+  }
+
+  private async prepareDelete(club: Club) {
+    this.openConfirm = true;
+    this.deletedClub = club;
   }
 }
 </script>

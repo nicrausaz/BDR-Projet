@@ -9,7 +9,7 @@
       <v-container>
         <v-alert type="error" v-if="error">{{ error }}</v-alert>
         <v-text-field required filled v-model="model.name" label="Name" />
-        <MyClubInput required v-model="model.club" />
+        <MyClubInput required v-model="model.club" restricted="true" />
         <LeagueInput required v-model="model.league" />
         <template v-if="editMode">
           <TeamManagerPlayers :team="model" />
