@@ -38,6 +38,18 @@ FROM (
     );
 
 
+
+CREATE VIEW event_list AS
+(
+    SELECT *, 'training' AS eventtype
+    FROM event
+             JOIN training ON uid = training.eventuid
+    UNION
+    SELECT *, 'game' AS eventtype
+    FROM event
+             JOIN game ON uid = game.eventuid;
+);
+
 -- Triggers
 CREATE TABLE event_log
 (

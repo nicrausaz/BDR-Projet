@@ -31,6 +31,7 @@
                 <v-list-item-content>
                   <v-list-item-title>{{ info.title }}</v-list-item-title>
                   <v-list-item-subtitle>{{ info.subtitle }}</v-list-item-subtitle>
+                  {{ info.text }}
                 </v-list-item-content>
               </v-list-item>
             </v-card>
@@ -91,7 +92,7 @@ export default class TrainingIndex extends Vue {
       {icon: "mdi-stadium", title: this.training?.stadium.name, subtitle: this.training?.stadium.address},
       {icon: "mdi-sort-clock-ascending-outline", title: this.training?.startAt.toLocaleString(), subtitle: ""},
       {icon: "mdi-sort-clock-descending-outline", title: this.training?.endAt.toLocaleString(), subtitle: ""},
-      {icon: "mdi-text", title: this.training?.description, subtitle: ""}
+      {icon: "mdi-text", text: this.training?.description, subtitle: ""}
     ];
   }
 

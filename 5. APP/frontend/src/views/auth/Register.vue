@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-card :loading="loading">
+  <v-container fluid style="max-width: 1500px">
+    <v-card :loading="loading" class="mx-auto" max-width="500">
       <v-toolbar flat>
         <v-icon>mdi-account</v-icon>
         <v-toolbar-title class="font-weight-light">Register</v-toolbar-title>

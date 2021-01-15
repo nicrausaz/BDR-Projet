@@ -158,7 +158,7 @@ CREATE TABLE game
 CREATE TABLE training
 (
     eventUid    UUID PRIMARY KEY,
-    description VARCHAR(255),
+    description TEXT,
     teamId      SERIAL NOT NULL,
 
     CONSTRAINT fk_eventUid FOREIGN KEY (eventUid) REFERENCES event (uid) ON DELETE CASCADE,
