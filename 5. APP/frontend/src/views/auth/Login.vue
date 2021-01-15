@@ -1,13 +1,13 @@
 <template>
-  <v-container>
-    <v-card :loading="loading">
+  <v-container fluid style="max-width: 1500px">
+    <v-card :loading="loading" class="mx-auto" max-width="500">
       <v-toolbar flat>
         <v-icon>mdi-account</v-icon>
         <v-toolbar-title class="font-weight-light">Login</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
 
-      <v-form v-model="valid">
+      <v-form v-model="valid" @submit.prevent="login">
         <v-container>
           <v-alert type="error" v-if="error">{{ error }}</v-alert>
           <v-text-field filled label="Email" type="email" v-model="data.email" required />
@@ -19,7 +19,7 @@
             <v-icon left>mdi-account-plus</v-icon>
             Register
           </v-btn>
-          <v-btn depressed :disabled="!valid" @click="login">
+          <v-btn :disabled="!valid" depressed type="submit">
             <v-icon left>mdi-login</v-icon>
             Login
           </v-btn>
