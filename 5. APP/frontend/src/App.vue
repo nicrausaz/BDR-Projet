@@ -18,15 +18,31 @@
       <v-divider></v-divider>
 
       <v-list rounded>
-        <v-list-item v-for="item in items" :key="item.text" link :to="item.path">
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <template v-for="item in items" :to="item.path">
+          <v-list-item v-if="!item.subfolder" :key="item.text" link>
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-group v-else :key="item.text" :prepend-icon="item.icon" value="true">
+            <template v-slot:activator>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </template>
+            <v-list-item v-for="subitem in item.subfolder" :key="subitem.text" :to="subitem.path" link>
+              <v-list-item-icon>
+                <v-icon>{{ subitem.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ subitem.text }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </template>
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
@@ -67,6 +83,11 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
+      text: "My players",
+      icon: "mdi-account-multiple",
+      path: {name: "Players"}
+    },
+    {
       text: "My teams",
       icon: "mdi-account-group",
       path: {name: "Teams"}
@@ -82,24 +103,25 @@ export default class App extends Vue {
       path: {name: "Federations"}
     },
     {
-      text: "My players",
-      icon: "mdi-account-multiple",
-      path: {name: "Players"}
-    },
-    {
-      text: "My games",
-      icon: "mdi-basketball",
-      path: {name: "Game"}
-    },
-    {
-      text: "My trainings",
-      icon: "mdi-weight-lifter",
-      path: {name: "Training"}
-    },
-    {
-      text: "My calendar",
+      text: "My events",
       icon: "mdi-calendar",
-      path: {name: "Calendar"}
+      subfolder: [
+        {
+          text: "My games",
+          icon: "mdi-basketball",
+          path: {name: "Game"}
+        },
+        {
+          text: "My trainings",
+          icon: "mdi-weight-lifter",
+          path: {name: "Training"}
+        },
+        {
+          text: "My calendar",
+          icon: "mdi-calendar",
+          path: {name: "Calendar"}
+        }
+      ]
     },
     {
       text: "Logs",
