@@ -18,8 +18,8 @@
       <v-divider></v-divider>
 
       <v-list rounded>
-        <template v-for="item in items" :to="item.path">
-          <v-list-item v-if="!item.subfolder" :key="item.text" link>
+        <template v-for="item in items">
+          <v-list-item v-if="!item.subfolder" :key="item.text" :to="item.path" link>
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
