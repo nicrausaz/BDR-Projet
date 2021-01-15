@@ -67,7 +67,6 @@ export class MyTrainingController {
   async put(@Req() request: Req, @BodyParams() training: Training) {
     if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, training.team.id)) throw new Unauthorized("Unauthorized Resource");
 
-    console.log(training);
     const client = await PoolClient();
     try {
       await client.query("BEGIN");

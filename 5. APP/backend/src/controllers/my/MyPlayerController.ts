@@ -24,6 +24,7 @@ import Player from "../../models/Player";
 import DB, {PoolClient} from "../../db/DB";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Training from "../../models/Training";
 
 @Controller("/player")
 @UseBefore(RouteLogMiddleware)
@@ -46,12 +47,14 @@ export class MyPlayerController {
           FROM player
           WHERE uid = ANY ($1)
             AND (firstname ILIKE $2 OR lastname ILIKE $2)
+            AND active = TRUE
       `, [perms])
       .setQuery(`
           SELECT *
           FROM player
           WHERE uid = ANY ($1)
             AND (firstname ILIKE $2 OR lastname ILIKE $2)
+            AND active = TRUE
           ORDER BY firstname, lastname
       `, [perms])
       .create({query, limit, offset});
@@ -68,8 +71,8 @@ export class MyPlayerController {
                                        VALUES ($1, $2, $3, $4, $5, $6)
                                        RETURNING *`, [player.lastname, player.firstname, player.birthdate, player.height, player.weight, player.sex]);
 
-      const res2 = await client.query(`INSERT INTO administrator_player (administratoruid, playeruid)
-                                       VALUES ($1, $2)`, [(<Administrator>request.user).uid, res1.rows[0].uid]);
+      await client.query(`INSERT INTO administrator_player (administratoruid, playeruid)
+                          VALUES ($1, $2)`, [(<Administrator>request.user).uid, res1.rows[0].uid]);
 
 
       await client.query("COMMIT");
@@ -88,7 +91,6 @@ export class MyPlayerController {
   async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() player: Player) {
 
     if (!await Utils.checkAccessToPlayerResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized Resource");
-    //TODO add many to many
     const result = await DB.query(`UPDATE player
                                    SET lastname  = $1,
                                        firstname = $2,
@@ -102,21 +104,32 @@ export class MyPlayerController {
     return result.rows.map((r) => Player.hydrate<Player>(r))[0];
   }
 
-  /**
-   * DELETE a player
-   * @param request
-   * @param uid
-   */
   @Delete("/:uid")
   @ContentType("json")
   async delete(@Req() request: Req, @PathParams("uid") uid: string) {
     if (!await Utils.checkAccessToPlayerResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized Resource");
+
+    const client = await PoolClient();
     try {
-      fs.unlinkSync(`${rootDir}/storage/player/${uid}.png`);
+      await client.query("BEGIN");
+
+      await client.query(`UPDATE player_play_for_team
+                          SET endat = COALESCE(endat, NOW())
+                          WHERE playeruid = $1`, [uid]);
+
+      await client.query(`UPDATE player
+                          SET active = FALSE
+                          WHERE uid = $1`, [uid]);
+
+      await client.query("COMMIT");
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
     } finally {
-      await DB.query(`DELETE
-                      FROM player
-                      WHERE uid = $1`, [uid]);
+      client.release();
+      if (fs.existsSync(`${rootDir}/storage/player/${uid}.png`)) {
+        fs.unlinkSync(`${rootDir}/storage/player/${uid}.png`);
+      }
     }
   }
 

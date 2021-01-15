@@ -30,7 +30,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deletePlayer(player)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(player)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editPlayer(player)">
@@ -42,6 +42,12 @@
         </v-card>
       </v-list>
     </v-card>
+    <ConfirmModal
+      :open="openConfirm"
+      text="Are you sure ? This action cannot be undone."
+      @close="cancelDelete"
+      @confirm="deletePlayer"
+    ></ConfirmModal>
     <v-footer app inset elevation="20" class="justify-center" v-if="nbPage > 1">
       <v-pagination @input="setPage" v-model="page" circle :length="nbPage"></v-pagination>
     </v-footer>
@@ -56,16 +62,19 @@ import LeagueInput from "@/components/input/LeagueInput.vue";
 import Pagination from "@/models/Pagination";
 import Player from "@/models/Player";
 import CreatePlayer from "@/components/CreatePlayer.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
-  components: {CreatePlayer, LeagueInput, MyClubInput}
+  components: {CreatePlayer, LeagueInput, MyClubInput, ConfirmModal}
 })
 export default class Players extends Vue {
   private dialog = false;
+  private openConfirm = false;
   private page = 1;
   private limit = 10;
   private pagination: Pagination<Player> | null = null;
   private editedPlayer: Player | null = null;
+  private deletedPlayer: Player | null = null;
   private searchQuery = "";
 
   private get nbPage(): number {
@@ -99,9 +108,22 @@ export default class Players extends Vue {
     this.pagination = await API.get<Pagination<Player>>(Pagination, `my/player?q=${query}&limit=${limit}&offset=${offset}`);
   }
 
-  private async deletePlayer(player: Player) {
-    await API.delete<Player>(Player, `my/player/${player.uid}`);
-    await this.setPage();
+  private async deletePlayer() {
+    this.openConfirm = false;
+    if (this.deletedPlayer) {
+      await API.delete<Player>(Player, `my/player/${this.deletedPlayer.uid}`);
+      await this.setPage();
+    }
+  }
+
+  private async cancelDelete() {
+    this.openConfirm = false;
+    this.deletedPlayer = null;
+  }
+
+  private async prepareDelete(player: Player) {
+    this.openConfirm = true;
+    this.deletedPlayer = player;
   }
 
   async mounted() {
