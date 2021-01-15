@@ -61,6 +61,14 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/league",
+    name: "Leagues",
+    component: () => import("@/views/league/Leagues.vue"),
+    meta: {
+      authenticate: true
+    }
+  },
+  {
     path: "/players",
     name: "Players",
     component: () => import("@/views/player/Players.vue"),
@@ -104,6 +112,14 @@ const routes: Array<RouteConfig> = [
     path: "/federation/:id",
     name: "FederationIndex",
     component: () => import("@/views/federation/FederationIndex.vue"),
+    meta: {
+      authenticate: true
+    }
+  },
+  {
+    path: "/league/:id",
+    name: "LeagueIndex",
+    component: () => import("@/views/league/LeagueIndex.vue"),
     meta: {
       authenticate: true
     }

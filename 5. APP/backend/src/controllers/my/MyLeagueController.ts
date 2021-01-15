@@ -8,7 +8,6 @@ import {Unauthorized} from "@tsed/exceptions";
 import DB, {PoolClient} from "../../db/DB";
 import League from "../../models/League";
 import Paginator from "../../utils/Paginator";
-import Federation from "../../models/Federation";
 
 @Controller("/league")
 @UseBefore(RouteLogMiddleware)

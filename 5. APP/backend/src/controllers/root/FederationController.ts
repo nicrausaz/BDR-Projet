@@ -7,6 +7,7 @@ import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
+import League from "../../models/League";
 
 @Controller("/federation")
 @UseBefore(RouteLogMiddleware)
@@ -44,11 +45,26 @@ export class FederationController {
     @PathParams("id") id: number
   ) {
     const query = await DB.query(
-      `SELECT f.*, row_to_json(s.*) as sport
+        `SELECT f.*, row_to_json(s.*) as sport
          FROM federation f
                   INNER JOIN sport s ON s.id = f.sportid
          WHERE f.id = $1`, [id]);
     const result = query.rows.map(r => Federation.hydrate<Federation>(r))[0];
+    if (result) return result;
+    throw new NotFound("Federation not found");
+  }
+
+  @Get("/:id/leagues")
+  @ContentType("json")
+  async getLeagues(
+    @PathParams("id") id: number
+  ) {
+    const query = await DB.query(
+        `SELECT *
+         FROM league l
+         WHERE l.active = TRUE
+           AND l.federationid = $1`, [id]);
+    const result = query.rows.map(r => League.hydrate<League>(r));
     if (result) return result;
     throw new NotFound("Federation not found");
   }

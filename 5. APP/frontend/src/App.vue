@@ -88,19 +88,25 @@ export default class App extends Vue {
       path: {name: "Players"}
     },
     {
-      text: "My teams",
-      icon: "mdi-account-group",
-      path: {name: "Teams"}
-    },
-    {
-      text: "My clubs",
-      icon: "mdi-domain",
-      path: {name: "Clubs"}
-    },
-    {
-      text: "My federations",
-      icon: "mdi-domain",
-      path: {name: "Federations"}
+      text: "My ressources",
+      icon: "mdi-account-supervisor-circle",
+      subfolder: [
+        {
+          text: "My teams",
+          icon: "mdi-account-group",
+          path: {name: "Teams"}
+        },
+        {
+          text: "My clubs",
+          icon: "mdi-shield-home",
+          path: {name: "Clubs"}
+        },
+        {
+          text: "My federations",
+          icon: "mdi-domain",
+          path: {name: "Federations"}
+        }
+      ]
     },
     {
       text: "My events",

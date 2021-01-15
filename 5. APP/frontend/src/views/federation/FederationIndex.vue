@@ -19,16 +19,16 @@
     </v-card>
     <v-row>
       <v-col>
-        <v-card flat outlined>
-          <v-card :to="{name: 'TeamIndex', params: {id: training.team.id}}" dark flat>
-            <v-card-title class="text-uppercase">
-              <v-avatar size="64" tile class="mr-3">
-                <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
-              </v-avatar>
-              {{ training.team.name }}
-            </v-card-title>
+        <v-list two-line>
+          <v-card v-if="!leagues.length" class="ma-3 justify-center" flat>No league</v-card>
+          <v-card v-for="league in leagues" :key="league.id" class="ma-3" flat outlined>
+            <v-list-item :to="{name: 'LeagueIndex', params: {id: league.id}}" link>
+              <v-list-item-content>
+                <v-list-item-title>{{ league.level }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-card>
-        </v-card>
+        </v-list>
       </v-col>
     </v-row>
   </v-container>
@@ -40,17 +40,20 @@ import API from "@/plugins/API";
 import Header from "@/components/Header.vue";
 import Federation from "@/models/Federation";
 import {RedirectError} from "@/plugins/Utils";
+import League from "@/models/League";
 
 @Component({
   components: {Header}
 })
 export default class FederationIndex extends Vue {
   private federation: Federation | null = null;
+  private leagues: League[] = [];
 
   async mounted() {
     try {
       const {id} = this.$route.params;
       this.federation = await API.get<Federation>(Federation, `federation/${id}`);
+      this.leagues = await API.get<League[]>(League, `federation/${id}/leagues`);
     } catch (e) {
       return RedirectError(e);
     }
