@@ -1,7 +1,7 @@
 <template>
   <v-container fluid style="max-width: 1500px">
     <v-toolbar class="mb-3" flat outlined rounded>
-      <v-toolbar-title>Mes Joueurs</v-toolbar-title>
+      <v-toolbar-title>My players</v-toolbar-title>
       <v-spacer />
       <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
       <v-btn icon @click="addPlayer">

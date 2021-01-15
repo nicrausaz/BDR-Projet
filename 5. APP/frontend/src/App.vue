@@ -3,7 +3,7 @@
     <v-progress-linear v-if="routeIsLoading" fixed indeterminate style="z-index: 10" />
     <v-navigation-drawer v-model="drawer" app width="300">
       <v-container class="pa-4" v-if="administrator">
-        <v-card outlined>
+        <v-card :to="{name: 'Account'}" outlined>
           <v-list-item dense>
             <v-list-item-avatar color="gray">
               <v-img :src="administrator.avatar" />
@@ -67,11 +67,6 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
-      text: "My account",
-      icon: "mdi-account-circle",
-      path: {name: "Account"}
-    },
-    {
       text: "My teams",
       icon: "mdi-account-group",
       path: {name: "Teams"}
@@ -87,22 +82,22 @@ export default class App extends Vue {
       path: {name: "Federations"}
     },
     {
-      text: "Mes joueurs",
+      text: "My players",
       icon: "mdi-account-multiple",
       path: {name: "Players"}
     },
     {
-      text: "Games",
+      text: "My games",
       icon: "mdi-basketball",
       path: {name: "Game"}
     },
     {
-      text: "Trainings",
+      text: "My trainings",
       icon: "mdi-weight-lifter",
       path: {name: "Training"}
     },
     {
-      text: "Calendar",
+      text: "My calendar",
       icon: "mdi-calendar",
       path: {name: "Calendar"}
     },
