@@ -26,7 +26,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteFederation(federation)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(federation)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editFederation(federation)">
@@ -38,8 +38,14 @@
         </v-card>
       </v-list>
     </v-card>
+    <ConfirmModal
+      :open="openConfirm"
+      text="This action cannot be undone. All related leagues and championships will be deleted."
+      @close="cancelDelete"
+      @confirm="deleteFederation"
+    ></ConfirmModal>
     <v-footer app inset elevation="20" class="justify-center">
-      <!--<v-pagination @input="setPage" v-model="page" circle :length="Math.ceil(pagination.total / pagination.limit)"></v-pagination>-->
+      <v-pagination @input="setPage" v-model="page" circle :length="Math.ceil(pagination.total / pagination.limit)"></v-pagination>
     </v-footer>
   </v-container>
 </template>
@@ -49,17 +55,20 @@ import {Component, Vue, Watch} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Pagination from "@/models/Pagination";
 import Federation from "@/models/Federation";
-import CreateFederation from "@/components/input/CreateFederation.vue";
+import CreateFederation from "@/components/CreateFederation.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
-  components: {CreateFederation}
+  components: {ConfirmModal, CreateFederation}
 })
 export default class Federations extends Vue {
   private dialog = false;
+  private openConfirm = false;
   private page = 1;
   private limit = 20;
   private pagination: Pagination<Federation> | null = null;
   private editedFederation: Federation | null = null;
+  private deletedFederation: Federation | null = null;
   private searchQuery = "";
 
   @Watch("searchQuery") onQuery() {
@@ -88,9 +97,22 @@ export default class Federations extends Vue {
     this.dialog = true;
   }
 
-  private async deleteFederation(federation: Federation) {
-    await API.delete<Federation>(Federation, `my/federation/${federation.id}`);
-    await this.setPage();
+  private async prepareDelete(federation: Federation) {
+    this.openConfirm = true;
+    this.deletedFederation = federation;
+  }
+
+  private async cancelDelete() {
+    this.openConfirm = false;
+    this.deletedFederation = null;
+  }
+
+  private async deleteFederation() {
+    this.openConfirm = false;
+    if (this.deletedFederation) {
+      await API.delete<Federation>(Federation, `my/federation/${this.deletedFederation.id}`);
+      await this.setPage();
+    }
   }
 
   async mounted() {
