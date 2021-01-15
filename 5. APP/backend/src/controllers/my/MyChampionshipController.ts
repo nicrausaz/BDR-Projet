@@ -28,6 +28,7 @@ export class MyChampionshipController {
           SELECT count(*)
           FROM championship
           WHERE id = ANY ($1)
+            AND active = TRUE
             AND name ILIKE $2
       `, [perms])
       .setQuery(`
@@ -35,6 +36,7 @@ export class MyChampionshipController {
           FROM championship as c
           INNER JOIN league l on l.id = c.leagueid
           WHERE c.id = ANY ($1)
+            AND active = TRUE
             AND c.name ILIKE $2
           ORDER BY c.name
       `, [perms])
@@ -82,6 +84,4 @@ export class MyChampionshipController {
 
     await DB.query(`UPDATE championship SET active = FALSE WHERE id = $1`, [id]);
   }
-
-
 }

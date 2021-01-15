@@ -29,6 +29,7 @@ export class MyLeagueController {
           FROM league
           WHERE id = ANY ($1)
             AND level ILIKE $2
+            AND active = TRUE
       `, [perms])
       .setQuery(`
           SELECT l.*,
@@ -37,6 +38,7 @@ export class MyLeagueController {
                    INNER JOIN federation f on l.federationid = f.id
           WHERE l.id = ANY ($1)
             AND l.level ILIKE $2
+            AND f.active = TRUE
       `, [perms])
       .create({query, limit, offset});
   }

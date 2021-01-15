@@ -26,14 +26,14 @@ export class TeamController {
       .setTotalQuery(`
           SELECT count(*)
           FROM team
-          WHERE name ILIKE $1
+          WHERE name ILIKE $1 AND active = TRUE
       `)
       .setQuery(`
           SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
           FROM team t
                    INNER JOIN club c on t.clubid = c.id
                    INNER JOIN league l on t.leagueid = l.id
-          WHERE t.name ILIKE $1
+          WHERE t.name ILIKE $1 AND t.active = TRUE
       `,)
       .create({query, limit, offset});
   }

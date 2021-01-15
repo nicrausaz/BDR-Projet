@@ -6,6 +6,7 @@ import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/federation")
 @UseBefore(RouteLogMiddleware)
@@ -19,7 +20,22 @@ export class FederationController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSimpleSearchPaginate(Federation, "federation", ["name"], query, limit, offset);
+    const page = new Paginator(Federation)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM federation
+          WHERE name ILIKE $1
+            AND active = TRUE
+      `)
+      .setQuery(`
+          SELECT f.*
+          FROM federation f
+          WHERE f.name ILIKE $1
+            AND f.active = TRUE
+          ORDER BY f.name
+      `)
+      .create({query, limit, offset});
+    return JSON.stringify(await page);
   }
 
   @Get("/:id")

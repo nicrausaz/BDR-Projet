@@ -21,7 +21,7 @@ export class MyFederationController {
     const result = await DB.query(`SELECT f.*, row_to_json(s.*) as sport
                                    FROM federation f
                                             INNER JOIN sport s ON s.id = f.sportid
-                                   WHERE f.id = ANY ($1)`, [perms]);
+                                   WHERE f.id = ANY ($1) AND f.active = TRUE`, [perms]);
     return result.rows.map(r => Federation.hydrate<Federation>(r));
   }
 

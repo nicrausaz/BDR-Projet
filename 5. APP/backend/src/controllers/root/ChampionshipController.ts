@@ -26,14 +26,16 @@ export class ChampionshipController {
           SELECT count(*)
           FROM championship
           WHERE name ILIKE $1
+            AND active = TRUE
       `)
       .setQuery(`
-          SELECT c.*,row_to_json(l.*)  as league
+          SELECT c.*, row_to_json(l.*) as league
           FROM championship as c
-          INNER JOIN league l on l.id = c.leagueid
+                   INNER JOIN league l on l.id = c.leagueid
           WHERE c.name ILIKE $1
+            AND c.active = TRUE
           ORDER BY c.name
-      `, )
+      `)
       .create({query, limit, offset});
     return JSON.stringify(await page);
   }
@@ -42,9 +44,10 @@ export class ChampionshipController {
   @ContentType("json")
   async get(@PathParams("id") id: string) {
     const query = await DB.query(
-      `SELECT *
-       FROM championship
-       WHERE id = $1`, [id]);
+        `SELECT *
+         FROM championship
+         WHERE id = $1
+           AND active = TRUE`, [id]);
 
     const result = query.rows.map(r => Championship.hydrate<Championship>(r))[0];
     if (result) return result;

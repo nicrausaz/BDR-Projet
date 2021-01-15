@@ -6,6 +6,8 @@ import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Paginator from "../../utils/Paginator";
+import Federation from "../../models/Federation";
 
 @Controller("/league")
 @UseBefore(RouteLogMiddleware)
@@ -19,7 +21,22 @@ export class LeagueController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSimpleSearchPaginate(League, "league", ["level"], query, limit, offset);
+    const page = new Paginator(League)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM league
+          WHERE level ILIKE $1
+            AND active = TRUE
+      `)
+      .setQuery(`
+          SELECT l.*
+          FROM league l
+          WHERE l.level ILIKE $1
+            AND l.active = TRUE
+          ORDER BY l.level
+      `)
+      .create({query, limit, offset});
+    return JSON.stringify(await page);
   }
 
   @Get("/:id")
