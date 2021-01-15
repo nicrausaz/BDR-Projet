@@ -3,7 +3,7 @@
     <v-progress-linear v-if="routeIsLoading" fixed indeterminate style="z-index: 10" />
     <v-navigation-drawer v-model="drawer" app width="300">
       <v-container class="pa-4" v-if="administrator">
-        <v-card outlined>
+        <v-card :to="{name: 'Account'}" outlined>
           <v-list-item dense>
             <v-list-item-avatar color="gray">
               <v-img :src="administrator.avatar" />
@@ -18,15 +18,31 @@
       <v-divider></v-divider>
 
       <v-list rounded>
-        <v-list-item v-for="item in items" :key="item.text" link :to="item.path">
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+        <template v-for="item in items">
+          <v-list-item v-if="!item.subfolder" :key="item.text" :to="item.path" link>
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-group v-else :key="item.text" :prepend-icon="item.icon">
+            <template v-slot:activator>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </template>
+            <v-list-item v-for="subitem in item.subfolder" :key="subitem.text" :to="subitem.path" link>
+              <v-list-item-icon>
+                <v-icon>{{ subitem.icon }}</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ subitem.text }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </template>
       </v-list>
       <template v-slot:append>
         <div class="pa-2">
@@ -67,9 +83,9 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
-      text: "My account",
-      icon: "mdi-account-circle",
-      path: {name: "Account"}
+      text: "My players",
+      icon: "mdi-account-multiple",
+      path: {name: "Players"}
     },
     {
       text: "My teams",
@@ -87,24 +103,25 @@ export default class App extends Vue {
       path: {name: "Federations"}
     },
     {
-      text: "Mes joueurs",
-      icon: "mdi-account-multiple",
-      path: {name: "Players"}
-    },
-    {
-      text: "Games",
-      icon: "mdi-basketball",
-      path: {name: "Game"}
-    },
-    {
-      text: "Trainings",
-      icon: "mdi-weight-lifter",
-      path: {name: "Training"}
-    },
-    {
-      text: "Calendar",
+      text: "My events",
       icon: "mdi-calendar",
-      path: {name: "Calendar"}
+      subfolder: [
+        {
+          text: "My games",
+          icon: "mdi-basketball",
+          path: {name: "Game"}
+        },
+        {
+          text: "My trainings",
+          icon: "mdi-weight-lifter",
+          path: {name: "Training"}
+        },
+        {
+          text: "My calendar",
+          icon: "mdi-calendar",
+          path: {name: "Calendar"}
+        }
+      ]
     },
     {
       text: "Logs",

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid style="max-width: 1500px" v-if="pagination">
     <v-toolbar class="mb-3" flat outlined rounded>
-      <v-toolbar-title>Games</v-toolbar-title>
+      <v-toolbar-title>My games</v-toolbar-title>
       <v-spacer />
       <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
       <v-btn icon @click="addGame">
