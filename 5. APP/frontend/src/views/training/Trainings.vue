@@ -108,6 +108,7 @@ export default class Trainings extends Vue {
 
   async mounted() {
     await this.setPage();
+    console.log(this.pagination);
   }
 }
 </script>

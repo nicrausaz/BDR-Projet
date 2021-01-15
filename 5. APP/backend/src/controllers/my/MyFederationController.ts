@@ -7,6 +7,7 @@ import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/federation")
 @UseBefore(RouteLogMiddleware)
@@ -15,14 +16,30 @@ export class MyFederationController {
 
   @Get("/")
   @ContentType("json")
-  async getAll(@Req() request: Req) {
+  async getAll(@Req() request: Req,
+               @QueryParams("q")query: string = "",
+               @QueryParams("limit")limit: number = 20,
+               @QueryParams("offset")offset: number = 0) {
     const perms = await Utils.getAccessibleFederationResources(<Administrator>request.user);
 
-    const result = await DB.query(`SELECT f.*, row_to_json(s.*) as sport
-                                   FROM federation f
-                                            INNER JOIN sport s ON s.id = f.sportid
-                                   WHERE f.id = ANY ($1) AND f.active = TRUE`, [perms]);
-    return result.rows.map(r => Federation.hydrate<Federation>(r));
+    return new Paginator(Federation)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM federation
+          WHERE id = ANY ($1)
+            AND name ILIKE $2
+            AND active = TRUE
+      `, [perms])
+      .setQuery(`
+          SELECT f.*, row_to_json(s.*) as sport
+          FROM federation f
+                   INNER JOIN sport s ON s.id = f.sportid
+          WHERE f.id = ANY ($1)
+            AND f.name ILIKE $2
+            AND f.active = TRUE
+          ORDER BY f.name
+      `, [perms])
+      .create({query, limit, offset});
   }
 
   @Put("/")
@@ -60,9 +77,10 @@ export class MyFederationController {
     if (!await Utils.checkAccessToFederationResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`UPDATE federation
-                                   SET name = $1
-                                   WHERE id = $2
-                                   RETURNING *`, [federation.name, id]);
+                                   SET name    = $1,
+                                       sportid = $2
+                                   WHERE id = $3
+                                   RETURNING *`, [federation.name, federation.sport.id, id]);
 
     return result.rows.map((r) => Federation.hydrate<Federation>(r))[0];
   }

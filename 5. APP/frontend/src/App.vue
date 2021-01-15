@@ -57,7 +57,7 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
 import {namespace} from "vuex-class";
-import Administrator from "@/models/Administrator"; // @ is an alias to /src
+import Administrator from "@/models/Administrator";
 
 const administrator = namespace("administrator");
 const router = namespace("router");
@@ -67,19 +67,24 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
-      text: "Mon compte",
+      text: "My account",
       icon: "mdi-account-circle",
       path: {name: "Account"}
     },
     {
-      text: "Mes équipes",
+      text: "My teams",
       icon: "mdi-account-group",
       path: {name: "Teams"}
     },
     {
-      text: "Mes clubs",
+      text: "My clubs",
       icon: "mdi-domain",
       path: {name: "Clubs"}
+    },
+    {
+      text: "My federations",
+      icon: "mdi-domain",
+      path: {name: "Federations"}
     },
     {
       text: "Mes joueurs",
@@ -87,17 +92,17 @@ export default class App extends Vue {
       path: {name: "Players"}
     },
     {
-      text: "Les matchs",
+      text: "Games",
       icon: "mdi-basketball",
       path: {name: "Game"}
     },
     {
-      text: "Les entraînements",
+      text: "Trainings",
       icon: "mdi-weight-lifter",
       path: {name: "Training"}
     },
     {
-      text: "Calendrier",
+      text: "Calendar",
       icon: "mdi-calendar",
       path: {name: "Calendar"}
     },
