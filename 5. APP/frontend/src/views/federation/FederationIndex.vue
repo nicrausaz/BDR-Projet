@@ -1,18 +1,18 @@
 <template>
-  <v-container fluid style="max-width: 1500px" v-if="training">
+  <v-container fluid style="max-width: 1500px" v-if="federation">
     <v-card class="mx-auto" dark flat>
       <v-parallax :src="require('@/assets/background.jpg')" height="400">
         <v-col align="center">
-          <v-chip>{{ training.startAt.toLocaleString() }}</v-chip>
+          <v-chip>test</v-chip>
         </v-col>
         <v-row align="end">
           <v-col class="text-center">
-            <span class="text-h4">{{ training.name }}</span>
+            <span class="text-h4">{{ federation.name }}</span>
           </v-col>
         </v-row>
         <v-row align="center" no-gutters>
           <v-col align="center">
-            <v-chip>{{ training.stadium.name }}</v-chip>
+            <v-chip>xx</v-chip>
           </v-col>
         </v-row>
       </v-parallax>
@@ -50,7 +50,7 @@ export default class FederationIndex extends Vue {
   async mounted() {
     try {
       const {id} = this.$route.params;
-      this.federation = await API.get<Federation>(Federation, `my/federation/${id}`);
+      this.federation = await API.get<Federation>(Federation, `federation/${id}`);
     } catch (e) {
       return RedirectError(e);
     }
