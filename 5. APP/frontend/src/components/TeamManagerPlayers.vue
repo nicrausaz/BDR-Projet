@@ -2,9 +2,12 @@
   <v-list>
     <v-card flat outlined>
       <v-card dark flat>
-        <v-card-title class="text-uppercase">Players</v-card-title>
+        <v-card-title class="text-uppercase">
+          Players
+          <v-spacer />
+          <TeamAddPlayers @added="addPlayer" />
+        </v-card-title>
       </v-card>
-      <TeamAddPlayers @added="addPlayer" />
       <v-list two-line>
         <v-card v-if="!players.length" class="ma-3 justify-center" flat>No player</v-card>
         <v-card v-for="player in players" :key="player.uid" class="ma-3" flat outlined>
