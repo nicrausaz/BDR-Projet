@@ -53,6 +53,14 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/federation",
+    name: "Federations",
+    component: () => import("@/views/federation/Federations.vue"),
+    meta: {
+      authenticate: true
+    }
+  },
+  {
     path: "/players",
     name: "Players",
     component: () => import("@/views/player/Players.vue"),
@@ -88,6 +96,14 @@ const routes: Array<RouteConfig> = [
     path: "/club/:id",
     name: "ClubIndex",
     component: () => import("@/views/club/ClubIndex.vue"),
+    meta: {
+      authenticate: true
+    }
+  },
+  {
+    path: "/federation/:id",
+    name: "FederationIndex",
+    component: () => import("@/views/federation/FederationIndex.vue"),
     meta: {
       authenticate: true
     }

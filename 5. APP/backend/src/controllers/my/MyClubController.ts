@@ -93,16 +93,18 @@ export class MyClubController {
 
       const res1 = await client.query(`UPDATE team
                                        SET active = FALSE
-                                       WHERE clubid = $1 RETURNING id`, [id]);
+                                       WHERE clubid = $1
+                                       RETURNING id`, [id]);
 
-      const res2 = await client.query(`UPDATE player_play_for_team
-                                       SET endat = COALESCE(endat, NOW())
-                                       WHERE teamid = $1`, [res1.rows[0].id]);
-
+      if (res1.rows.length) {
+        const res2 = await client.query(`UPDATE player_play_for_team
+                                         SET endat = COALESCE(endat, NOW())
+                                         WHERE teamid = $1`, [res1.rows[0].id]);
+      }
 
       const res3 = await client.query(`UPDATE club
-                                   SET active = FALSE
-                                   WHERE id = $1`, [id]);
+                                       SET active = FALSE
+                                       WHERE id = $1`, [id]);
 
       await client.query("COMMIT");
 
