@@ -28,7 +28,7 @@
               <v-list-item-title>{{ item.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-group v-else :key="item.text" :prepend-icon="item.icon" value="true">
+          <v-list-group v-else :key="item.text" :prepend-icon="item.icon">
             <template v-slot:activator>
               <v-list-item-title>{{ item.text }}</v-list-item-title>
             </template>
