@@ -1,7 +1,7 @@
 <template>
   <v-container fluid style="max-width: 1500px" v-if="pagination">
     <v-toolbar class="mb-3" flat outlined rounded>
-      <v-toolbar-title>Les Entraînements</v-toolbar-title>
+      <v-toolbar-title>Trainings</v-toolbar-title>
       <v-spacer />
       <v-text-field v-model="searchQuery" dense hide-details outlined prepend-inner-icon="mdi-magnify" single-line></v-text-field>
       <v-btn icon @click="addTraining">
@@ -34,7 +34,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteTraining(training)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(training)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editTraining(training)">
@@ -46,6 +46,12 @@
         </v-card>
       </v-list>
     </v-card>
+    <ConfirmModal
+      :open="openConfirm"
+      text="Are you sure ? This action cannot be undone."
+      @close="cancelDelete"
+      @confirm="deleteTraining"
+    ></ConfirmModal>
     <v-footer v-if="nbPage > 1" app class="justify-center" elevation="20" inset>
       <v-pagination v-model="page" :length="nbPage" circle @input="setPage"></v-pagination>
     </v-footer>
@@ -58,16 +64,19 @@ import API from "@/plugins/API";
 import Training from "@/models/Training";
 import Pagination from "@/models/Pagination";
 import CreateTraining from "@/components/CreateTraining.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
-  components: {CreateTraining}
+  components: {CreateTraining, ConfirmModal}
 })
 export default class Trainings extends Vue {
   private dialog = false;
+  private openConfirm = false;
   private page = 1;
   private limit = 20;
   private pagination: Pagination<Training> | null = null;
   private editedTraining: Training | null = null;
+  private deletedTraining: Training | null = null;
   private searchQuery = "";
 
   @Watch("searchQuery") onQuery() {
@@ -101,14 +110,26 @@ export default class Trainings extends Vue {
     this.dialog = true;
   }
 
-  private async deleteTraining(training: Training) {
-    await API.delete<Training>(Training, `my/training/${training.uid}`);
-    await this.setPage();
+  private async deleteTraining() {
+    this.openConfirm = false;
+    if (this.deletedTraining) {
+      await API.delete<Training>(Training, `my/training/${this.deletedTraining.uid}`);
+      await this.setPage();
+    }
+  }
+
+  private async cancelDelete() {
+    this.openConfirm = false;
+    this.deletedTraining = null;
+  }
+
+  private async prepareDelete(training: Training) {
+    this.openConfirm = true;
+    this.deletedTraining = training;
   }
 
   async mounted() {
     await this.setPage();
-    console.log(this.pagination);
   }
 }
 </script>

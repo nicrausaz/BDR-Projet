@@ -35,7 +35,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="deleteTeam(team)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(team)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editTeam(team)">
@@ -47,6 +47,12 @@
         </v-card>
       </v-list>
     </v-card>
+    <ConfirmModal
+      :open="openConfirm"
+      text="Are you sure ? This action cannot be undone."
+      @close="cancelDelete"
+      @confirm="deleteTeam"
+    ></ConfirmModal>
     <v-footer app inset elevation="20" class="justify-center" v-if="nbPage > 1">
       <v-pagination @input="setPage" v-model="page" circle :length="nbPage"></v-pagination>
     </v-footer>
@@ -61,16 +67,19 @@ import LeagueInput from "@/components/input/LeagueInput.vue";
 import Pagination from "@/models/Pagination";
 import Team from "@/models/Team";
 import CreateTeam from "@/components/CreateTeam.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
 
 @Component({
-  components: {CreateTeam, LeagueInput, MyClubInput}
+  components: {CreateTeam, LeagueInput, MyClubInput, ConfirmModal}
 })
 export default class Teams extends Vue {
   private dialog = false;
+  private openConfirm = false;
   private page = 1;
   private limit = 20;
   private pagination: Pagination<Team> | null = null;
   private editedTeam: Team | null = null;
+  private deletedTeam: Team | null = null;
   private searchQuery = "";
 
   private get nbPage(): number {
@@ -94,9 +103,12 @@ export default class Teams extends Vue {
     this.dialog = true;
   }
 
-  private async deleteTeam(team: Team) {
-    await API.delete<Team>(Team, `my/team/${team.id}`);
-    await this.setPage();
+  private async deleteTeam() {
+    this.openConfirm = false;
+    if (this.deletedTeam) {
+      await API.delete<Team>(Team, `my/team/${this.deletedTeam.id}`);
+      await this.setPage();
+    }
   }
 
   private async afterConfirm() {
@@ -107,6 +119,16 @@ export default class Teams extends Vue {
   private async addTeam() {
     this.editedTeam = null;
     this.dialog = true;
+  }
+
+  private async cancelDelete() {
+    this.openConfirm = false;
+    this.deletedTeam = null;
+  }
+
+  private async prepareDelete(team: Team) {
+    this.openConfirm = true;
+    this.deletedTeam = team;
   }
 
   async mounted() {

@@ -55,9 +55,7 @@ export default class TeamManagerPlayers extends Vue {
 
   @Watch("team")
   async setPage() {
-    console.log(this.team.id);
     this.players = await API.get<PlayerTeam[]>(PlayerTeam, `my/team/${this.team.id}/player`);
-    console.log(this.players);
   }
 
   mounted() {
@@ -65,7 +63,6 @@ export default class TeamManagerPlayers extends Vue {
   }
 
   async removePlayer(player: PlayerTeam) {
-    console.log("delete", player);
     await API.delete<PlayerTeam>(PlayerTeam, `my/team/${this.team.id}/player`, {
       data: {
         playerUid: player.uid
@@ -75,7 +72,6 @@ export default class TeamManagerPlayers extends Vue {
   }
 
   async addPlayer({player, jerseyNumber}: {player: Player; jerseyNumber: number}) {
-    console.log("add", player);
     await API.put<PlayerTeam>(PlayerTeam, `my/team/${this.team.id}/player`, {
       playerUid: player?.uid,
       jerseyNumber
