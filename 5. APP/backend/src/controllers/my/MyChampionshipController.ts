@@ -36,7 +36,7 @@ export class MyChampionshipController {
           FROM championship as c
           INNER JOIN league l on l.id = c.leagueid
           WHERE c.id = ANY ($1)
-            AND active = TRUE
+            AND c.active = TRUE
             AND c.name ILIKE $2
           ORDER BY c.name
       `, [perms])
@@ -48,7 +48,7 @@ export class MyChampionshipController {
   @ContentType("json")
   async insertChampionship(@Req() request: Req, @BodyParams() championship: Championship) {
 
-    if (!await Utils.checkAccessToChampionshipResource(<Administrator>request.user, championship.id)) throw new Unauthorized("Unauthorized Resource");
+    if (!await Utils.checkAccessToLeagueResource(<Administrator>request.user, championship.league.id)) throw new Unauthorized("Unauthorized Resource");
 
     const result = await DB.query(`INSERT INTO championship (name, startat, endat, leagueid)
                                    VALUES ($1, $2, $3, $4)
