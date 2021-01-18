@@ -3,7 +3,7 @@
     <Header>
       <v-row align="center" no-gutters>
         <v-col align="center">
-          <v-chip>{{ game.startAt.toLocaleDateString() }}</v-chip>
+          <v-chip>{{ game.startAt.toLocaleString() }}</v-chip>
         </v-col>
       </v-row>
       <v-row align="center" justify="center">

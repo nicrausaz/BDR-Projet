@@ -27,10 +27,10 @@
             </v-list-item-content>
             <v-list-item-action>
               <div>
-                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(team)">
+                <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="prepareDelete(league)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editTeam(team)">
+                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editLeague(league)">
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </div>
@@ -90,7 +90,7 @@ export default class Leagues extends Vue {
     this.pagination = await API.get<Pagination<League>>(Pagination, `my/league?q=${query}&limit=${limit}&offset=${offset}`);
   }
 
-  private async editTeam(league: League) {
+  private async editLeague(league: League) {
     this.editedLeague = new League(league);
     this.dialog = true;
   }

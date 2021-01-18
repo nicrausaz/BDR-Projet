@@ -6,6 +6,7 @@ import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
+import Game from "../../models/Game";
 
 @Controller("/championship")
 @UseBefore(RouteLogMiddleware)
@@ -42,14 +43,35 @@ export class ChampionshipController {
   @ContentType("json")
   async get(@PathParams("id") id: string) {
     const query = await DB.query(
-        `SELECT *
-         FROM championship
-         WHERE id = $1
-           AND active = TRUE`, [id]);
+      `SELECT *, row_to_json(l.*) as league
+       FROM championship c
+                INNER JOIN league l on c.leagueid = l.id AND l.active = TRUE
+       WHERE c.id = $1
+         AND c.active = TRUE`
+      , [id]);
 
     const result = query.rows.map(r => Championship.hydrate<Championship>(r))[0];
     if (result) return result;
     throw new NotFound("Championship not found");
+  }
+
+  @Get("/:id/games")
+  @ContentType("json")
+  async getGames(@PathParams("id") id: string) {
+    const query = await DB.query(`SELECT g.*,
+                                         row_to_json(s.*)  as stadium,
+                                         row_to_json(th.*) as teamHome,
+                                         row_to_json(tg.*) as teamGuest,
+                                         row_to_json(c.*)  as championship
+                                  FROM event_game g
+                                           INNER JOIN stadium s
+                                                      ON s.id = g.stadiumid
+                                           INNER JOIN team th ON th.id = g.teamhomeid
+                                           INNER JOIN team tg ON tg.id = g.teamguestid
+                                           INNER JOIN championship c ON c.id = g.championshipid
+                                  WHERE championshipid = $1`, [id]);
+
+    return query.rows.map(r => Game.hydrate<Game>(r));
   }
 }
 

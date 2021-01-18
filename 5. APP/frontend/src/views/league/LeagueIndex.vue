@@ -1,38 +1,35 @@
 <template>
   <v-container v-if="league" fluid style="max-width: 1500px">
-    <v-card class="mx-auto" dark flat>
-      <v-parallax :src="require('@/assets/background.jpg')" height="400">
-        <v-row align="end">
-          <v-col class="align-self-middle text-center" cols="12">
-            <v-avatar :size="$vuetify.breakpoint.xs ? 200 : 250" tile>
-              <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png"></v-img>
-            </v-avatar>
-          </v-col>
-          <v-col class="py-7 text-center">
-            <span class="text-h4">{{ league.level }}</span>
-          </v-col>
-        </v-row>
-      </v-parallax>
-    </v-card>
+    <Header>
+      <v-row align="center" justify="center">
+        <v-col class="text-center text-h3 text-md-h1 font-weight-bold">{{ league.level }} ({{ league.gender }})</v-col>
+      </v-row>
+      <v-row align="center" no-gutters>
+        <v-col align="center">
+          <v-chip>{{ league.federation.name }}</v-chip>
+        </v-col>
+      </v-row>
+    </Header>
     <v-row>
-      <v-col cols="12" sm="6">
-        <!--<v-card flat outlined>
+      <v-col cols="12" sm="12">
+        <v-card flat outlined>
           <v-card dark flat>
-            <v-card-title class="text-uppercase">Players</v-card-title>
+            <v-card-title class="text-uppercase">Championships</v-card-title>
           </v-card>
           <v-list two-line>
-            <v-card v-if="!players.length" class="ma-3 justify-center" flat>No player</v-card>
-            <v-card v-for="player in players" :key="player.uid" class="ma-3" flat outlined>
-              <v-list-item :to="{name: 'PlayerIndex', params: {id: player.uid}}" link>
-                <v-list-item-avatar color="grey">
-                  <v-img :src="player.avatar" />
-                </v-list-item-avatar>
+            <v-card v-if="!championships.length" class="ma-3 justify-center" flat>No championship</v-card>
+            <v-card v-for="champ in championships" :key="champ.id" class="ma-3" flat outlined>
+              <v-list-item :to="{name: 'ChampionshipIndex', params: {id: champ.id}}" link>
                 <v-list-item-content>
-                  <v-list-item-title>{{ player.firstname }} {{ player.lastname }}</v-list-item-title>
+                  <v-list-item-title>{{ champ.name }}</v-list-item-title>
                   <v-list-item-subtitle>
-                    <v-chip label small>
-                      <v-icon left small>mdi-tshirt-crew</v-icon>
-                      {{ player.jerseyNumber }}
+                    <v-chip label small class="mr-2">
+                      <v-icon left small>mdi-clock</v-icon>
+                      {{ champ.league.level }}
+                    </v-chip>
+                    <v-chip label small class="mr-2">
+                      <v-icon left small>mdi-clock</v-icon>
+                      {{ champ.startAt.toLocaleDateString() }} - {{ champ.endAt.toLocaleDateString() }}
                     </v-chip>
                   </v-list-item-subtitle>
                 </v-list-item-content>
@@ -40,26 +37,6 @@
             </v-card>
           </v-list>
         </v-card>
-      </v-col>
-      <v-col cols="12" sm="6">
-        <v-card flat outlined>
-          <v-card dark flat>
-            <v-card-title class="text-uppercase">Games</v-card-title>
-          </v-card>
-          <v-list two-line>
-            <v-card v-if="!games.length" class="ma-3 justify-center" flat>No game</v-card>
-            <v-list-item v-for="game in games" :key="game.gameId" :to="{name: 'GameIndex', params: {id: game.uid}}" link>
-              <v-list-item-content>
-                <v-list-item-title>{{ game.name }}</v-list-item-title>
-                <v-list-item-subtitle>
-                  <v-chip label small>
-                    {{ game.startAt.toLocaleString() }}
-                  </v-chip>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>-->
       </v-col>
     </v-row>
   </v-container>
@@ -69,19 +46,22 @@
 import {Component, Vue} from "vue-property-decorator";
 import API from "@/plugins/API";
 import {RedirectError} from "@/plugins/Utils";
-import GamesChart from "@/components/GamesChart.vue";
 import League from "@/models/League";
+import Championship from "@/models/Championship";
+import Header from "@/components/Header.vue";
 
 @Component({
-  components: {GamesChart}
+  components: {Header}
 })
 export default class LeagueIndex extends Vue {
   private league: League | null = null;
+  private championships: Championship[] = [];
 
   async mounted() {
     try {
       const {id} = this.$route.params;
       this.league = await API.get<League>(League, `league/${id}`);
+      this.championships = await API.get<Championship[]>(Championship, `league/${id}/championships`);
     } catch (e) {
       return RedirectError(e);
     }
