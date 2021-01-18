@@ -105,6 +105,16 @@ export default class App extends Vue {
           text: "My federations",
           icon: "mdi-domain",
           path: {name: "Federations"}
+        },
+        {
+          text: "My leagues",
+          icon: "mdi-shield-star",
+          path: {name: "Leagues"}
+        },
+        {
+          text: "My championships",
+          icon: "mdi-trophy",
+          path: {name: "Championships"}
         }
       ]
     },
