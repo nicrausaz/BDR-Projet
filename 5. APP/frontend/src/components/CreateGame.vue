@@ -14,12 +14,16 @@
               <v-col class="text-right text-h6 text-md-h5 text-uppercase">
                 <v-row align="center" no-gutters>
                   <v-col class="text-break" cols="12">{{ model.teamHome.name }}</v-col>
+                  <v-col><IncrementInput min-value="0" v-model="model.scoreHome" /></v-col>
                 </v-row>
               </v-col>
-              <v-col class="text-center text-h3 text-md-h1 font-weight-bold"> {{ model.scoreHome }}:{{ model.scoreGuest }} </v-col>
+              <v-col class="text-center text-h3 text-md-h1 font-weight-bold">
+                <ContentEditable v-model="model.scoreHome" />:<ContentEditable v-model="model.scoreGuest" />
+              </v-col>
               <v-col class="text-left text-h6 text-md-h5 text-uppercase">
                 <v-row align="center" no-gutters>
                   <v-col class="text-break" cols="12">{{ model.teamGuest.name }}</v-col>
+                  <v-col><IncrementInput min-value="0" v-model="model.scoreGuest" /></v-col>
                 </v-row>
               </v-col>
             </v-row>
@@ -78,9 +82,21 @@ import TeamInput from "@/components/input/TeamInput.vue";
 import StadiumInput from "@/components/input/StadiumInput.vue";
 import MyChampionshipInput from "@/components/input/ChampionshipInput.vue";
 import Header from "@/components/Header.vue";
+import IncrementInput from "@/components/input/IncrementInput.vue";
+import ContentEditable from "@/components/input/ContentEditable.vue";
 
 @Component({
-  components: {Header, MyChampionshipInput, StadiumInput, TeamInput, DateInput, LeagueInput, MyClubInput}
+  components: {
+    ContentEditable,
+    IncrementInput,
+    Header,
+    MyChampionshipInput,
+    StadiumInput,
+    TeamInput,
+    DateInput,
+    LeagueInput,
+    MyClubInput
+  }
 })
 export default class CreateGame extends Vue {
   @Prop() prefill!: Game;

@@ -83,9 +83,9 @@ export class MyGameController {
     try {
       await client.query("BEGIN");
       const res1 = await client.query(
-          `INSERT INTO event (name, startat, endat, stadiumid)
-           VALUES ($1, $2, $3, $4)
-           RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id]);
+        `INSERT INTO event (name, startat, endat, stadiumid)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id]);
 
       const res2 = await client.query(`INSERT INTO game (eventuid, gameid, championshipid, teamhomeid, teamguestid)
                                        VALUES ($1, $2, $3, $4, $5)`, [res1.rows[0].uid, game.gameId, game.championship.id, game.teamHome.id, game.teamGuest.id]);
@@ -111,21 +111,24 @@ export class MyGameController {
     try {
       await client.query("BEGIN");
       const res1 = await client.query(
-          `UPDATE event
-           SET name      = $1,
-               startat   = $2,
-               endat     = $3,
-               stadiumid = $4
-           WHERE uid = $5
-           RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id, uid]);
+        `UPDATE event
+         SET name      = $1,
+             startat   = $2,
+             endat     = $3,
+             stadiumid = $4
+         WHERE uid = $5
+         RETURNING *`, [game.name, game.startAt, game.endAt, game.stadium.id, uid]);
 
       const res2 = await client.query(`UPDATE game
                                        SET gameid         = $1,
                                            championshipid = $2,
                                            teamhomeid     = $3,
-                                           teamguestid    = $4
-                                       WHERE eventuid = $5
-                                       RETURNING *`, [game.gameId, game.championship.id, game.teamHome.id, game.teamGuest.id, uid]);
+                                           teamguestid    = $4,
+                                           scoreguest     = $5,
+                                           scorehome      = $6,
+                                           canceled       = $7
+                                       WHERE eventuid = $8
+                                       RETURNING *`, [game.gameId, game.championship.id, game.teamHome.id, game.teamGuest.id, game.scoreGuest, game.scoreHome, game.canceled, uid]);
 
       await client.query("COMMIT");
 
@@ -144,7 +147,9 @@ export class MyGameController {
   async delete(@Req() request: Req, @PathParams("uid") uid: string) {
     if (!await Utils.checkAccessToGameResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
 
-    await DB.query(`DELETE FROM event WHERE uid = $1`, [uid]);
+    await DB.query(`DELETE
+                    FROM event
+                    WHERE uid = $1`, [uid]);
   }
 }
 
