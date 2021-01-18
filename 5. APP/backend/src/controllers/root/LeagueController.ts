@@ -4,10 +4,8 @@ import DB from "../../db/DB";
 import League from "../../models/League";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
-import Federation from "../../models/Federation";
 
 @Controller("/league")
 @UseBefore(RouteLogMiddleware)

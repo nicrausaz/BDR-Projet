@@ -4,9 +4,7 @@ import DB from "../../db/DB";
 import Championship from "../../models/Championship";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
-import Administrator from "../../models/Administrator";
 import Paginator from "../../utils/Paginator";
 
 @Controller("/championship")

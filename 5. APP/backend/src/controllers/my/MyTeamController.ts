@@ -9,7 +9,6 @@ import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
-import Club from "../../models/Club";
 
 @Controller("/team")
 @UseBefore(RouteLogMiddleware)

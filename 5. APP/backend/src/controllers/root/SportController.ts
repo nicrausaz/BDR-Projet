@@ -4,8 +4,8 @@ import DB from "../../db/DB";
 import Sport from "../../models/Sport";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Paginator from "../../utils/Paginator";
 
 @Controller("/sport")
 @UseBefore(RouteLogMiddleware)
@@ -19,7 +19,20 @@ export class SportController {
     @QueryParams("limit")limit: number = 20,
     @QueryParams("offset")offset: number = 0
   ) {
-    return Utils.createSimpleSearchPaginate(Sport, "sport", ["name"], query, limit, offset);
+    const page = new Paginator(Sport)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM sport
+          WHERE name ILIKE $1
+      `)
+      .setQuery(`
+          SELECT *
+          FROM sport
+          WHERE name ILIKE $1
+          ORDER BY name
+      `)
+      .create({query, limit, offset});
+    return JSON.stringify(await page);
   }
 
   @Get("/:id")

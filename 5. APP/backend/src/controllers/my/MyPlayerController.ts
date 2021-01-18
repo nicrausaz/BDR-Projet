@@ -24,7 +24,6 @@ import Player from "../../models/Player";
 import DB, {PoolClient} from "../../db/DB";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
-import Training from "../../models/Training";
 
 @Controller("/player")
 @UseBefore(RouteLogMiddleware)

@@ -4,7 +4,6 @@ import DB from "../../db/DB";
 import Federation from "../../models/Federation";
 import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
-import Utils from "../../utils/Utils";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 import League from "../../models/League";
