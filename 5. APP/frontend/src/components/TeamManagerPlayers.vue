@@ -29,9 +29,6 @@
                 <v-btn class="mx-1" color="error" elevation="0" fab x-small @click.prevent="removePlayer(player)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <v-btn class="mx-1" color="primary" elevation="0" fab x-small @click.prevent="editPlayer(player)">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
               </div>
             </v-list-item-action>
           </v-list-item>
