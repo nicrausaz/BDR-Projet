@@ -26,9 +26,12 @@ CREATE OR REPLACE VIEW team_played_games AS
 (
 SELECT *,
        CASE
-           WHEN scorehome < scoreguest AND teamhomeid = t.teamid THEN 'W'
+           WHEN scorehome < scoreguest AND teamhomeid = t.teamid THEN 'L'
+           WHEN scorehome < scoreguest AND teamhomeid != t.teamid THEN 'W'
+           WHEN scorehome > scoreguest AND teamhomeid = t.teamid THEN 'W'
+           WHEN scorehome > scoreguest AND teamhomeid != t.teamid THEN 'L'
            WHEN scorehome = scoreguest THEN 'D'
-           ELSE 'L' END AS result
+           END AS result
 FROM (
          SELECT teamhomeid AS teamid, *
          FROM event_game
@@ -36,7 +39,8 @@ FROM (
          SELECT teamguestid AS teamid, *
          FROM event_game
      ) AS t
-    );
+WHERE t.canceled = FALSE
+  AND t.endat <= NOW());
 
 
 CREATE OR REPLACE VIEW event_list AS
