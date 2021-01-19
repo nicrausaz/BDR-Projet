@@ -31,11 +31,4 @@ export default class Player extends Model {
   @Enum("M", "F")
   sex: "M" | "F";
 
-  @Property()
-  get avatar(): string {
-    return `http://localhost:8083/api/player/${this.uid}/avatar`;
-  }
-
-  set avatar(value) {
-  };
 }

@@ -9,14 +9,17 @@ import Game from "../../models/Game";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 import Championship from "../../models/Championship";
+import Jimp from "jimp";
+import {rootDir} from "../../Server";
+import {Readable} from "stream";
 
 @Controller("/team")
 @UseBefore(RouteLogMiddleware)
-@Authenticate()
 export class TeamController {
 
   @Get("/")
   @ContentType("json")
+  @Authenticate()
   async getAll(
     @QueryParams("q")query: string = "",
     @QueryParams("limit")limit: number = 20,
@@ -40,6 +43,7 @@ export class TeamController {
 
   @Get("/:id")
   @ContentType("json")
+  @Authenticate()
   async get(@PathParams("id") id: number) {
     const query = await DB.query(`SELECT *
                                   FROM team
@@ -51,6 +55,7 @@ export class TeamController {
 
   @Get("/:id/player")
   @ContentType("json")
+  @Authenticate()
   async getPlayers(@PathParams("id") id: number) {
 
     const result = await DB.query(`SELECT *
@@ -65,6 +70,7 @@ export class TeamController {
 
   @Get("/:id/games")
   @ContentType("json")
+  @Authenticate()
   async getGames(@PathParams("id") id: number) {
     const result = await DB.query(`SELECT e.uid,
                                           e.name,
@@ -92,6 +98,7 @@ export class TeamController {
 
   @Get("/:id/stats")
   @ContentType("json")
+  @Authenticate()
   async getStats(@PathParams("id") id: number) {
     const result = await DB.query(`SELECT SUM(CASE WHEN result = 'W' then 1 else 0 end) AS wins,
                                           SUM(CASE WHEN result = 'D' then 1 else 0 end) AS draws,
@@ -102,5 +109,18 @@ export class TeamController {
                                    GROUP BY teamid;`, [id]);
 
     return result.rows[0];
+  }
+
+  @Get("/:id/avatar")
+  @ContentType(Jimp.MIME_PNG)
+  private async avatar(
+    @PathParams("id") id: number
+  ) {
+    const path = `${rootDir}/storage/team/${id}.png`;
+    return Readable.from(await (await Jimp.read(path)
+      .catch(() => Jimp.read(`https://i.pravatar.cc/250?u=${id}`)))
+      .contain(500, 500)
+      .quality(50)
+      .getBufferAsync(Jimp.MIME_PNG));
   }
 }

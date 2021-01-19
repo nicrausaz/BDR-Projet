@@ -52,6 +52,9 @@ export default class Register extends Vue {
         if (e.response.data.name === "AJV_VALIDATION_ERROR") this.errors.push(...e.response.data.errors.map((e: Error) => e.message));
         else this.errors.push(e.response.data.message);
       })
+      .then(() => {
+        this.$router.push({name: "Login"});
+      })
       .finally(() => {
         this.loading = false;
       });

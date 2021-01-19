@@ -5,7 +5,7 @@
         <v-row align="end">
           <v-col class="align-self-middle text-center" cols="12">
             <v-avatar :size="$vuetify.breakpoint.xs ? 200 : 250" tile>
-              <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png"></v-img>
+              <v-img :src="club.avatar"></v-img>
             </v-avatar>
           </v-col>
           <v-col class="py-7 text-center">
@@ -24,6 +24,9 @@
             <v-card v-if="!teams.length" class="ma-3 justify-center" flat>No team</v-card>
             <v-card v-for="team in teams" :key="team.id" class="ma-3" flat outlined>
               <v-list-item :to="{name: 'TeamIndex', params: {id: team.id}}" link>
+                <v-list-item-avatar tile>
+                  <v-img :src="team.avatar" />
+                </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ team.name }}</v-list-item-title>
                   <v-list-item-subtitle>

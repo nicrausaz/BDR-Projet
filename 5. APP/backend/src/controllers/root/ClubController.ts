@@ -7,14 +7,17 @@ import {NotFound} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
+import Jimp from "jimp";
+import {rootDir} from "../../Server";
+import {Readable} from "stream";
 
 @Controller("/club")
 @UseBefore(RouteLogMiddleware)
-@Authenticate()
 export class ClubController {
 
   @Get("/")
   @ContentType("json")
+  @Authenticate()
   async getAll(
     @QueryParams("q")query: string = "",
     @QueryParams("limit")limit: number = 20,
@@ -40,6 +43,7 @@ export class ClubController {
 
   @Get("/:id")
   @ContentType("json")
+  @Authenticate()
   async get(@PathParams("id") id: number) {
     const query = await DB.query(
         `SELECT c.*, row_to_json(s.*) as sport
@@ -53,6 +57,7 @@ export class ClubController {
 
   @Get("/:id/teams")
   @ContentType("json")
+  @Authenticate()
   async getTeams(@PathParams("id") id: number) {
     const result = await DB.query(
         `SELECT t.*
@@ -60,5 +65,18 @@ export class ClubController {
                   INNER JOIN team t ON c.id = t.clubid
          WHERE c.id = $1`, [id]);
     return result.rows.map(r => Team.hydrate<Team>(r));
+  }
+
+  @Get("/:id/avatar")
+  @ContentType(Jimp.MIME_PNG)
+  private async avatar(
+    @PathParams("id") id: number
+  ) {
+    const path = `${rootDir}/storage/club/${id}.png`;
+    return Readable.from(await (await Jimp.read(path)
+      .catch(() => Jimp.read(`https://i.pravatar.cc/250?u=${id}`)))
+      .contain(500, 500)
+      .quality(50)
+      .getBufferAsync(Jimp.MIME_PNG));
   }
 }

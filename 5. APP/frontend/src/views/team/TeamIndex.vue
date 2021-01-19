@@ -5,7 +5,7 @@
         <v-row align="end">
           <v-col class="align-self-middle text-center" cols="12">
             <v-avatar :size="$vuetify.breakpoint.xs ? 200 : 250" tile>
-              <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png"></v-img>
+              <v-img :src="team.avatar"></v-img>
             </v-avatar>
           </v-col>
           <v-col class="py-7 text-center">

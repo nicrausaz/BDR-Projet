@@ -43,7 +43,7 @@
           <v-card :to="{name: 'TeamIndex', params: {id: training.team.id}}" dark flat>
             <v-card-title class="text-uppercase">
               <v-avatar size="64" tile class="mr-3">
-                <v-img src="https://cdn-csd.swisstxt.ch/images/sport/club/logo/large/2679.png" />
+                <v-img :src="training.team.avatar" />
               </v-avatar>
               {{ training.team.name }}
             </v-card-title>

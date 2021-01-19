@@ -23,6 +23,9 @@
         </v-card>
         <v-card v-for="club in pagination.result" :key="club.id" class="ma-3" outlined>
           <v-list-item :to="{name: 'ClubIndex', params: {id: club.id}}" link>
+            <v-list-item-avatar tile>
+              <v-img :src="club.avatar" />
+            </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ club.name }}</v-list-item-title>
             </v-list-item-content>

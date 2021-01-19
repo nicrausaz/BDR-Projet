@@ -8,6 +8,24 @@
     <v-form v-model="valid">
       <v-container>
         <v-alert type="error" v-if="error">{{ error }}</v-alert>
+        <template v-if="editMode">
+          <v-dialog v-model="uploadDialog" max-width="750">
+            <UploadForm :path="`my/club/${model.id}/avatar`" @close="uploadDialog = false" />
+          </v-dialog>
+          <div class="text-center mb-5">
+            <v-hover v-slot="{hover}">
+              <v-avatar :size="200" color="grey">
+                <v-img :src="model.avatar">
+                  <div v-if="hover" class="d-flex align-center justify-center" style="width: 100%">
+                    <v-btn fab @click="uploadDialog = true">
+                      <v-icon>mdi-camera</v-icon>
+                    </v-btn>
+                  </div>
+                </v-img>
+              </v-avatar>
+            </v-hover>
+          </div>
+        </template>
         <v-text-field required filled v-model="model.name" label="Name" />
         <SportInput required v-model="model.sport" />
       </v-container>
@@ -31,9 +49,10 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import API from "@/plugins/API";
 import Club from "@/models/Club";
 import SportInput from "@/components/input/SportInput.vue";
+import UploadForm from "@/components/UploadForm.vue";
 
 @Component({
-  components: {SportInput}
+  components: {UploadForm, SportInput}
 })
 export default class CreateClub extends Vue {
   @Prop() prefill!: Club;
@@ -41,9 +60,14 @@ export default class CreateClub extends Vue {
   private loading = false;
   private error: string | null = null;
   private player = new Club();
+  private uploadDialog = false;
+
+  private get editMode() {
+    return !!this.prefill;
+  }
 
   private request(path: string) {
-    return this.prefill
+    return this.editMode
       ? API.axios.patch<Club>(`${path}/${this.model.primaryKey}`, this.model)
       : API.axios.put<Club>(`${path}`, this.model);
   }

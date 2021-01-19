@@ -71,6 +71,12 @@ class API {
     const {data} = await this.axios.patch(url, datas, config);
     return (Array.isArray(data) ? data.map((d) => new Class(d)) : new Class(data)) as M;
   }
+
+  public getUrl(pathname: string): string {
+    const url = new URL(this.server);
+    url.pathname = pathname;
+    return url.toString();
+  }
 }
 
 export default new API();

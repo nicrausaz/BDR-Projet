@@ -1,4 +1,16 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
+import {
+  BodyParams,
+  Controller,
+  Delete,
+  Get, MultipartFile,
+  Patch,
+  PathParams, PlatformMulterFile,
+  Post,
+  Put,
+  QueryParams,
+  Req,
+  UseBefore
+} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import Club from "../../models/Club";
@@ -8,6 +20,9 @@ import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Jimp from "jimp";
+import {rootDir} from "../../Server";
+import fs from "fs";
 
 @Controller("/club")
 @UseBefore(RouteLogMiddleware)
@@ -113,6 +128,24 @@ export class MyClubController {
       throw e;
     } finally {
       client.release();
+      if (fs.existsSync(`${rootDir}/storage/club/${id}.png`)) {
+        fs.unlinkSync(`${rootDir}/storage/club/${id}.png`);
+      }
     }
+  }
+
+  @Post("/:id/avatar")
+  private async uploadFile(@Req() request: Req, @PathParams("id") id: number, @MultipartFile("file") file: PlatformMulterFile) {
+    if (!await Utils.checkAccessToClubResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
+    try {
+      const img = await Jimp.read(file.path);
+      img
+        .contain(500, 500)
+        .quality(75)
+        .write(`${rootDir}/storage/club/${id}.png`);
+    } finally {
+      fs.unlinkSync(file.path);
+    }
+    return true;
   }
 }

@@ -1,4 +1,16 @@
-import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
+import {
+  BodyParams,
+  Controller,
+  Delete,
+  Get, MultipartFile,
+  Patch,
+  PathParams, PlatformMulterFile,
+  Post,
+  Put,
+  QueryParams,
+  Req,
+  UseBefore
+} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
 import {Unauthorized} from "@tsed/exceptions";
@@ -9,10 +21,13 @@ import Team from "../../models/Team";
 import PlayerTeam from "../../models/PlayerTeam";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
+import Jimp from "jimp";
+import {rootDir} from "../../Server";
+import fs from "fs";
 
 @Controller("/team")
-@UseBefore(RouteLogMiddleware)
 @Authenticate()
+@UseBefore(RouteLogMiddleware)
 export class MyTeamController {
 
   @Get("/")
@@ -155,5 +170,24 @@ export class MyTeamController {
                         jerseynumber = NULL
                     WHERE playeruid = $1
                       AND teamid = $2 `, [data.playerUid, id]);
+
+    if (fs.existsSync(`${rootDir}/storage/team/${id}.png`)) {
+      fs.unlinkSync(`${rootDir}/storage/team/${id}.png`);
+    }
+  }
+
+  @Post("/:id/avatar")
+  private async uploadFile(@Req() request: Req, @PathParams("id") id: number, @MultipartFile("file") file: PlatformMulterFile) {
+    if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");
+    try {
+      const img = await Jimp.read(file.path);
+      img
+        .contain(500, 500)
+        .quality(75)
+        .write(`${rootDir}/storage/team/${id}.png`);
+    } finally {
+      fs.unlinkSync(file.path);
+    }
+    return true;
   }
 }

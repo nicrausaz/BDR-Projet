@@ -1,4 +1,5 @@
 import Model, {ModelDecorator, PrimaryKey, Property} from "@/models/Model";
+import API from "@/plugins/API";
 
 @ModelDecorator
 export default class Player extends Model {
@@ -9,7 +10,10 @@ export default class Player extends Model {
   @Property() height!: number;
   @Property() weight!: number;
   @Property() sex!: "M" | "F";
-  @Property() avatar!: string;
+
+  get avatar() {
+    return API.getUrl(`api/player/${this.uid}/avatar`);
+  }
 
   get name() {
     return `${this.firstname} ${this.lastname}`;
