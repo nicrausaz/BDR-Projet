@@ -100,6 +100,7 @@ export default class TrainingIndex extends Vue {
     try {
       const {id} = this.$route.params;
       this.training = await API.get<Training>(Training, `my/training/${id}`);
+      console.log(this.training);
       if (this.training) {
         this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.training?.team.id}/player`);
       }
