@@ -1,7 +1,7 @@
 import {BodyParams, Controller, Delete, Get, Patch, PathParams, Put, QueryParams, Req, UseBefore} from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
-import {NotFound, Unauthorized} from "@tsed/exceptions";
+import {BadRequest, NotFound, Unauthorized} from "@tsed/exceptions";
 import Game from "../../models/Game";
 import {Authenticate} from "@tsed/passport";
 import Paginator from "../../utils/Paginator";
@@ -78,6 +78,7 @@ export class MyGameController {
   @ContentType("json")
   async putGame(@Req() request: Req, @BodyParams() game: Game) {
     if (!await Utils.checkAccessToChampionshipResource(<Administrator>request.user, game.championship.id)) throw new Unauthorized("Unauthorized Resource");
+    if (!await Utils.validationGame(game.championship.id, game.teamHome.id, game.teamGuest.id)) throw new BadRequest("Wrong Sport");
 
     const client = await PoolClient();
     try {
@@ -106,6 +107,7 @@ export class MyGameController {
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() game: Game) {
     if (!await Utils.checkAccessToGameResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
+    if (!await Utils.validationGame(game.championship.id, game.teamHome.id, game.teamGuest.id)) throw new BadRequest("Wrong Sport");
 
     const client = await PoolClient();
     try {

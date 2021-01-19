@@ -2,9 +2,11 @@ import {
   BodyParams,
   Controller,
   Delete,
-  Get, MultipartFile,
+  Get,
+  MultipartFile,
   Patch,
-  PathParams, PlatformMulterFile,
+  PathParams,
+  PlatformMulterFile,
   Post,
   Put,
   QueryParams,
@@ -13,7 +15,7 @@ import {
 } from "@tsed/common";
 import {ContentType} from "@tsed/schema";
 import DB, {PoolClient} from "../../db/DB";
-import {Unauthorized} from "@tsed/exceptions";
+import {BadRequest, Unauthorized} from "@tsed/exceptions";
 import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
@@ -85,7 +87,7 @@ export class MyTeamController {
   async put(@Req() request: Req, @BodyParams() team: Team) {
 
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
-
+    if (!await Utils.validationSportClubLeague(team.club.id, team.league.id)) throw new BadRequest("Wrong Sport");
     const result = await DB.query(`INSERT INTO team(name, clubid, leagueid)
                                    VALUES ($1, $2, $3)
                                    RETURNING *`, [team.name, team.club.id, team.league.id]);
@@ -97,7 +99,7 @@ export class MyTeamController {
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("id") id: number, @BodyParams() team: Team) {
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
-
+    if (!await Utils.validationSportClubLeague(team.club.id, team.league.id)) throw new BadRequest("Wrong Sport");
     const result = await DB.query(`UPDATE team
                                    SET name     = $1,
                                        clubid   = $2,
