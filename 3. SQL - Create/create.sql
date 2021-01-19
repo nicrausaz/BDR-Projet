@@ -1,18 +1,13 @@
-/*
- ---------------------------------------
-    Gestion de ligues sportives
- ---------------------------------------
-    Création des tables et contraintes
- ---------------------------------------
-    Nicolas Crausaz & Maxime Scharwath
-    Version 4 - 13.01.2021
- ---------------------------------------
- */
+--
+-- Création des tables et contraintes
+-- Nicolas Crausaz & Maxime Scharwath
+-- Version 4 - 19.01.2021
+--
 
 CREATE DATABASE bdr_proj_crausaz_scharwath;
-CREATE SCHEMA public;
+CREATE SCHEMA IF NOT EXISTS public;
 
---Pour utiliser uuid
+-- Pour utiliser uuid
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 SET search_path TO public;
@@ -26,9 +21,9 @@ CREATE TABLE sport
 CREATE TABLE federation
 (
     id      SERIAL PRIMARY KEY,
-    name    VARCHAR(100) NOT NULL,
-    sportId SERIAL       NOT NULL,
-    active   BOOLEAN DEFAULT TRUE NOT NULL,
+    name    VARCHAR(100)         NOT NULL,
+    sportId SERIAL               NOT NULL,
+    active  BOOLEAN DEFAULT TRUE NOT NULL,
 
     CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id) ON DELETE SET NULL
 );
@@ -36,10 +31,10 @@ CREATE TABLE federation
 CREATE TABLE league
 (
     id           SERIAL PRIMARY KEY,
-    level        VARCHAR(50) NOT NULL,
-    gender       CHAR        NOT NULL,
-    federationid SERIAL      NOT NULL,
-    active   BOOLEAN DEFAULT TRUE NOT NULL,
+    level        VARCHAR(50)          NOT NULL,
+    gender       CHAR                 NOT NULL,
+    federationid SERIAL               NOT NULL,
+    active       BOOLEAN DEFAULT TRUE NOT NULL,
 
     CONSTRAINT fk_federationId FOREIGN KEY (federationid) REFERENCES federation (id)
 );
@@ -47,10 +42,10 @@ CREATE TABLE league
 CREATE TABLE championship
 (
     id       SERIAL PRIMARY KEY,
-    name     VARCHAR(30) NOT NULL,
-    startAt  DATE        NOT NULL,
-    endAt    DATE        NOT NULL,
-    leagueId SERIAL      NOT NULL,
+    name     VARCHAR(40)          NOT NULL,
+    startAt  DATE                 NOT NULL,
+    endAt    DATE                 NOT NULL,
+    leagueId SERIAL               NOT NULL,
     active   BOOLEAN DEFAULT TRUE NOT NULL,
 
     CONSTRAINT fk_leagueId FOREIGN KEY (leagueId) REFERENCES league (id)
@@ -60,12 +55,13 @@ CREATE TABLE championship
 CREATE TABLE player
 (
     uid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    lastname  VARCHAR(255) NOT NULL,
-    firstname VARCHAR(255) NOT NULL,
-    birthdate DATE         NOT NULL,
+    lastname  VARCHAR(255)                  NOT NULL,
+    firstname VARCHAR(255)                  NOT NULL,
+    birthdate DATE                          NOT NULL,
     height    INTEGER,
     weight    INTEGER,
-    sex       CHAR
+    sex       CHAR,
+    active    BOOLEAN          DEFAULT TRUE NOT NULL
 );
 
 CREATE TABLE federation_licence_player
@@ -83,18 +79,19 @@ CREATE TABLE federation_licence_player
 CREATE TABLE club
 (
     id      SERIAL PRIMARY KEY,
-    name    VARCHAR(100) NOT NULL,
+    name    VARCHAR(100)         NOT NULL,
     sportId SERIAL,
-    active   BOOLEAN DEFAULT TRUE NOT NULL,
+    active  BOOLEAN DEFAULT TRUE NOT NULL,
+
     CONSTRAINT fk_sportId FOREIGN KEY (sportId) REFERENCES sport (id) ON DELETE SET NULL
 );
 
 CREATE TABLE team
 (
     id       SERIAL PRIMARY KEY,
-    name     VARCHAR(100) NOT NULL,
-    clubId   SERIAL       NOT NULL,
-    leagueId SERIAL       NOT NULL,
+    name     VARCHAR(100)         NOT NULL,
+    clubId   SERIAL               NOT NULL,
+    leagueId SERIAL               NOT NULL,
     active   BOOLEAN DEFAULT TRUE NOT NULL,
 
     CONSTRAINT fk_clubId FOREIGN KEY (clubId) REFERENCES club (id),
@@ -105,15 +102,15 @@ CREATE TABLE team
 CREATE TABLE player_play_for_team
 (
     jerseyNumber INTEGER,
-    startAt      TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    startAt      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     endAt        TIMESTAMP,
     playerUid    UUID,
     teamId       SERIAL,
 
-    PRIMARY KEY (playerUid, teamId),
+    PRIMARY KEY (playerUid, teamId, startAt),
 
     CONSTRAINT fk_playerUid FOREIGN KEY (playerUid) REFERENCES player (uid) ON DELETE CASCADE,
-    CONSTRAINT fk_teamId    FOREIGN KEY (teamId)    REFERENCES team (id) ON DELETE CASCADE
+    CONSTRAINT fk_teamId FOREIGN KEY (teamId) REFERENCES team (id) ON DELETE CASCADE
 );
 
 CREATE TABLE stadium
@@ -130,8 +127,8 @@ CREATE TABLE event
     name      VARCHAR(100) NOT NULL,
     startAt   TIMESTAMP    NOT NULL,
     endAt     TIMESTAMP    NOT NULL,
-    createdAt TIMESTAMP    DEFAULT current_timestamp,
-    updatedAt TIMESTAMP    DEFAULT current_timestamp,
+    createdAt TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     stadiumId SERIAL,
 
     CONSTRAINT fk_stadiumId FOREIGN KEY (stadiumId) REFERENCES stadium (id) ON DELETE SET NULL
