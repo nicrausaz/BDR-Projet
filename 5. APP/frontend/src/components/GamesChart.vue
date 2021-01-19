@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <canvas id="doughnut" />
-  </div>
+  <canvas id="doughnut" />
 </template>
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";

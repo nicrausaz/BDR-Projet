@@ -108,7 +108,7 @@ export class TeamController {
                                    WHERE teamid = $1
                                    GROUP BY teamid;`, [id]);
 
-    return result.rows[0];
+    return result.rowCount != 0 ? result.rows[0] : {};
   }
 
   @Get("/:id/avatar")
