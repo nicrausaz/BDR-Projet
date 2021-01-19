@@ -83,14 +83,14 @@ export default class App extends Vue {
   drawer = false;
   items = [
     {
-      text: "My players",
-      icon: "mdi-account-multiple",
-      path: {name: "Players"}
-    },
-    {
       text: "My ressources",
       icon: "mdi-account-supervisor-circle",
       subfolder: [
+        {
+          text: "My players",
+          icon: "mdi-account-multiple",
+          path: {name: "Players"}
+        },
         {
           text: "My teams",
           icon: "mdi-account-group",

@@ -13,6 +13,13 @@
     </v-dialog>
     <v-card flat outlined>
       <v-list two-line>
+        <v-card v-if="pagination.result.length === 0" class="ma-3" outlined>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>We are sorry, we have no result with this request</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
         <v-card v-for="game in pagination.result" :key="game.uid" class="ma-3" flat outlined>
           <v-list-item :to="{name: 'GameIndex', params: {id: game.uid}}" link>
             <v-list-item-content>

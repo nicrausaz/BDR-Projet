@@ -10,6 +10,13 @@
     </v-toolbar>
     <v-card flat outlined>
       <v-list>
+        <v-card v-if="pagination.result.length === 0" class="ma-3" outlined>
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>We are sorry, we have no result with this request</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
         <v-card v-for="item in pagination.result" :key="item.id" class="ma-3" flat outlined>
           <v-list-item>
             <v-list-item-avatar color="warning">
