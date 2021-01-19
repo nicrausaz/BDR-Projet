@@ -6,16 +6,16 @@
 
 --SPORT
 insert into public.sport (name)
-values  ('basketball'),
-        ('football'),
-        ('iceHockey'),
-        ('baseball'),
-        ('waterpolo'),
-        ('handball'),
-        ('rugby'),
-        ('volleyball');
+values  ('Basketball'),
+        ('Football'),
+        ('Ice Hockey'),
+        ('Baseball'),
+        ('Waterpolo'),
+        ('Handball'),
+        ('Rugby'),
+        ('Volleyball');
 
-        --STADIUM
+--STADIUM
 insert into public.stadium (name, address, capacity)
 values  ('Malibu stadium', 'South Francescoview, 5819 Pons Laffitte', 36024),
         ('Ranchero stadium', 'Fernandoside, 516 Bonnet du Bac', 10762),
@@ -33,7 +33,6 @@ values  ('Malibu stadium', 'South Francescoview, 5819 Pons Laffitte', 36024),
         ('Civic stadium', 'Rousseaustad, 6001 Marty Delesseux', 70922),
         ('Fiesta stadium', 'South Kolbyhaven, 627 Pierre de Tilsitt', 61879),
         ('Expedition stadium', 'West Helena, 611 Jacquet de Presbourg', 75697),
-        ('Civic stadium', 'West Dougstad, 5354 Fritz Charlemagne', 61127),
         ('Impala stadium', 'South Ciceromouth, 67327 Domingo Joubert', 71547),
         ('Charger stadium', 'New Carolineton, 6702 Richard d''Abbeville', 38734),
         ('F-150 stadium', 'Constantinmouth, 00873 Boyer de Richelieu', 42172),
@@ -62,6 +61,4 @@ values  ('Malibu stadium', 'South Francescoview, 5819 Pons Laffitte', 36024),
         ('Sentra stadium', 'South Jovani, 61069 Savanah de la Huchette', 18896),
         ('Corvette stadium', 'North Tobinville, 8561 Melissa Monsieur-le-Prince', 52195),
         ('Altima stadium', 'Vidalville, 0861 Petit de Rivoli', 29047),
-        ('Altima stadium', 'New Elouiseville, 9483 Leclerc de la Pompe', 91270),
-        ('Accord stadium', 'East Geoffreyshire, 160 Dumont de Tilsitt', 46017),
-        ('CTS stadium', 'South Linneashire, 00752 Jena Lepic', 74262),
+        ('CTS stadium', 'South Linneashire, 00752 Jena Lepic', 74262);

@@ -2,9 +2,6 @@
   <v-container fluid style="max-width: 1500px" v-if="federation">
     <v-card class="mx-auto" dark flat>
       <v-parallax :src="require('@/assets/background.jpg')" height="400">
-        <v-col align="center">
-          <v-chip>test</v-chip>
-        </v-col>
         <v-row align="end">
           <v-col class="text-center">
             <span class="text-h4">{{ federation.name }}</span>
@@ -12,7 +9,7 @@
         </v-row>
         <v-row align="center" no-gutters>
           <v-col align="center">
-            <v-chip>xx</v-chip>
+            <v-chip>{{ federation.sport.name }}</v-chip>
           </v-col>
         </v-row>
       </v-parallax>
