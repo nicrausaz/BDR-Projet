@@ -8,11 +8,20 @@ import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 import League from "../../models/League";
 
+/**
+ * Public federation endpoint
+ */
 @Controller("/federation")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class FederationController {
 
+  /**
+   * Retrieve all federations
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -38,6 +47,10 @@ export class FederationController {
     return JSON.stringify(await page);
   }
 
+  /**
+   * Retrieve a federation
+   * @param id
+   */
   @Get("/:id")
   @ContentType("json")
   async get(
@@ -47,12 +60,16 @@ export class FederationController {
         `SELECT f.*, row_to_json(s.*) as sport
          FROM federation f
                   INNER JOIN sport s ON s.id = f.sportid
-         WHERE f.id = $1`, [id]);
+         WHERE f.id = $1 AND f.active = TRUE`, [id]);
     const result = query.rows.map(r => Federation.hydrate<Federation>(r))[0];
     if (result) return result;
     throw new NotFound("Federation not found");
   }
 
+  /**
+   * Retrieve leagues of a federation
+   * @param id
+   */
   @Get("/:id/leagues")
   @ContentType("json")
   async getLeagues(

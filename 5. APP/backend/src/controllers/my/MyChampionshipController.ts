@@ -9,11 +9,21 @@ import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import {Unauthorized} from "@tsed/exceptions";
 import DB from "../../db/DB";
 
+/**
+ * Manage championship related to user
+ */
 @Controller("/championship")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyChampionshipController {
 
+  /**
+   * Retrieve all accessible championship of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @(Returns(200, Championship).Of(Championship).Description("All Championship"))
   @ContentType("json")
@@ -44,6 +54,11 @@ export class MyChampionshipController {
     return JSON.stringify(await page);
   }
 
+  /**
+   * Add new championship
+   * @param request
+   * @param championship
+   */
   @Put("/")
   @ContentType("json")
   async insertChampionship(@Req() request: Req, @BodyParams() championship: Championship) {
@@ -58,6 +73,12 @@ export class MyChampionshipController {
     return result.rows.map(r => Championship.hydrate<Championship>(r))[0];
   }
 
+  /**
+   * Update championship
+   * @param request
+   * @param id
+   * @param championship
+   */
   @Patch("/:id")
   @ContentType("json")
   async updateChampionship(@Req() request: Req, @PathParams("id") id: number, @BodyParams() championship: Championship) {
@@ -76,6 +97,11 @@ export class MyChampionshipController {
     return result.rows.map(r => Championship.hydrate<Championship>(r))[0];
   }
 
+  /**
+   * Delete championship
+   * @param request
+   * @param id
+   */
   @Delete("/:id")
   @ContentType("json")
   async deleteChampionship(@Req() request: Req, @PathParams("id") id: number) {

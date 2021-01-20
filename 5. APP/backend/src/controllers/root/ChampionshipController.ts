@@ -8,11 +8,20 @@ import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 import Game from "../../models/Game";
 
+/**
+ * Public championship endpoint
+ */
 @Controller("/championship")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class ChampionshipController {
 
+  /**
+   * Retrieve all championships
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @(Returns(200, Championship).Of(Championship).Description("All Championship"))
   @ContentType("json")
@@ -39,6 +48,10 @@ export class ChampionshipController {
     return JSON.stringify(await page);
   }
 
+  /**
+   * Retrieve a championship
+   * @param id
+   */
   @Get("/:id")
   @ContentType("json")
   async get(@PathParams("id") id: string) {
@@ -55,6 +68,10 @@ export class ChampionshipController {
     throw new NotFound("Championship not found");
   }
 
+  /**
+   * Retrieve games of championship
+   * @param id
+   */
   @Get("/:id/games")
   @ContentType("json")
   async getGames(@PathParams("id") id: string) {

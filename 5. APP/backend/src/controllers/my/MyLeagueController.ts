@@ -9,11 +9,21 @@ import DB, {PoolClient} from "../../db/DB";
 import League from "../../models/League";
 import Paginator from "../../utils/Paginator";
 
+/**
+ * Manage league related to user
+ */
 @Controller("/league")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyLeagueController {
 
+  /**
+   * Retrieve all accessible leagues of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAllLeagues(@Req() request: Req,
@@ -42,6 +52,11 @@ export class MyLeagueController {
       .create({query, limit, offset});
   }
 
+  /**
+   * Create new league
+   * @param request
+   * @param league
+   */
   @Put("/")
   @ContentType("json")
   async insertLeague(@Req() request: Req, @BodyParams() league: League) {
@@ -54,6 +69,12 @@ export class MyLeagueController {
     return result.rows.map(r => League.hydrate<League>(r))[0];
   }
 
+  /**
+   * Update league
+   * @param request
+   * @param league
+   * @param id
+   */
   @Patch("/:id")
   @ContentType("json")
   async updateLeague(@Req() request: Req, @BodyParams() league: League, @PathParams("id") id: number) {
@@ -70,6 +91,11 @@ export class MyLeagueController {
     return result.rows.map((r) => League.hydrate<League>(r))[0];
   }
 
+  /**
+   * Delete league
+   * @param request
+   * @param id
+   */
   @Delete("/:id")
   @ContentType("json")
   async deleteLeague(@Req() request: Req, @PathParams("id") id: number) {

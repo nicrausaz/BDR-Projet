@@ -11,10 +11,19 @@ import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import {Readable} from "stream";
 
+/**
+ * Public club endpoint
+ */
 @Controller("/club")
 @UseBefore(RouteLogMiddleware)
 export class ClubController {
 
+  /**
+   * Retrieve all clubs
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   @Authenticate()
@@ -41,6 +50,10 @@ export class ClubController {
     return JSON.stringify(await page);
   }
 
+  /**
+   * Retrive a club
+   * @param id
+   */
   @Get("/:id")
   @ContentType("json")
   @Authenticate()
@@ -49,12 +62,16 @@ export class ClubController {
         `SELECT c.*, row_to_json(s.*) as sport
          FROM club c
                   INNER JOIN sport s ON s.id = c.sportid
-         WHERE c.id = $1`, [id]);
+         WHERE c.id = $1 AND active = TRUE`, [id]);
     const result = query.rows.map(r => Club.hydrate<Club>(r))[0];
     if (result) return result;
     throw new NotFound("Club not found");
   }
 
+  /**
+   * Retrieve teams of a club
+   * @param id
+   */
   @Get("/:id/teams")
   @ContentType("json")
   @Authenticate()
@@ -63,13 +80,17 @@ export class ClubController {
         `SELECT t.*
          FROM club c
                   INNER JOIN team t ON c.id = t.clubid
-         WHERE c.id = $1`, [id]);
+         WHERE c.id = $1 AND t.active = TRUE`, [id]);
     return result.rows.map(r => Team.hydrate<Team>(r));
   }
 
+  /**
+   * Retrieve club's picture
+   * @param id
+   */
   @Get("/:id/avatar")
   @ContentType(Jimp.MIME_PNG)
-  private async avatar(
+  async avatar(
     @PathParams("id") id: number
   ) {
     const path = `${rootDir}/storage/club/${id}.png`;

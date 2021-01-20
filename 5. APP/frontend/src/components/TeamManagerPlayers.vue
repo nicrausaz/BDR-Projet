@@ -55,7 +55,7 @@ export default class TeamManagerPlayers extends Vue {
 
   @Watch("team")
   async setPage() {
-    this.players = await API.get<PlayerTeam[]>(PlayerTeam, `my/team/${this.team.id}/player`);
+    this.players = await API.get<PlayerTeam[]>(PlayerTeam, `team/${this.team.id}/player`);
   }
 
   mounted() {

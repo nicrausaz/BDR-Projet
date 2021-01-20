@@ -9,11 +9,21 @@ import Administrator from "../../models/Administrator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 
+/**
+ * Manage federation related to user
+ */
 @Controller("/federation")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyFederationController {
 
+  /**
+   * Retrieve all accessible federations of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(@Req() request: Req,
@@ -42,6 +52,11 @@ export class MyFederationController {
       .create({query, limit, offset});
   }
 
+  /**
+   * Create new federation
+   * @param request
+   * @param federation
+   */
   @Put("/")
   @ContentType("json")
   async insert(@Req() request: Req, @BodyParams() federation: Federation) {
@@ -55,7 +70,7 @@ export class MyFederationController {
                                        VALUES ($1, $2)
                                        RETURNING *`, [federation.name, federation.sport.id]);
 
-      const res2 = await client.query(`INSERT INTO administrator_federation (administratoruid, federationid)
+      await client.query(`INSERT INTO administrator_federation (administratoruid, federationid)
                                        VALUES ($1, $2)`, [(<Administrator>request.user).uid, res1.rows[0].id]);
 
       await client.query("COMMIT");
@@ -70,6 +85,12 @@ export class MyFederationController {
     }
   }
 
+  /**
+   * Update federation
+   * @param request
+   * @param id
+   * @param federation
+   */
   @Patch("/:id")
   @ContentType("json")
   async update(@Req() request: Req, @PathParams("id") id: number, @BodyParams() federation: Federation) {
@@ -85,6 +106,11 @@ export class MyFederationController {
     return result.rows.map((r) => Federation.hydrate<Federation>(r))[0];
   }
 
+  /**
+   * Delete federation
+   * @param request
+   * @param id
+   */
   @Delete("/:id")
   @ContentType("json")
   async delete(@Req() request: Req, @PathParams("id") id: number) {

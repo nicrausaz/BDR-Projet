@@ -7,11 +7,20 @@ import {Authenticate} from "@tsed/passport";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 
+/**
+ * Public stadium endpoint
+ */
 @Controller("/stadium")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class StadiumController {
 
+  /**
+   * Retrieve all stadiums
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -35,6 +44,10 @@ export class StadiumController {
     return JSON.stringify(await page);
   }
 
+  /**
+   * Retrieve a stadium
+   * @param id
+   */
   @Get("/:id")
   @ContentType("json")
   async get(
@@ -49,6 +62,11 @@ export class StadiumController {
     throw new NotFound("Stadium not found");
   }
 
+  /**
+   * Create a new stadium
+   * @param stadium
+   * (not used yet)
+   */
   @Put("/")
   @ContentType("json")
   async insert(@BodyParams() stadium: Stadium) {
@@ -62,6 +80,12 @@ export class StadiumController {
     return result.rows.map((r) => Stadium.hydrate<Stadium>(r))[0];
   }
 
+  /**
+   * Update stadium
+   * @param id
+   * @param stadium
+   * (not used yet)
+   */
   @Patch("/:id")
   @ContentType("json")
   async update(
@@ -81,6 +105,11 @@ export class StadiumController {
     return result.rows.map((r) => Stadium.hydrate<Stadium>(r))[0];
   }
 
+  /**
+   * Delete stadium
+   * @param id
+   * (not used yet)
+   */
   @Delete("/:id")
   @ContentType("json")
   async delete(
