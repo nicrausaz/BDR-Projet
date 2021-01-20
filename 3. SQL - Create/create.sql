@@ -64,18 +64,6 @@ CREATE TABLE player
     active    BOOLEAN          DEFAULT TRUE NOT NULL
 );
 
-CREATE TABLE federation_licence_player
-(
-    licenceNumber VARCHAR(255) NOT NULL,
-    playerUid     UUID,
-    federationId  SERIAL,
-
-    PRIMARY KEY (playerUid, federationId),
-
-    CONSTRAINT fk_playerUid FOREIGN KEY (playerUid) REFERENCES player (uid) ON DELETE CASCADE,
-    CONSTRAINT fk_federationId FOREIGN KEY (federationId) REFERENCES federation (id) ON DELETE CASCADE
-);
-
 CREATE TABLE club
 (
     id      SERIAL PRIMARY KEY,

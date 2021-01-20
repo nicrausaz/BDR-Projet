@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>960</x>
-      <y>570</y>
+      <y>560</y>
       <w>160</w>
       <h>120</h>
     </coordinates>
@@ -18,7 +18,7 @@ description: Varchar</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>1540</x>
-      <y>650</y>
+      <y>640</y>
       <w>120</w>
       <h>110</h>
     </coordinates>
@@ -34,7 +34,7 @@ active: Boolean
     <id>UMLClass</id>
     <coordinates>
       <x>810</x>
-      <y>570</y>
+      <y>560</y>
       <w>140</w>
       <h>120</h>
     </coordinates>
@@ -51,7 +51,7 @@ canceled: Boolean
     <id>UMLClass</id>
     <coordinates>
       <x>1540</x>
-      <y>380</y>
+      <y>370</y>
       <w>120</w>
       <h>110</h>
     </coordinates>
@@ -69,7 +69,7 @@ active: Boolean
     <id>UMLClass</id>
     <coordinates>
       <x>620</x>
-      <y>360</y>
+      <y>350</y>
       <w>120</w>
       <h>100</h>
     </coordinates>
@@ -87,7 +87,7 @@ capacity: Integer
     <id>UMLClass</id>
     <coordinates>
       <x>510</x>
-      <y>590</y>
+      <y>580</y>
       <w>130</w>
       <h>100</h>
     </coordinates>
@@ -103,7 +103,7 @@ active: Boolean
     <id>UMLClass</id>
     <coordinates>
       <x>1190</x>
-      <y>350</y>
+      <y>340</y>
       <w>130</w>
       <h>180</h>
     </coordinates>
@@ -120,7 +120,7 @@ active: Boolean</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>1030</x>
-      <y>960</y>
+      <y>950</y>
       <w>130</w>
       <h>130</h>
     </coordinates>
@@ -137,7 +137,7 @@ password: Varchar</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>210</x>
-      <y>720</y>
+      <y>710</y>
       <w>130</w>
       <h>110</h>
     </coordinates>
@@ -152,7 +152,7 @@ active: Boolean</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>210</x>
-      <y>550</y>
+      <y>540</y>
       <w>170</w>
       <h>160</h>
     </coordinates>
@@ -173,7 +173,7 @@ active: Boolean
     <id>UMLClass</id>
     <coordinates>
       <x>870</x>
-      <y>360</y>
+      <y>350</y>
       <w>160</w>
       <h>110</h>
     </coordinates>
@@ -192,7 +192,7 @@ updatedAt: Datetime
     <id>Relation</id>
     <coordinates>
       <x>1580</x>
-      <y>480</y>
+      <y>470</y>
       <w>130</w>
       <h>190</h>
     </coordinates>
@@ -206,7 +206,7 @@ is responsible ^</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>730</x>
-      <y>400</y>
+      <y>390</y>
       <w>160</w>
       <h>50</h>
     </coordinates>
@@ -220,7 +220,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>850</x>
-      <y>460</y>
+      <y>450</y>
       <w>180</w>
       <h>130</h>
     </coordinates>
@@ -232,7 +232,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>910</x>
-      <y>460</y>
+      <y>450</y>
       <w>110</w>
       <h>130</h>
     </coordinates>
@@ -243,7 +243,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>630</x>
-      <y>610</y>
+      <y>600</y>
       <w>200</w>
       <h>50</h>
     </coordinates>
@@ -257,7 +257,7 @@ is visitor &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>630</x>
-      <y>650</y>
+      <y>640</y>
       <w>200</w>
       <h>50</h>
     </coordinates>
@@ -271,7 +271,7 @@ is host &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>370</x>
-      <y>620</y>
+      <y>610</y>
       <w>160</w>
       <h>50</h>
     </coordinates>
@@ -285,7 +285,7 @@ play for &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>330</x>
-      <y>680</y>
+      <y>670</y>
       <w>240</w>
       <h>100</h>
     </coordinates>
@@ -299,7 +299,7 @@ m2=1..*
     <id>Relation</id>
     <coordinates>
       <x>850</x>
-      <y>520</y>
+      <y>510</y>
       <w>440</w>
       <h>350</h>
     </coordinates>
@@ -313,7 +313,7 @@ m2=1
     <id>Relation</id>
     <coordinates>
       <x>1310</x>
-      <y>420</y>
+      <y>410</y>
       <w>250</w>
       <h>50</h>
     </coordinates>
@@ -327,7 +327,7 @@ occur &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>600</x>
-      <y>620</y>
+      <y>610</y>
       <w>670</w>
       <h>200</h>
     </coordinates>
@@ -341,7 +341,7 @@ participate in ^</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1150</x>
-      <y>750</y>
+      <y>740</y>
       <w>460</w>
       <h>310</h>
     </coordinates>
@@ -355,7 +355,7 @@ administrate &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>300</x>
-      <y>820</y>
+      <y>810</y>
       <w>750</w>
       <h>240</h>
     </coordinates>
@@ -369,7 +369,7 @@ m2=*
     <id>Relation</id>
     <coordinates>
       <x>100</x>
-      <y>630</y>
+      <y>620</y>
       <w>1030</w>
       <h>550</h>
     </coordinates>
@@ -383,7 +383,7 @@ m2=*
     <id>Relation</id>
     <coordinates>
       <x>560</x>
-      <y>470</y>
+      <y>460</y>
       <w>1000</w>
       <h>440</h>
     </coordinates>
@@ -397,7 +397,7 @@ play into &gt;</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>220</x>
-      <y>1230</y>
+      <y>1220</y>
       <w>100</w>
       <h>80</h>
     </coordinates>
@@ -411,7 +411,7 @@ name: Varchar</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>240</x>
-      <y>820</y>
+      <y>810</y>
       <w>80</w>
       <h>430</h>
     </coordinates>
@@ -425,7 +425,7 @@ plays v</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>310</x>
-      <y>730</y>
+      <y>720</y>
       <w>1510</w>
       <h>550</h>
     </coordinates>
@@ -439,7 +439,7 @@ promote v</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>370</x>
-      <y>410</y>
+      <y>400</y>
       <w>170</w>
       <h>90</h>
     </coordinates>
@@ -454,7 +454,7 @@ endAt: Datetime</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>440</x>
-      <y>490</y>
+      <y>480</y>
       <w>30</w>
       <h>170</h>
     </coordinates>
@@ -462,48 +462,10 @@ endAt: Datetime</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>230</x>
-      <y>200</y>
-      <w>1670</w>
-      <h>520</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1..*
-m2=*
-is licenced v</panel_attributes>
-    <additional_attributes>1430.0;490.0;1570.0;490.0;1570.0;10.0;10.0;10.0;10.0;350.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>370</x>
-      <y>60</y>
-      <w>170</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>references
---
-licenseNumber: Varchar</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>430</x>
-      <y>140</y>
-      <w>30</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1850</x>
-      <y>760</y>
+      <x>90</x>
+      <y>340</y>
       <w>200</w>
       <h>140</h>
     </coordinates>
