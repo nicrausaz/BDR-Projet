@@ -37,7 +37,7 @@ export class MyLeagueController {
                    INNER JOIN federation f on l.federationid = f.id
           WHERE l.id = ANY ($1)
             AND l.level ILIKE $2
-            AND f.active = TRUE
+            AND l.active = TRUE
       `, [perms])
       .create({query, limit, offset});
   }
@@ -82,12 +82,12 @@ export class MyLeagueController {
       await client.query("BEGIN");
 
       await client.query(`UPDATE league
-                    SET active = FALSE
-                    WHERE id = $1`, [id]);
+                          SET active = FALSE
+                          WHERE id = $1`, [id]);
 
       await client.query(`UPDATE championship
-                    SET active = FALSE
-                    WHERE leagueid = $1`, [id]);
+                          SET active = FALSE
+                          WHERE leagueid = $1`, [id]);
 
       await client.query("COMMIT");
 

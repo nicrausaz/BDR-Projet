@@ -43,9 +43,7 @@ export class GameController {
 
   @Get("/:uid")
   @ContentType("json")
-  async get(
-    @PathParams("uid") uid: string
-  ) {
+  async get(@PathParams("uid") uid: string) {
     const query = await DB.query(
       `SELECT g.*,
               row_to_json(s.*)  as stadium,
