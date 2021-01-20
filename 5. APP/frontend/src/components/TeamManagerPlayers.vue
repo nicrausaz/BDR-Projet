@@ -78,9 +78,5 @@ export default class TeamManagerPlayers extends Vue {
     });
     await this.setPage();
   }
-
-  async editPlayer(player: PlayerTeam) {
-    console.log(player);
-  }
 }
 </script>

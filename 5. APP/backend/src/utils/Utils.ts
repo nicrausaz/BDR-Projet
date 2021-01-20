@@ -172,15 +172,16 @@ export default class Utils {
 
   static async validationGame(championshipId: number, teamAId: number, teamBId: number) {
     const result = await DB.query(`
-        SELECT c.id
+        SELECT l.id
         FROM championship c
-                 INNER JOIN league l on l.id = c.leagueid
-                 INNER JOIN team ta on l.id = c.leagueid
-                 INNER JOIN team tb on l.id = c.leagueid
+                 INNER JOIN league l ON l.id = c.leagueid
+                 INNER JOIN team ta ON l.id = ta.leagueid
+                 INNER JOIN team tb ON l.id = tb.leagueid
         WHERE c.id = $1
           AND ta.id = $2
           AND tb.id = $3
         LIMIT 1;`, [championshipId, teamAId, teamBId]);
+
     return result.rows.length == 1;
   }
 }

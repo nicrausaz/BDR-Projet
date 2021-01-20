@@ -33,6 +33,10 @@
                   <v-icon left small>mdi-stadium</v-icon>
                   {{ game.stadium.name }}
                 </v-chip>
+                <v-chip class="mr-2" label small>
+                  <v-icon left small>mdi-shield-star</v-icon>
+                  {{ game.championship.name }}
+                </v-chip>
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>

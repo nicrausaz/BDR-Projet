@@ -75,8 +75,8 @@ export default class UploadForm extends Vue {
         this.$emit("upload", this.file);
         this.close();
       })
-      .catch((e: Error) => {
-        this.error = e.message;
+      .catch((e) => {
+        this.error = e.response.data.message;
       })
       .finally(() => {
         this.isUploading = false;

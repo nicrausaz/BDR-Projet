@@ -76,7 +76,7 @@ export default class CreateLeague extends Vue {
         this.$emit("confirm");
       })
       .catch((e) => {
-        this.error = e?.message;
+        this.error = e.response.data.message;
       })
       .finally(() => {
         this.loading = false;

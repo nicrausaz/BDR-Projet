@@ -88,6 +88,7 @@ export class MyTeamController {
 
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
     if (!await Utils.validationSportClubLeague(team.club.id, team.league.id)) throw new BadRequest("Wrong Sport");
+
     const result = await DB.query(`INSERT INTO team(name, clubid, leagueid)
                                    VALUES ($1, $2, $3)
                                    RETURNING *`, [team.name, team.club.id, team.league.id]);
@@ -100,6 +101,7 @@ export class MyTeamController {
   async patch(@Req() request: Req, @PathParams("id") id: number, @BodyParams() team: Team) {
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, team.club.id)) throw new Unauthorized("Unauthorized ressource");
     if (!await Utils.validationSportClubLeague(team.club.id, team.league.id)) throw new BadRequest("Wrong Sport");
+
     const result = await DB.query(`UPDATE team
                                    SET name     = $1,
                                        clubid   = $2,

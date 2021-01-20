@@ -46,7 +46,7 @@
             <StadiumInput v-model="model.stadium" />
           </v-col>
           <v-col cols="6">
-            <MyChampionshipInput v-model="model.championship" restricted="true" />
+            <ChampionshipInput v-model="model.championship" restricted="true" />
           </v-col>
           <v-col cols="6">
             <TeamInput v-model="model.teamHome" />
@@ -73,14 +73,13 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import MyClubInput from "@/components/input/ClubInput.vue";
 import Game from "@/models/Game";
 import API from "@/plugins/API";
 import LeagueInput from "@/components/input/LeagueInput.vue";
 import DateInput from "@/components/input/DateInput.vue";
 import TeamInput from "@/components/input/TeamInput.vue";
 import StadiumInput from "@/components/input/StadiumInput.vue";
-import MyChampionshipInput from "@/components/input/ChampionshipInput.vue";
+import ChampionshipInput from "@/components/input/ChampionshipInput.vue";
 import Header from "@/components/Header.vue";
 import IncrementInput from "@/components/input/IncrementInput.vue";
 import ContentEditable from "@/components/input/ContentEditable.vue";
@@ -90,12 +89,11 @@ import ContentEditable from "@/components/input/ContentEditable.vue";
     ContentEditable,
     IncrementInput,
     Header,
-    MyChampionshipInput,
+    ChampionshipInput,
     StadiumInput,
     TeamInput,
     DateInput,
-    LeagueInput,
-    MyClubInput
+    LeagueInput
   }
 })
 export default class CreateGame extends Vue {
@@ -127,7 +125,7 @@ export default class CreateGame extends Vue {
         this.$emit("confirm");
       })
       .catch((e) => {
-        this.error = e?.message;
+        this.error = e.response.data.message;
       })
       .finally(() => {
         this.loading = false;

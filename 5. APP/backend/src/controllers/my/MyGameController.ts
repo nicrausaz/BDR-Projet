@@ -78,7 +78,7 @@ export class MyGameController {
   @ContentType("json")
   async putGame(@Req() request: Req, @BodyParams() game: Game) {
     if (!await Utils.checkAccessToChampionshipResource(<Administrator>request.user, game.championship.id)) throw new Unauthorized("Unauthorized Resource");
-    if (!await Utils.validationGame(game.championship.id, game.teamHome.id, game.teamGuest.id)) throw new BadRequest("Wrong Sport");
+    if (!await Utils.validationGame(game.championship.id, game.teamHome.id, game.teamGuest.id)) throw new BadRequest("Selected teams are not both playing in this league");
 
     const client = await PoolClient();
     try {
@@ -107,7 +107,7 @@ export class MyGameController {
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() game: Game) {
     if (!await Utils.checkAccessToGameResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized ressource");
-    if (!await Utils.validationGame(game.championship.id, game.teamHome.id, game.teamGuest.id)) throw new BadRequest("Wrong Sport");
+    if (!await Utils.validationGame(game.championship.id, game.teamHome.id, game.teamGuest.id)) throw new BadRequest("Selected teams are not both playing in this league");
 
     const client = await PoolClient();
     try {
