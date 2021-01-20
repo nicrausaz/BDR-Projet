@@ -1,14 +1,16 @@
 # Projet BDR [Frontend]
 > Nicolas Crausaz et Maxime Scharwath
 
+Le frontend est une application Vue.js
+
 ## Installation [Frontend]
 
 ```batch
-cd ./frontend
+$ cd ./frontend
 
-npm install
+$ npm install
 
-npm run serve
+$ npm run serve
 ```
 
 Le frontend est maintenant démarré sur http://localhost:8080

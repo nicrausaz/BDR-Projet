@@ -10,6 +10,7 @@ import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import {Readable} from "stream";
+import Paginator from "../../utils/Paginator";
 
 /**
  * Public team endpoint
@@ -17,6 +18,37 @@ import {Readable} from "stream";
 @Controller("/team")
 @UseBefore(RouteLogMiddleware)
 export class TeamController {
+
+  /**
+   * Retrive all teams
+   * @param query 
+   * @param limit 
+   * @param offset 
+   */
+  @Get("/")
+  @ContentType("json")
+  @Authenticate()
+  async getAll(
+    @QueryParams("q")query: string = "",
+    @QueryParams("limit")limit: number = 20,
+    @QueryParams("offset")offset: number = 0
+  ) {
+    return new Paginator(Team)
+      .setTotalQuery(`
+          SELECT count(*)
+          FROM team
+          WHERE name ILIKE $1 AND active = TRUE
+      `)
+      .setQuery(`
+          SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
+          FROM team t
+                   INNER JOIN club c on t.clubid = c.id
+                   INNER JOIN league l on t.leagueid = l.id
+          WHERE t.name ILIKE $1 AND t.active = TRUE
+      `,)
+      .create({query, limit, offset});
+  }
+
   /**
    * Retrieve a team
    * @param id

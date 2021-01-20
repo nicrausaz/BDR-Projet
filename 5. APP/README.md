@@ -7,6 +7,17 @@ Le frontend est une application Vue.js
 
 > ! Vous devez avoir installé NodeJS sur votre ordinateur https://nodejs.org/en/ !
 
+
+## Database
+
+Il faut utiliser PostgreSQL.
+
+Importer la DB et les données à l'aide du script fourni.
+
+Utiliser pour l'application le compte:
+
+> bdruser password
+
 <br>
 
 ## Installation [Backend]
@@ -29,11 +40,11 @@ Il faut éditer les informations de connexion à la DB.
 ## Installation [Frontend]
 
 ```batch
-cd ./frontend
+$ cd ./frontend
 
-npm install
+$ npm install
 
-npm run serve
+$ npm run serve
 ```
 
 Le frontend est maintenant démarré sur http://localhost:8080
