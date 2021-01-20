@@ -56,7 +56,8 @@ export default class Login extends Vue {
     this.log(this.data)
       .then((e) => {
         if (e instanceof Error) {
-          return (this.error = e.message);
+          this.error = "Wrong crendentials";
+          return this.error;
         }
         this.$router.push((this.$route.query.to as string) ?? "/");
       })
