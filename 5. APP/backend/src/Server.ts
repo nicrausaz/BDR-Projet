@@ -1,6 +1,5 @@
 import "@tsed/platform-express";
 import "@tsed/socketio";
-import "@tsed/ajv";
 import "@tsed/swagger";
 import "@tsed/passport";
 

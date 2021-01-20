@@ -24,7 +24,7 @@ class API {
         };
       },
       (error) => {
-        this.networkError = error;
+        this.networkError = !error?.response ? error : false;
       }
     );
     this.setToken(localStorage.getItem("token") ?? "");
