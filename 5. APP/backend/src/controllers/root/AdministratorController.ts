@@ -5,9 +5,17 @@ import {ContentType} from "@tsed/schema";
 import {Readable} from "stream";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Public user endpoint
+ */
 @Controller("/administrator")
 @UseBefore(RouteLogMiddleware)
 export class AdministratorController {
+  /**
+   * Get user's picture
+   * @param uid
+   * @private
+   */
   @Get("/:uid/avatar")
   @ContentType(Jimp.MIME_PNG)
   private async avatar(

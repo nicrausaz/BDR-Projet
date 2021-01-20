@@ -7,10 +7,19 @@ import {Authenticate} from "@tsed/passport";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Public game endpoint
+ */
 @Controller("/game")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class GameController {
+  /**
+   * Retrive all games
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -41,6 +50,10 @@ export class GameController {
       .create({query, limit, offset});
   }
 
+  /**
+   * Retrieve a game
+   * @param uid
+   */
   @Get("/:uid")
   @ContentType("json")
   async get(@PathParams("uid") uid: string) {

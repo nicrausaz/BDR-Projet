@@ -7,52 +7,37 @@ import PlayerTeam from "../../models/PlayerTeam";
 import {Authenticate} from "@tsed/passport";
 import Game from "../../models/Game";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
-import Paginator from "../../utils/Paginator";
-import Championship from "../../models/Championship";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import {Readable} from "stream";
 
+/**
+ * Public team endpoint
+ */
 @Controller("/team")
 @UseBefore(RouteLogMiddleware)
 export class TeamController {
-
-  @Get("/")
-  @ContentType("json")
-  @Authenticate()
-  async getAll(
-    @QueryParams("q")query: string = "",
-    @QueryParams("limit")limit: number = 20,
-    @QueryParams("offset")offset: number = 0
-  ) {
-    return new Paginator(Championship)
-      .setTotalQuery(`
-          SELECT count(*)
-          FROM team
-          WHERE name ILIKE $1 AND active = TRUE
-      `)
-      .setQuery(`
-          SELECT t.*, row_to_json(c.*) as club, row_to_json(l.*) as league
-          FROM team t
-                   INNER JOIN club c on t.clubid = c.id
-                   INNER JOIN league l on t.leagueid = l.id
-          WHERE t.name ILIKE $1 AND t.active = TRUE
-      `,)
-      .create({query, limit, offset});
-  }
-
+  /**
+   * Retrieve a team
+   * @param id
+   */
   @Get("/:id")
   @ContentType("json")
   @Authenticate()
   async get(@PathParams("id") id: number) {
     const query = await DB.query(`SELECT *
                                   FROM team
-                                  WHERE id = $1`, [id]);
+                                  WHERE id = $1
+                                    AND active = TRUE`, [id]);
     const result = query.rows.map(r => Team.hydrate<Team>(r))[0];
     if (result) return result;
     throw new NotFound("Team not found");
   }
 
+  /**
+   * Retrieve team's players
+   * @param id
+   */
   @Get("/:id/player")
   @ContentType("json")
   @Authenticate()
@@ -68,6 +53,10 @@ export class TeamController {
     return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
   }
 
+  /**
+   * Retrieve team's games
+   * @param id
+   */
   @Get("/:id/games")
   @ContentType("json")
   @Authenticate()
@@ -96,6 +85,10 @@ export class TeamController {
     return result.rows.map(r => Game.hydrate<Game>(r));
   }
 
+  /**
+   * Retrieve team's stats (Wins, draws, looses)
+   * @param id
+   */
   @Get("/:id/stats")
   @ContentType("json")
   @Authenticate()
@@ -111,6 +104,11 @@ export class TeamController {
     return result.rowCount != 0 ? result.rows[0] : {};
   }
 
+  /**
+   * Retrieve team's picture
+   * @param id
+   * @private
+   */
   @Get("/:id/avatar")
   @ContentType(Jimp.MIME_PNG)
   private async avatar(

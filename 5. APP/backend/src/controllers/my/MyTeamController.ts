@@ -20,18 +20,27 @@ import {Authenticate} from "@tsed/passport";
 import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import Team from "../../models/Team";
-import PlayerTeam from "../../models/PlayerTeam";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import fs from "fs";
 
+/**
+ * Manage team related to user
+ */
 @Controller("/team")
 @Authenticate()
 @UseBefore(RouteLogMiddleware)
 export class MyTeamController {
 
+  /**
+   * Retrieve all accessible teams of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -63,25 +72,11 @@ export class MyTeamController {
       .create({query, limit, offset});
   }
 
-  @Get("/:id/player")
-  @ContentType("json")
-  async getPlayers(@Req() request: Req, @PathParams("id") id: number) {
-
-    const perms = await Utils.getAccessibleClubResources(<Administrator>request.user);
-
-    const result = await DB.query(`SELECT *
-                                   FROM player
-                                            INNER JOIN player_play_for_team ppft ON player.uid = ppft.playeruid
-                                            INNER JOIN team t ON ppft.teamid = t.id
-                                            INNER JOIN club c on t.clubid = c.id
-                                   WHERE t.id = $1
-                                     AND c.id = ANY ($2)
-                                     AND t.active = TRUE
-                                     AND (endat IS NULL OR endat > NOW());`, [id, perms]);
-
-    return result.rows.map(r => PlayerTeam.hydrate<PlayerTeam>(r));
-  }
-
+  /**
+   * Create new team
+   * @param request
+   * @param team
+   */
   @Put("/")
   @ContentType("json")
   async put(@Req() request: Req, @BodyParams() team: Team) {
@@ -96,6 +91,12 @@ export class MyTeamController {
     return result.rows.map((r) => Team.hydrate<Team>(r))[0];
   }
 
+  /**
+   * Update team
+   * @param request
+   * @param id
+   * @param team
+   */
   @Patch("/:id")
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("id") id: number, @BodyParams() team: Team) {
@@ -112,6 +113,11 @@ export class MyTeamController {
     return result.rows.map((r) => Team.hydrate<Team>(r))[0];
   }
 
+  /**
+   * Delete team
+   * @param request
+   * @param id
+   */
   @Delete("/:id")
   @ContentType("json")
   async deleteTeam(@Req() request: Req, @PathParams("id") id: number) {
@@ -122,13 +128,13 @@ export class MyTeamController {
       await client.query("BEGIN");
 
 
-      const res1 = await client.query(`UPDATE player_play_for_team
-                                       SET endat = COALESCE(endat, NOW())
-                                       WHERE teamid = $1`, [id]);
+      await client.query(`UPDATE player_play_for_team
+                          SET endat = COALESCE(endat, NOW())
+                          WHERE teamid = $1`, [id]);
 
-      const res2 = await client.query(`UPDATE team
-                                       SET active = FALSE
-                                       WHERE id = $1`, [id]);
+      await client.query(`UPDATE team
+                          SET active = FALSE
+                          WHERE id = $1`, [id]);
 
       await client.query("COMMIT");
 
@@ -140,6 +146,12 @@ export class MyTeamController {
     }
   }
 
+  /**
+   * Add player to team
+   * @param request
+   * @param id
+   * @param data
+   */
   @Put("/:id/player")
   @ContentType("json")
   async addPlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
@@ -150,6 +162,7 @@ export class MyTeamController {
                     VALUES ($1, $2, $3)`, [data.playerUid, id, data.jerseyNumber]);
   }
 
+  /*
   @Patch("/:id/player")
   @ContentType("json")
   async updatePlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
@@ -161,8 +174,14 @@ export class MyTeamController {
                     WHERE playeruid = $2
                       AND teamid = $3 `, [data.jerseyNumber, data.playerUid, id]);
   }
+*/
 
-
+  /**
+   * Remove player from team
+   * @param request
+   * @param id
+   * @param data
+   */
   @Delete("/:id/player")
   @ContentType("json")
   async deletePlayer(@Req() request: Req, @PathParams("id") id: number, @BodyParams() data: any) {
@@ -180,6 +199,13 @@ export class MyTeamController {
     }
   }
 
+  /**
+   * Edit & upload team's picture
+   * @param request
+   * @param id
+   * @param file
+   * @private
+   */
   @Post("/:id/avatar")
   private async uploadFile(@Req() request: Req, @PathParams("id") id: number, @MultipartFile("file") file: PlatformMulterFile) {
     if (!await Utils.checkAccessToTeamResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");

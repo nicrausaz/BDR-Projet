@@ -7,11 +7,20 @@ import {Authenticate} from "@tsed/passport";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 import Paginator from "../../utils/Paginator";
 
+/**
+ * Public sport endpoint
+ */
 @Controller("/sport")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class SportController {
 
+  /**
+   * Retrieve all sports
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -35,6 +44,10 @@ export class SportController {
     return JSON.stringify(await page);
   }
 
+  /**
+   * Retrieve a sport
+   * @param id
+   */
   @Get("/:id")
   @ContentType("json")
   async get(@PathParams("id") id: number) {
@@ -46,6 +59,11 @@ export class SportController {
     throw new NotFound("Sport not found");
   }
 
+  /**
+   * Create Sport
+   * @param sport
+   * (not used yet)
+   */
   @Put("/")
   @ContentType("json")
   async put(@BodyParams() sport: Sport) {
@@ -56,11 +74,16 @@ export class SportController {
     return result.rows.map((r) => Sport.hydrate<Sport>(r))[0];
   }
 
+  /**
+   * Delete sport
+   * @param id
+   * (not used yet)
+   */
   @Delete("/:id")
   @ContentType("json")
   async delete(@PathParams("id") id: number) {
-    const result = await DB.query(`DELETE
-                                   FROM sport
-                                   WHERE id = $1`, [id]);
+    await DB.query(`DELETE
+                    FROM sport
+                    WHERE id = $1`, [id]);
   }
 }

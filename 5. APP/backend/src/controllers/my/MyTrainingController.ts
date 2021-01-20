@@ -9,10 +9,20 @@ import Utils from "../../utils/Utils";
 import Administrator from "../../models/Administrator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Manage training related to user
+ */
 @Controller("/training")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyTrainingController {
+  /**
+   * Retrieve all accessible trainings of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -41,6 +51,11 @@ export class MyTrainingController {
       .create({query, limit, offset});
   }
 
+  /**
+   * Retrieve a training
+   * @param request
+   * @param uid
+   */
   @Get("/:uid")
   @ContentType("json")
   async get(
@@ -62,6 +77,11 @@ export class MyTrainingController {
     throw new NotFound("Training not found");
   }
 
+  /**
+   * Create new training
+   * @param request
+   * @param training
+   */
   @Put("/")
   @ContentType("json")
   async put(@Req() request: Req, @BodyParams() training: Training) {
@@ -90,7 +110,12 @@ export class MyTrainingController {
     }
   }
 
-
+  /**
+   * Edit training
+   * @param request
+   * @param uid
+   * @param training
+   */
   @Patch("/:uid")
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() training: Training) {
@@ -127,6 +152,11 @@ export class MyTrainingController {
     }
   }
 
+  /**
+   * Delete training
+   * @param request
+   * @param uid
+   */
   @Delete("/:uid")
   @ContentType("json")
   async delete(@Req() request: Req, @PathParams("uid") uid: string) {

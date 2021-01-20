@@ -5,11 +5,22 @@ import Log from "../../models/Log";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Public log endpoint
+ *
+ * Logs are insert and update on database ressources
+ */
 @Controller("/log")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class LogController {
 
+  /**
+   * Get all logs
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(

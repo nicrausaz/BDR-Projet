@@ -7,18 +7,21 @@ import Administrator from "../../models/Administrator";
 import CalendarEntry from "../../models/CalendarEntry";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Manage event related to user
+ */
 @Controller("/event")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyEventController {
-  @Get("/")
-  @ContentType("json")
-  async get() {
-    const result = await DB.query(`SELECT *
-                                   FROM event`);
-    return result.rows;
-  }
 
+  /**
+   * Get all accessible events of user
+   * formated to be used with calendar
+   * @param request
+   * @param start
+   * @param end
+   */
   @Get("/calendar")
   @ContentType("json")
   async getCalendar(@Req() request: Req, @QueryParams("start") start: string, @QueryParams("end") end: string) {

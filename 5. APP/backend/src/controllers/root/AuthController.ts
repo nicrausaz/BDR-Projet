@@ -7,9 +7,18 @@ import {Unauthorized} from "@tsed/exceptions";
 import bcrypt from "bcrypt";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Public authentication endpoint
+ */
 @Controller("/auth")
 @UseBefore(RouteLogMiddleware)
 export class AuthController {
+  /**
+   * Login
+   * @param req
+   * @param email
+   * @param password
+   */
   @Post("/login")
   async login(@Req() req: Req, @BodyParams("email") email: string, @BodyParams("password") password: string) {
     const user = (await DB.query(
@@ -28,12 +37,21 @@ export class AuthController {
     return {token};
   }
 
+  /**
+   * Retrieve authentified user's data
+   * @param request
+   */
   @Get("/getProfile")
   @Authenticate()
   async getProfile(@Req() request: Req) {
     return request.user;
   }
 
+  /**
+   * Register a new user account
+   * @param admin
+   * @private
+   */
   @Post("/register")
   private async register(@BodyParams() admin: Administrator) {
     const query = await DB.query(

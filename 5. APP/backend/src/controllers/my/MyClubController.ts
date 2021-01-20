@@ -24,11 +24,21 @@ import Jimp from "jimp";
 import {rootDir} from "../../Server";
 import fs from "fs";
 
+/**
+ * Manage club related to user
+ */
 @Controller("/club")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyClubController {
 
+  /**
+   * Retrieve all accessible clubs of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   async getAll(
@@ -58,6 +68,11 @@ export class MyClubController {
       .create({query, limit, offset});
   }
 
+  /**
+   * Create new club
+   * @param request
+   * @param club
+   */
   @Put("/")
   @ContentType("json")
   async put(@Req() request: Req, @BodyParams() club: Club) {
@@ -84,6 +99,12 @@ export class MyClubController {
     }
   }
 
+  /**
+   * Update club
+   * @param request
+   * @param id
+   * @param club
+   */
   @Patch("/:id")
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("id") id: number, @BodyParams() club: Club) {
@@ -99,6 +120,11 @@ export class MyClubController {
     return result.rows.map(r => Club.hydrate<Club>(r))[0];
   }
 
+  /**
+   * Delete club
+   * @param request
+   * @param id
+   */
   @Delete("/:id")
   @ContentType("json")
   async delete(@Req() request: Req, @PathParams("id") id: number) {
@@ -134,6 +160,13 @@ export class MyClubController {
     }
   }
 
+  /**
+   * Edit & upload club's picture
+   * @param request
+   * @param id
+   * @param file
+   * @private
+   */
   @Post("/:id/avatar")
   private async uploadFile(@Req() request: Req, @PathParams("id") id: number, @MultipartFile("file") file: PlatformMulterFile) {
     if (!await Utils.checkAccessToClubResource(<Administrator>request.user, id)) throw new Unauthorized("Unauthorized Resource");

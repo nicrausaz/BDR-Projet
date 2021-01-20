@@ -25,11 +25,21 @@ import DB, {PoolClient} from "../../db/DB";
 import Paginator from "../../utils/Paginator";
 import {RouteLogMiddleware} from "../../middlewares/RouteLogMiddleware";
 
+/**
+ * Manage player related to user
+ */
 @Controller("/player")
 @UseBefore(RouteLogMiddleware)
 @Authenticate()
 export class MyPlayerController {
 
+  /**
+   * Retrieve all accessible players of user
+   * @param request
+   * @param query
+   * @param limit
+   * @param offset
+   */
   @Get("/")
   @ContentType("json")
   @Authenticate()
@@ -59,7 +69,12 @@ export class MyPlayerController {
       .create({query, limit, offset});
   }
 
-  @Put()
+  /**
+   * Create new Player
+   * @param request
+   * @param player
+   */
+  @Put("/")
   @ContentType("json")
   async put(@Req() request: Req, @BodyParams() player: Player) {
     const client = await PoolClient();
@@ -85,6 +100,12 @@ export class MyPlayerController {
     }
   }
 
+  /**
+   * Update player
+   * @param request
+   * @param uid
+   * @param player
+   */
   @Patch("/:uid")
   @ContentType("json")
   async patch(@Req() request: Req, @PathParams("uid") uid: string, @BodyParams() player: Player) {
@@ -103,6 +124,11 @@ export class MyPlayerController {
     return result.rows.map((r) => Player.hydrate<Player>(r))[0];
   }
 
+  /**
+   * Delete player
+   * @param request
+   * @param uid
+   */
   @Delete("/:uid")
   @ContentType("json")
   async delete(@Req() request: Req, @PathParams("uid") uid: string) {
@@ -132,6 +158,13 @@ export class MyPlayerController {
     }
   }
 
+  /**
+   * Edit & upload player's picture
+   * @param request
+   * @param uid
+   * @param file
+   * @private
+   */
   @Post("/:uid/avatar")
   private async uploadFile(@Req() request: Req, @PathParams("uid") uid: string, @MultipartFile("file") file: PlatformMulterFile) {
     if (!await Utils.checkAccessToPlayerResource(<Administrator>request.user, uid)) throw new Unauthorized("Unauthorized Resource");
