@@ -65,6 +65,7 @@
     </v-app-bar>
 
     <v-main>
+      <NetworkError />
       <router-view />
     </v-main>
   </v-app>
@@ -74,11 +75,13 @@
 import {Component, Vue} from "vue-property-decorator";
 import {namespace} from "vuex-class";
 import Administrator from "@/models/Administrator";
+import NetworkError from "@/components/NetworkError.vue";
 
 const administrator = namespace("administrator");
 const router = namespace("router");
-
-@Component
+@Component({
+  components: {NetworkError}
+})
 export default class App extends Vue {
   drawer = false;
   items = [

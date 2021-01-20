@@ -1,6 +1,6 @@
-# frontend
+# Projet BDR [Frontend]
 
-## Project setup
+## Installation
 ```
 npm install
 ```
@@ -19,6 +19,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

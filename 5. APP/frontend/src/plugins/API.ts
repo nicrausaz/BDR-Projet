@@ -2,28 +2,52 @@ import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import io from "socket.io-client";
 
 class API {
-  public readonly server = "http://localhost:8083";
   public readonly axios: AxiosInstance;
   public socket?: SocketIOClient.Socket;
+  public networkError: any = false;
+  private server = localStorage.getItem("server") ?? "http://localhost:8083";
+  private token?: string;
 
   constructor() {
     this.axios = axios.create({
       baseURL: `${this.server}/api`
     });
-    this.axios.interceptors.response.use((response) => {
-      const isoDatePattern = new RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/);
-      return {
-        ...response,
-        data: JSON.parse(JSON.stringify(response.data), (key: string, value: unknown) =>
-          typeof value === "string" && value.match(isoDatePattern) ? new Date(value) : value
-        )
-      };
-    });
+    this.axios.interceptors.response.use(
+      (response) => {
+        const isoDatePattern = new RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/);
+        this.networkError = false;
+        return {
+          ...response,
+          data: JSON.parse(JSON.stringify(response.data), (key: string, value: unknown) =>
+            typeof value === "string" && value.match(isoDatePattern) ? new Date(value) : value
+          )
+        };
+      },
+      (error) => {
+        this.networkError = error;
+      }
+    );
     this.setToken(localStorage.getItem("token") ?? "");
   }
 
+  public getServer() {
+    return this.server;
+  }
+
+  public setServer(server: string) {
+    localStorage.setItem("server", server);
+    this.server = server;
+    this.axios.defaults.baseURL = this.server;
+    this.socket?.close();
+    this.socket = io(`${this.server}`, {
+      query: {token: this.token}
+    });
+  }
+
   public setToken(token: string) {
+    this.token = token;
     localStorage.setItem("token", token);
+    this.socket?.close();
     this.socket = io(`${this.server}`, {
       query: {token}
     });
