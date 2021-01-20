@@ -4,7 +4,7 @@
 -- Version 4 - 19.01.2021
 --
 
---CREATE DATABASE bdr_proj_crausaz_scharwath;
+CREATE DATABASE bdr_proj_crausaz_scharwath;
 CREATE SCHEMA IF NOT EXISTS public;
 
 -- Pour utiliser uuid
@@ -638,6 +638,8 @@ SELECT SETVAL('stadium_id_seq', (SELECT MAX(id) FROM stadium));
 SELECT SETVAL('club_id_seq', (SELECT MAX(id) FROM club));
 
 -- Service Account for backend
+--DROP OWNED BY bdruser;
+--DROP USER bdruser;
 CREATE USER bdruser WITH ENCRYPTED PASSWORD 'password';
 GRANT CONNECT ON DATABASE bdr_proj_crausaz_scharwath TO bdruser;
 GRANT USAGE ON SCHEMA public TO bdruser;

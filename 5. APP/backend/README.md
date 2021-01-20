@@ -17,9 +17,8 @@ $ npm start
 
 Le serveur va démarrer normalement sur http://localhost:8083 
 
-Les réglages du serveur se trouvent dans le fichier _.env_ à la racine du dossier backend
-
-Il faut éditer les informations de connexion à la DB.
+Les réglages du serveur se trouvent dans le fichier _.env_ à la racine du dossier backend,
+il faut y éditer les informations de connexion à la DB.
 
 ---
 <div style="text-align: right"> Nicolas Crausaz et Maxime Scharwath - 20.01.2020</div>
