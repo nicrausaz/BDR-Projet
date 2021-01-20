@@ -636,3 +636,10 @@ SELECT SETVAL('team_id_seq', (SELECT MAX(id) FROM team));
 SELECT SETVAL('event_log_id_seq', (SELECT MAX(id) FROM event_log));
 SELECT SETVAL('stadium_id_seq', (SELECT MAX(id) FROM stadium));
 SELECT SETVAL('club_id_seq', (SELECT MAX(id) FROM club));
+
+-- Service Account for backend
+CREATE USER bdruser WITH ENCRYPTED PASSWORD 'password';
+GRANT CONNECT ON DATABASE bdr_proj_crausaz_scharwath TO bdruser;
+GRANT USAGE ON SCHEMA public TO bdruser;
+GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA public TO bdruser;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO bdruser;
