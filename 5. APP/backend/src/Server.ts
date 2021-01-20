@@ -13,13 +13,19 @@ import cors from "cors";
 import {Configuration, Inject} from "@tsed/di";
 import {PlatformApplication} from "@tsed/common";
 
+import * as dotenv from "dotenv";
+
 export const rootDir = __dirname;
+dotenv.config();
 
 @Configuration({
   rootDir,
   acceptMimes: ["application/json"],
-  httpPort: process.env.PORT || 8083,
-  httpsPort: false, // CHANGE
+  httpPort: process.env.SERVER_PORT || 8083,
+  httpsPort: false,
+  logger: {
+    logRequest: Boolean(Number(process.env.SERVER_LOGS))
+  },
   mount: {
     "/api": [
       `${rootDir}/controllers/root/**/*.ts`

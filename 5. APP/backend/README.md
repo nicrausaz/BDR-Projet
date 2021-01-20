@@ -1,21 +1,20 @@
-# backend
+# Projet BDR [Backend]
 
-> An awesome project based on Ts.ED framework
+>Nicolas Crausaz et Maxime Scharwath
 
-See [Ts.ED](https://tsed.io) project for more information.
+Le serveur de notre application est un serveur codé en NodeJS avec le Framework TSED qui nous a facilite la vie pour la création d'un serveur API REST. Nous avons séparé la gestion de nos Table en contrôleurs. Qui sont eux aussi séparés en sous requêtes avec leurs fonctions dédiées.
 
-## Build setup
-
-> **Important!** Ts.ED requires Node >= 10, Express >= 4 and TypeScript >= 3.
+## Installation
+Vous devez avoir installé NodeJS sur votre ordinateur.
+https://nodejs.org/en/
 
 ```batch
 # install dependencies
-$ yarn install
+$ npm install
 
-# serve
-$ yarn start
-
-# build for production
-$ yarn build
-$ yarn start:prod
+# serve de test
+$ npm start
 ```
+Le serveur va démarrer normalement sur le localhost:8083 
+
+Les réglages du serveur se trouvent dans le fichier .env à la racine du projet.
