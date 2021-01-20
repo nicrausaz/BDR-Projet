@@ -1,21 +1,17 @@
 # Projet BDR [Frontend]
+> Nicolas Crausaz et Maxime Scharwath
 
-## Installation
-```
+## Installation [Frontend]
+
+```batch
+cd ./frontend
+
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Le frontend est maintenant démarré sur http://localhost:8080
 
-### Lints and fixes files
-```
-npm run lint
-```
+---
+<div style="text-align: right"> Nicolas Crausaz et Maxime Scharwath - 20.01.2020</div>
